@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router"
 export default function AuthRegister(){
+    const navigate = useNavigate();
     return <>
         <div class="w-full flex items-center justify-center bg-background-light dark:bg-background-dark p-6 md:p-12">
             <div class="w-full max-w-md bg-white dark:bg-[#1a202c] shadow-xl rounded-xl p-8 space-y-6">
@@ -31,7 +33,7 @@ export default function AuthRegister(){
                 </form>
                 <div class="text-center mt-6">
                     <p class="text-sm text-gray-500">Already have an account?</p>
-                    <a href="login.php" class="mt-2 text-primary font-bold hover:underline">
+                    <a onClick={()=> navigate("/")} class="mt-2 text-primary font-bold hover:underline">
                         Return to Login
                     </a>
                 </div>

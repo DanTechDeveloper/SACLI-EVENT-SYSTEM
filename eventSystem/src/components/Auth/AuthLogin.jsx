@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 export default function AuthLogin() {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   return (
     <>
       <div class="w-full flex items-center justify-center bg-background-light dark:bg-background-dark p-6 md:p-6">
@@ -65,14 +69,15 @@ export default function AuthLogin() {
             </form>
             <div class="text-center mt-6">
               <p class="text-sm text-gray-500">
-                Don't have an account?     
-                <a
-                  href="register.php"
-                  class="text-primary font-bold hover:underline"
+                Don't have an account? 
+                
+                <button
+                  onClick={() => navigate("/register")} // Use navigate to redirect
+                  className="text-primary font-bold hover:underline"
                 >
-                   Register
-                </a>
-              </p>
+                  Register
+                </button>
+               </p>
             </div>
 
             <div class=" flex items-center gap-2 my-6">
@@ -116,80 +121,6 @@ export default function AuthLogin() {
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
                 <span class="text-sm">Facebook</span>
-              </button>
-            </div>
-          </div>
-          {/* <!-- Registration Form Section (Hidden by default) --> */}
-          <div class=" hidden space-y-6" id="register-container">
-            <div class="text-left mb-6">
-              <h2 class="text-2xl font-bold text-[#111318] dark:text-white">
-                Create Staff Account
-              </h2>
-              <p class="text-gray-500 dark:text-gray-400 mt-1">
-                Join the school management board.
-              </p>
-            </div>
-            <form class="space-y-4">
-              <div class="grid grid-cols-1 gap-4">
-                <label class="block">
-                  <span class="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
-                    Full Name
-                  </span>
-                  <input
-                    class="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-11 px-4 focus:ring-2 focus:ring-primary outline-none"
-                    type="text"
-                    id="fullName"
-                  />
-                </label>
-                <label class="block">
-                  <span class="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
-                    School Email
-                  </span>
-                  <input
-                    class="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-11 px-4 focus:ring-2 focus:ring-primary outline-none"
-                    type="email"
-                    id="email"
-                  />
-                </label>
-                <label class="block relative">
-                  <span class="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
-                    Password
-                  </span>
-                  <div class="relative">
-                    <input
-                      class="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-11 px-4 pr-10 focus:ring-2 focus:ring-primary outline-none"
-                      type="password"
-                      id="regPassword"
-                    />
-                    <button
-                      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
-                      type="button"
-                      onclick="togglePasswordVisibility('regPassword')"
-                    >
-                      <span
-                        class="material-symbols-outlined text-[18px]"
-                        id="regPasswordIcon"
-                      >
-                        visibility
-                      </span>
-                    </button>
-                  </div>
-                </label>
-              </div>
-              <button
-                class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-primary/20 transition-all mt-4"
-                type="submit"
-              >
-                Register Account
-              </button>
-            </form>
-            <div class="text-center mt-6">
-              <p class="text-sm text-gray-500">Already have an account?</p>
-              <button
-                class="mt-2 text-primary font-bold hover:underline"
-                onclick="toggleAuth('login')"
-              >
-                Return to Login
               </button>
             </div>
           </div>
