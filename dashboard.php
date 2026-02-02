@@ -71,196 +71,163 @@ include 'dashboardDatabase.php';
                         <span class="material-symbols-outlined fill">dashboard</span>
                         <p class="text-sm font-semibold leading-normal">Dashboard</p>
                     </a>
-                    <div class="px-4 space-y-1">
-                        <div class="flex items-center justify-between px-3 py-1 mb-1">
-                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Events Management</span>
-                            <span class="material-symbols-outlined text-slate-500 text-xs">expand_more</span>
-                        </div>
-                        <div class="space-y-1">
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group" href="#">
-                                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">calendar_month</span>
-                                <p class="text-sm font-medium">All Events</p>
-                            </a>
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group" href="#">
-                                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400 pl-1">upcoming</span>
-                                <p class="text-sm font-medium">Upcoming</p>
-                            </a>
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group" href="#">
-                                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">add_box</span>
-                                <p class="text-sm font-medium">Add New</p>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="px-4 space-y-1">
-                        <div class="flex items-center justify-between px-3 py-1 mb-1">
-                            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Announcements</span>
-                            <span class="material-symbols-outlined text-slate-500 text-xs">expand_more</span>
-                        </div>
-                        <div class="space-y-1">
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group" href="#">
-                                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">campaign</span>
-                                <p class="text-sm font-medium">All Posts</p>
-                            </a>
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group" href="#">
-                                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400 pl-1">check_circle</span>
-                                <p class="text-sm font-medium">Published</p>
-                            </a>
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group" href="#">
-                                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">post_add</span>
-                                <p class="text-sm font-medium">Add New</p>
-                            </a>
-                        </div>
-                    </div>
-
-            </div>
-            <!-- <a href="studentView.php" class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-[0.015em]">
+                    
+                    <a class="flex items-center gap-3 px-3 py-2 text-[#212529] dark:text-slate-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="createAnnouncementUI.php">
+                        <span class="material-symbols-outlined">campaign</span>
+                        <p class="text-sm font-medium leading-normal">Create Announcements</p>
+                    </a>
+                    <a class="flex items-center gap-3 px-3 py-2 text-[#212529] dark:text-slate-300 hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg" href="createEventUI.php">
+                        <span class="material-symbols-outlined">event</span>
+                        <p class="text-sm font-medium leading-normal">Create Events</p>
+                    </a>
+                    <!-- <a href="studentView.php" class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-[0.015em]">
                         <span class="truncate">Student View</span>
                         <a /> -->
-            </nav>
-    </div>
+                </nav>
+            </div>
+           
+        </aside>
+        <!-- Main Content -->
+        <main class="ml-64 flex flex-1 flex-col p-8">
+            <form action="#" method="POST">
+                <div class="flex flex-col gap-8">
+                    <!-- PageHeading -->
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <div class="flex flex-col gap-1">
+                            <p class="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Admin Dashboard</p>
+                            <p class="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">Welcome, Admin! Here's a summary of school announcements and events!.</p>
+                        </div>
 
-    </aside>
-    <!-- Main Content -->
-    <main class="ml-64 flex flex-1 flex-col p-8">
-        <form action="#" method="POST">
-            <div class="flex flex-col gap-8">
-                <!-- PageHeading -->
-                <div class="flex flex-wrap justify-between items-center gap-3">
-                    <div class="flex flex-col gap-1">
-                        <p class="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Admin Dashboard</p>
-                        <p class="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">Welcome, Admin! Here's a summary of school announcements and events!.</p>
                     </div>
 
-                </div>
+                    <!-- Stats -->
+                    <div id="stats">
+                        <?php
+                        $selectedOption = $_POST['selectedOption'] ?? "allTypes";
 
-                <!-- Stats -->
-                <div id="stats">
-                    <?php
-                    $selectedOption = $_POST['selectedOption'] ?? "allTypes";
-
-                    if ($selectedOption === "allTypes" || !isset($_POST['applyChangesButton'])) {
-                        getTotalPosts();
-                    } else if ($selectedOption === "allAnnouncements") {
-                        getTotalAnnouncementCategory();
-                    } else if ($selectedOption === "allSubtypeEvents") {
-                        getAllSubtypeEvent();
-                    } else if ($selectedOption === "allEventsStatus") {
-                        getAllEventStatus();
-                    } else {
-                        getTotalPosts();
-                    }
+                        if ($selectedOption === "allTypes" || !isset($_POST['applyChangesButton'])) {
+                            getTotalPosts();
+                        } else if ($selectedOption === "allAnnouncements") {
+                            getTotalAnnouncementCategory();
+                        } else if ($selectedOption === "allSubtypeEvents") {
+                            getAllSubtypeEvent();
+                        } else if ($selectedOption === "allEventsStatus") {
+                            getAllEventStatus();
+                        } else {
+                            getTotalPosts();
+                        }
 
 
-                    ?>
-                </div>
-                <!-- Toolbar for filters -->
-                <div class="flex flex-col gap-5 py-3">
-                    <div class="flex gap-2 items-center justify-between">
-                        <div class='flex items-center gap-3'>
-                            <h4 class="text-[#212529] dark:text-white text-[15px] font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Filter By</h4>
-                            <!-- ToolBar -->
-                            <select name="selectedOption" id="dashboardSelection" class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
-                                <?php $currentSelectedOption = isset($_POST['selectedOption']) ? $_POST['selectedOption'] : 'allTypes'; ?>
-                                <option value="allTypes" <?php echo ($currentSelectedOption == 'allTypes') ? 'selected' : ''; ?>>All Types</option>
-                                <option value="allAnnouncements" <?php echo ($currentSelectedOption == 'allAnnouncements') ? 'selected' : ''; ?>>All Announcements</option>
-                                <option value="allSubtypeEvents" <?php echo ($currentSelectedOption == 'allSubtypeEvents') ? 'selected' : ''; ?>>Events Subtypes</option>
-                                <option value="allEventsStatus" <?php echo ($currentSelectedOption == 'allEventsStatus') ? 'selected' : ''; ?>>Event Status Overview</option>
-                            </select>
-                            <h4 class="text-[#212529] dark:text-white text-[15px] font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Sort By</h4>
-                            <select id="selectedSort" name="selectedSort" class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
-                                <!-- Use server-safe values (mapped on server) -->
-                                <?php
-                                $currentSelectedSort = isset($_POST['selectedSort']) ? $_POST['selectedSort'] : 'title';
-                                $currentSelectedOption = isset($_POST['selectedOption']) ? $_POST['selectedOption'] : 'allTypes';
-                                if ($currentSelectedOption === "allAnnouncements") {
-                                    echo '
+                        ?>
+                    </div>
+                    <!-- Toolbar for filters -->
+                    <div class="flex flex-col gap-5 py-3">
+                        <div class="flex gap-2 items-center justify-between">
+                            <div class='flex items-center gap-3'>
+                                <h4 class="text-[#212529] dark:text-white text-[15px] font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Filter By</h4>
+                                <!-- ToolBar -->
+                                <select name="selectedOption" id="dashboardSelection" class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+                                    <?php $currentSelectedOption = isset($_POST['selectedOption']) ? $_POST['selectedOption'] : 'allTypes'; ?>
+                                    <option value="allTypes" <?php echo ($currentSelectedOption == 'allTypes') ? 'selected' : ''; ?>>All Types</option>
+                                    <option value="allAnnouncements" <?php echo ($currentSelectedOption == 'allAnnouncements') ? 'selected' : ''; ?>>All Announcements</option>
+                                    <option value="allSubtypeEvents" <?php echo ($currentSelectedOption == 'allSubtypeEvents') ? 'selected' : ''; ?>>Events Subtypes</option>
+                                    <option value="allEventsStatus" <?php echo ($currentSelectedOption == 'allEventsStatus') ? 'selected' : ''; ?>>Event Status Overview</option>
+                                </select>
+                                <h4 class="text-[#212529] dark:text-white text-[15px] font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Sort By</h4>
+                                <select id="selectedSort" name="selectedSort" class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+                                    <!-- Use server-safe values (mapped on server) -->
+                                    <?php
+                                    $currentSelectedSort = isset($_POST['selectedSort']) ? $_POST['selectedSort'] : 'title';
+                                    $currentSelectedOption = isset($_POST['selectedOption']) ? $_POST['selectedOption'] : 'allTypes';
+                                    if ($currentSelectedOption === "allAnnouncements") {
+                                        echo '
                                         <option value="title" ' . (($currentSelectedSort == 'title') ? 'selected' : '') . '>Title</option>
                                         <option value="date" ' . (($currentSelectedSort == 'date') ? 'selected' : '') . '>Date</option>
                                         <option value="category" ' . (($currentSelectedSort == 'category') ? '  selected' : '') . '>Category</option>
                                         ';
-                                } else if ($currentSelectedOption === "allSubtypeEvents") {
-                                    echo '
+                                    } else if ($currentSelectedOption === "allSubtypeEvents") {
+                                        echo '
                                         <option value="title" ' . (($currentSelectedSort == 'title') ? 'selected' : '') . '>Title</option>
                                         <option value="date" ' . (($currentSelectedSort == 'date') ? 'selected' : '') . '>Date</option>
                                         <option value="subtype" ' . (($currentSelectedSort == 'subtype') ? '  selected' : '') . '>Subtype</option>
                                         ';
-                                } else if ($currentSelectedOption === "allEventsStatus") {
-                                    echo '
+                                    } else if ($currentSelectedOption === "allEventsStatus") {
+                                        echo '
                                         <option value="title" ' . (($currentSelectedSort == 'title') ? 'selected' : '') . '>Title</option>
                                         <option value="date" ' . (($currentSelectedSort == 'date') ? 'selected' : '') . '>Date</option>
                                         ';
-                                } else {
-                                    echo '
+                                    } else {
+                                        echo '
                                         <option value="title" ' . (($currentSelectedSort == 'title') ? 'selected' : '') . '>Title</option>
                                         <option value="date" ' . (($currentSelectedSort == 'date') ? 'selected' : '') . '>Date</option>
                                         <option value="category" ' . (($currentSelectedSort == 'category') ? 'selected' : '') . '>Category (Announcements)</option>
                                         <option value="subtype" ' . (($currentSelectedSort == 'subtype') ? 'selected' : '') . '>Subtype (Events)</option>
                                         <option value="location" ' . (($currentSelectedSort == 'location') ? 'selected' : '') . '>Location (Events)</option>
                                         ';
-                                }
-                                ?>
+                                    }
+                                    ?>
 
 
 
-                            </select>
-                            <h4 class="text-[#212529] dark:text-white text-[15px] font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Order By</h4>
-                            <select id="selectedOrder" name="selectedOrder" class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
-                                <?php $currentSelectedOrder = isset($_POST['selectedOrder']) ? $_POST['selectedOrder'] : 'ASC'; ?>
-                                <option value="ASC" <?php echo ($currentSelectedOrder == 'ASC') ? 'selected' : ''; ?>>Ascending</option>
-                                <option value="DESC" <?php echo ($currentSelectedOrder == 'DESC') ? 'selected' : ''; ?>>Descending</option>
-                            </select>
-                            <button type="submit" name="applyChangesButton" class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-[0.010em]">
-                                <span class="truncate">Apply Changes</span>
-                            </button>
+                                </select>
+                                <h4 class="text-[#212529] dark:text-white text-[15px] font-bold leading-tight tracking-[-0.015em] whitespace-nowrap">Order By</h4>
+                                <select id="selectedOrder" name="selectedOrder" class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+                                    <?php $currentSelectedOrder = isset($_POST['selectedOrder']) ? $_POST['selectedOrder'] : 'ASC'; ?>
+                                    <option value="ASC" <?php echo ($currentSelectedOrder == 'ASC') ? 'selected' : ''; ?>>Ascending</option>
+                                    <option value="DESC" <?php echo ($currentSelectedOrder == 'DESC') ? 'selected' : ''; ?>>Descending</option>
+                                </select>
+                                <button type="submit" name="applyChangesButton" class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold tracking-[0.010em]">
+                                    <span class="truncate">Apply Changes</span>
+                                </button>
+
+                            </div>
 
                         </div>
 
-                    </div>
 
 
+                        <div class="flex flex-col gap-4">
+                            <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-xs uppercase text-[#6C757D] dark:bg-slate-800 dark:text-slate-400">
+                                        <tr>
+                                            <th class="px-6 py-3 font-medium" scope="col whitespace-nowrap">Title</th>
+                                            <th class="px-6 py-3 font-medium" scope="col">Type / Status</th>
+                                            <th class="px-6 py-3 font-medium" scope="col">Date / Location</th>
+                                            <th class="px-6 py-3 font-medium whitespace-nowrap" scope="col">Subtype / Category</th>
+                                            <th class="px-6 py-3 text-right font-medium" scope="col">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+                                        <?php
 
-                    <div class="flex flex-col gap-4">
-                        <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-                            <table class="w-full text-left text-sm">
-                                <thead class="bg-slate-50 text-xs uppercase text-[#6C757D] dark:bg-slate-800 dark:text-slate-400">
-                                    <tr>
-                                        <th class="px-6 py-3 font-medium" scope="col whitespace-nowrap">Title</th>
-                                        <th class="px-6 py-3 font-medium" scope="col">Type / Status</th>
-                                        <th class="px-6 py-3 font-medium" scope="col">Date / Location</th>
-                                        <th class="px-6 py-3 font-medium whitespace-nowrap" scope="col">Subtype / Category</th>
-                                        <th class="px-6 py-3 text-right font-medium" scope="col">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody">
-                                    <?php
-
-                                    $selectedSort = isset($_POST['selectedSort']) ? $_POST['selectedSort'] : 'title'; // Default to 'title'
-                                    $selectedOrder = isset($_POST['selectedOrder']) ? $_POST['selectedOrder'] : 'ASC'; // Default to 'ASC'
-                                    if (isset($_POST['applyChangesButton'])) {
-                                        $selectedOption = isset($_POST['selectedOption']) ? $_POST['selectedOption'] : 'allTypes';
-                                        if ($selectedOption === 'allAnnouncements') {
-                                            readAllTableAnnouncements($selectedSort, $selectedOrder);
-                                        } else if ($selectedOption === 'allSubtypeEvents') {
-                                            readAllSubtypeEvents($selectedSort, $selectedOrder);
-                                        } else if ($selectedOption === "allEventsStatus") {
-                                            readAllEventsStatus($selectedSort, $selectedOrder);
-                                        } else if ($selectedOption === "Upcoming Events") {
-                                            readUpcomingEventsTable($selectedSort, $selectedOrder);
+                                        $selectedSort = isset($_POST['selectedSort']) ? $_POST['selectedSort'] : 'title'; // Default to 'title'
+                                        $selectedOrder = isset($_POST['selectedOrder']) ? $_POST['selectedOrder'] : 'ASC'; // Default to 'ASC'
+                                        if (isset($_POST['applyChangesButton'])) {
+                                            $selectedOption = isset($_POST['selectedOption']) ? $_POST['selectedOption'] : 'allTypes';
+                                            if ($selectedOption === 'allAnnouncements') {
+                                                readAllTableAnnouncements($selectedSort, $selectedOrder);
+                                            } else if ($selectedOption === 'allSubtypeEvents') {
+                                                readAllSubtypeEvents($selectedSort, $selectedOrder);
+                                            } else if ($selectedOption === "allEventsStatus") {
+                                                readAllEventsStatus($selectedSort, $selectedOrder);
+                                            } else if ($selectedOption === "Upcoming Events") {
+                                                readUpcomingEventsTable($selectedSort, $selectedOrder);
+                                            } else {
+                                                readAllTypesTable($selectedSort, $selectedOrder);
+                                            }
                                         } else {
                                             readAllTypesTable($selectedSort, $selectedOrder);
                                         }
-                                    } else {
-                                        readAllTypesTable($selectedSort, $selectedOrder);
-                                    }
 
-                                    ?>
-                                </tbody>
-                            </table>
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-        </form>
-    </main>
+            </form>
+        </main>
 
     </div>
 
