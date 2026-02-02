@@ -27,7 +27,7 @@ export default function DashSidebar() {
             <span class="material-symbols-outlined fill">dashboard</span>
             <p class="text-sm font-semibold leading-normal">Dashboard</p>
           </a>
-          <div class="px-4 space-y-1">
+          <div class="">
             <div class="flex items-center justify-between px-3 py-1 mb-1">
               <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
                 Events Management
@@ -66,7 +66,7 @@ export default function DashSidebar() {
               </a>
             </div>
           </div>
-          <div class="px-4 space-y-1">
+          <div class="">
             <div class="flex items-center justify-between px-3 py-1 mb-1">
               <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
                 Announcements
