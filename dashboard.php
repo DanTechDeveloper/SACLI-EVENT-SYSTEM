@@ -118,7 +118,7 @@ include 'dashboardDatabase.php';
                         <a /> -->
             </nav>
     </div>
-    
+
     </aside>
     <!-- Main Content -->
     <main class="ml-64 flex flex-1 flex-col p-8">
