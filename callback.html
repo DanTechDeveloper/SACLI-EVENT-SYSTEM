@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google OAuth Callback</title>
+  </head>
+  <body>
+    <script>
+      // Extract the token from the URL hash
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get("access_token");
+
+      if (accessToken) {
+        // Send the access token to the server for verification and login
+        fetch("loginDatabase.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            action: "googleLogin",
+            token: accessToken,
+          }),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.success) {
+              alert("Welcome, " + result.user.fullName);
+              // Redirect to the main application page
+              window.location.href = "studentView.php";
+            } else {
+              alert("Login failed: " + result.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error during login:", error);
+            alert("An error occurred during login.");
+          });
+      } else {
+        alert("No access token found.");
+      }
+    </script>
+  </body>
+</html>
