@@ -11,8 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-session_start();
 include 'connect.php';
+session_start();
+
 
 try {
     // Get the request data

@@ -1,7 +1,42 @@
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useEffect, useState } from "react"; // Import useNavigate
+import apiRequest from "../../services/apiRequest";
 
 export default function AuthLogin() {
   const navigate = useNavigate(); // Initialize useNavigate
+  const handleGoogleAuth = () => {
+    const clientId =
+      "1070483531281-lfru2nob62sbeojao9vc74q12o1fia9f.apps.googleusercontent.com";
+    const redirectUri = encodeURIComponent("http://localhost:5173");
+    const scope = encodeURIComponent("openid email profile");
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=select_account`;
+
+    // Redirect to Google's OAuth2 endpoint
+    window.location.href = oauthUrl;
+  };
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLoginForm = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      alert("Please enter both email and password.");
+      return;
+    }
+    const newUser = { email, password, action: "login" };
+    const result = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
+      "POST",
+      newUser
+    );
+    if (result.success) {
+      alert("Login successful! Welcome " + result.user.fullName);
+      navigate("/dashboard");
+    } else {
+      alert("Login failed: " + result.message);
+    }
+  };
 
   return (
     <>
@@ -17,7 +52,7 @@ export default function AuthLogin() {
                 Please enter your credentials to continue.
               </p>
             </div>
-            <form class="space-y-4" onsubmit="loginForm(event)">
+            <form class="space-y-4" onSubmit={handleLoginForm}>
               <div class="space-y-2">
                 <label class="block">
                   <span class="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-2 block">
@@ -27,6 +62,7 @@ export default function AuthLogin() {
                     class="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-12 px-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400"
                     type="email"
                     id="loginEmail"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </label>
               </div>
@@ -42,6 +78,7 @@ export default function AuthLogin() {
                       class="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-12 px-4 pr-12 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400"
                       type="password"
                       id="loginPassword"
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
                       class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary"
@@ -69,15 +106,14 @@ export default function AuthLogin() {
             </form>
             <div class="text-center mt-6">
               <p class="text-sm text-gray-500">
-                Don't have an account? 
-                
+                Don't have an account?
                 <button
                   onClick={() => navigate("/register")} // Use navigate to redirect
                   className="text-primary font-bold hover:underline"
                 >
                   Register
                 </button>
-               </p>
+              </p>
             </div>
 
             <div class=" flex items-center gap-2 my-6">
@@ -90,6 +126,7 @@ export default function AuthLogin() {
               <button
                 id="googleLoginBtn"
                 type="button"
+                onClick={handleGoogleAuth}
                 class="flex-1 bg-white dark:bg-gray-800 border border-[#dbdee6] dark:border-gray-700 text-[#111318] dark:text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2"
               >
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">

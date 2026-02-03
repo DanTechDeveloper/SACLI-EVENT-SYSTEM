@@ -1,11 +1,12 @@
 import { useState } from "react";
 import AuthAdmin from "./AuthAdmin";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthHeader() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const navigate = useNavigate();
   const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
+      setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -23,7 +24,9 @@ export default function AuthHeader() {
           onClick={toggleModal}
           className="text-sm text-primary font-bold hover:underline cursor-pointer flex items-center gap-1"
         >
-          <span className="material-symbols-outlined">admin_panel_settings</span>
+          <span className="material-symbols-outlined">
+            admin_panel_settings
+          </span>
           <span>Login as admin</span>
         </button>
       </header>

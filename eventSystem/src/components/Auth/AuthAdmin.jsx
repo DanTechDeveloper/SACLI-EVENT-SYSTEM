@@ -1,7 +1,19 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function AuthAdmin({ toggleModal }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const handleDashboard = (e) => {
+    e.preventDefault();
+    if (email.trim() === "sacli@gmail.com" && password.trim() === "admin") {
+      navigate("/dashboard");
+    } else {
+      alert("Incorrect Email and Password Try Again");
+      return;
+    }
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -47,6 +59,8 @@ export default function AuthAdmin({ toggleModal }) {
               </div>
               <input
                 type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 placeholder="admin@sacli.edu.ph"
                 className="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-12 pl-10 pr-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400"
               />
@@ -65,6 +79,8 @@ export default function AuthAdmin({ toggleModal }) {
               </div>
               <input
                 type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-12 pl-10 pr-12 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400"
               />
@@ -82,6 +98,7 @@ export default function AuthAdmin({ toggleModal }) {
 
           <button
             type="submit"
+            onClick={handleDashboard}
             className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-6 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2 mt-4"
           >
             <span>Login to Dashboard</span>
