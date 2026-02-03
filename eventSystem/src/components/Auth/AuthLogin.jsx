@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { useEffect, useState } from "react"; // Import useNavigate
+import { useEffect, useState } from "react"; 
 import apiRequest from "../../services/apiRequest";
 
 export default function AuthLogin() {
@@ -24,15 +24,15 @@ export default function AuthLogin() {
       alert("Please enter both email and password.");
       return;
     }
-    const newUser = { email, password, action: "login" };
+    const user = { email : email, password : password, action: "login" };
     const result = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
       "POST",
-      newUser
+      user
     );
     if (result.success) {
       alert("Login successful! Welcome " + result.user.fullName);
-      navigate("/dashboard");
+      navigate("/student");
     } else {
       alert("Login failed: " + result.message);
     }
