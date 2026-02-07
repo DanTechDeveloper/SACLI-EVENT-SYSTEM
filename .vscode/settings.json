@@ -1,0 +1,24 @@
+{
+  "piny.project_settings": {
+    "open-pages": ["pinyfakepage.html"],
+    "component-settings": {
+      "eventSystem/src/pages/StudentView.jsx:::Temp": {
+        "route": "studentView"
+      }
+    },
+    "app-routes": {
+      "routes": ["/", "/studentView"],
+      "current_route": "/studentView"
+    },
+    "urls": {
+      "pinyfakepage.html": {
+        "open-page-views": [
+          {
+            "w": 1300,
+            "h": 0
+          }
+        ]
+      }
+    }
+  }
+}
