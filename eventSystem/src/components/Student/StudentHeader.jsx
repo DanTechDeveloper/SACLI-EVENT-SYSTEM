@@ -1,11 +1,39 @@
+import { useEffect, useState } from "react";
 import SacliLogo from "../../assets/logo.jpg";
+import apiRequest from "../../services/apiRequest";
+
 export default function StudentHeader() {
+  const [profilePicture, setProfilePicture] = useState(null);
+useEffect(() => {
+  async function fetchUser() {
+    try {
+      const response = await apiRequest(
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/userLogin.php",
+        "GET"
+      );
+
+      console.log("Full response:", response); // DEBUG
+
+      if (response.success) {
+        console.table(response.user);
+      } else {
+        console.log("Login failed or no user:", response.message);
+      }
+    } catch (err) {
+      console.error("API request failed:", err.message);
+    }
+  }
+
+  fetchUser();
+}, []);
+
+
   return (
     <>
       <header class="fixed w-full flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-gray-700/60 px-4 md:px-8 lg:px-10 py-3 bg-white dark:bg-background-dark/50 backdrop-blur-sm top-0 z-10">
         <div class="flex items-center gap-4 text-gray-900 dark:text-white">
           <div class="size-6 text-primary">
-            <img src={SacliLogo} alt=""/>
+            <img src={SacliLogo} alt="" />
           </div>
           <h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
             SACLIEventSys
@@ -19,11 +47,10 @@ export default function StudentHeader() {
                 class="flex items-center gap-2 text-sm font-bold text-[#111318] dark:text-white hover:text-primary transition-colors group focus:outline-none"
               >
                 <div class="size-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 group-hover:text-primary transition-colors overflow-hidden">
-                  {/* <?php if (!empty($profilePicture)): ?>
-                                        <img src="<?php echo htmlspecialchars($profilePicture); ?>" alt="Profile" class="w-full h-full object-cover">
-                                    <?php else: ?>
-                                        <span class="material-symbols-outlined text-[20px]">person</span>
-                                    <?php endif; ?> */}
+                  <img
+                    alt="Profile"
+                    class="w-full h-full object-cover"
+                  />
                 </div>
                 {/* <span class="truncate"><?php echo isset($_SESSION['fullName']) ? htmlspecialchars($_SESSION['fullName']) : 'Admin'; ?></span> */}
                 <span class="material-symbols-outlined text-[20px] text-gray-400 group-hover:text-primary transition-colors">

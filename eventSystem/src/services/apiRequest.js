@@ -6,14 +6,20 @@
  * @param {object} headers - optional additional headers
  * @returns {Promise<object>} - JSON response
  */
-export default async function apiRequest(url, method = "GET", body = null, headers = {}) {
+export default async function apiRequest(
+  url,
+  method = "GET",
+  body = null,
+  headers = {},
+) {
   try {
     const options = {
       method,
       headers: {
         "Content-Type": "application/json",
-        ...headers
+        ...headers,
       },
+      credentials: "include", // Required to send cookies (PHPSESSID) with cross-origin requests
     };
 
     if (body) {

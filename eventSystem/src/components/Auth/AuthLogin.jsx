@@ -32,7 +32,7 @@ export default function AuthLogin() {
     );
     if (result.success) {
       alert("Login successful! Welcome " + result.user.fullName);
-      navigate("/student");
+      navigate("/studentView");
     } else {
       alert("Login failed: " + result.message);
     }
@@ -99,6 +99,7 @@ export default function AuthLogin() {
               <button
                 class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
                 type="submit"
+                
               >
                 Sign In
                 <span class="material-symbols-outlined text-lg">login</span>

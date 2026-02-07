@@ -7,6 +7,7 @@ import AuthLogin from "./components/Auth/AuthLogin";
 import AuthRegister from "./components/Auth/AuthRegister";
 import AuthAdmin from "./components/Auth/AuthAdmin";
 import StudentLayout from "./layouts/StudentLayout";
+import StudentView from "./pages/StudentView";
 
 function App() {
   return (
@@ -23,8 +24,7 @@ function App() {
           </Route>
 
           <Route element={<StudentLayout/>} path="/">
-            {/* <Route element={<All/>} index path="/student"/> */}
-
+            <Route element={<StudentView/>} index path="/studentView"/>
           </Route>
         </Routes>
       </BrowserRouter>
