@@ -1,0 +1,63 @@
+import { useState, useEffect } from "react";
+import StudentHeader from "../components/Student/StudentHeader";
+import { StudentContent } from "../components/Student/StudentContent";
+
+export default function StudentMainContent() {
+  const [user, setUser] = useState(null);
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    async function fetchInitialData() {
+      try {
+        const endpoints = [
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/userLogin.php",
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php", // Placeholder for your second endpoint
+        ];
+
+        // Fetch both endpoints in parallel
+        const responses = await Promise.all(
+          endpoints.map((url) => fetch(url, { credentials: "include" }))
+        );
+
+        // Check for HTTP errors
+        responses.forEach((res) => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        });
+
+        // Parse JSON from both responses
+        const [userData, contentData] = await Promise.all(
+          responses.map((res) => res.json()),
+        );
+
+        if (userData.success) {
+          setUser(userData.user);
+        } else {
+          console.log("Login failed or no user:", userData.message);
+        }
+
+        if (contentData.success){
+          setContent(contentData);
+        }
+
+      } catch (err) {
+        console.error("Data fetching failed:", err.message);
+      }
+    }
+
+    fetchInitialData();
+  }, []);
+
+  return (
+    // &lt;&gt;
+    <div className="font-display bg-background-light dark:bg-background-dark">
+      <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div className="layout-container flex h-full grow flex-col">
+          <StudentHeader user={user} />
+          <main class="flex flex-1 py-5 sm:py-8 lg:py-10">
+            <StudentContent content={content} />
+          </main>
+        </div>
+      </div>
+    </div>
+  );
+}

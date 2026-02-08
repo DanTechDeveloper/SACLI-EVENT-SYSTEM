@@ -5,27 +5,21 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import DashContent from "./pages/DashContent";
 import AuthLogin from "./components/Auth/AuthLogin";
 import AuthRegister from "./components/Auth/AuthRegister";
-import AuthAdmin from "./components/Auth/AuthAdmin";
-import StudentLayout from "./layouts/StudentLayout";
-import StudentView from "./pages/StudentView";
+import StudentMainContent from "./pages/StudentMainContent";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={<AuthLayout />} path="/">
+          <Route element={<AuthLayout />}>
             <Route index element={<AuthLogin />} />
             <Route path="/register" element={<AuthRegister />} />
           </Route>
-
-          <Route element={<DashboardLayout />} path="/">
+          <Route element={<DashboardLayout />}>
             <Route index element={<DashContent />} path="/dashboard" />
           </Route>
-
-          <Route element={<StudentLayout/>} path="/">
-            <Route element={<StudentView/>} index path="/studentView"/>
-          </Route>
+          <Route element={<StudentMainContent />} index path="/studentView"/>
         </Routes>
       </BrowserRouter>
     </>

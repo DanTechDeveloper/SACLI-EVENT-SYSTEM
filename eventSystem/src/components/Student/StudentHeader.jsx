@@ -1,32 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SacliLogo from "../../assets/logo.jpg";
-import apiRequest from "../../services/apiRequest";
 
-export default function StudentHeader() {
-  const [profilePicture, setProfilePicture] = useState(null);
-useEffect(() => {
-  async function fetchUser() {
-    try {
-      const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/userLogin.php",
-        "GET"
-      );
+export default function StudentHeader({ user }) {
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 
-      console.log("Full response:", response); // DEBUG
-
-      if (response.success) {
-        console.table(response.user);
-      } else {
-        console.log("Login failed or no user:", response.message);
-      }
-    } catch (err) {
-      console.error("API request failed:", err.message);
-    }
-  }
-
-  fetchUser();
-}, []);
-
+  const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
 
   return (
     <>
@@ -43,27 +21,32 @@ useEffect(() => {
           <nav class="hidden lg:flex items-center gap-9">
             <div class="relative">
               <button
-                onclick="toggleProfileMenu()"
+                onClick={toggleProfileMenu}
                 class="flex items-center gap-2 text-sm font-bold text-[#111318] dark:text-white hover:text-primary transition-colors group focus:outline-none"
               >
                 <div class="size-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 group-hover:text-primary transition-colors overflow-hidden">
-                  <img
-                    alt="Profile"
-                    class="w-full h-full object-cover"
-                  />
+                  <img alt="Profile" class="w-full h-full object-cover" />
                 </div>
-                {/* <span class="truncate"><?php echo isset($_SESSION['fullName']) ? htmlspecialchars($_SESSION['fullName']) : 'Admin'; ?></span> */}
+                <span className="truncate">
+                  {user ? user.fullName : "Student"}
+                </span>
                 <span class="material-symbols-outlined text-[20px] text-gray-400 group-hover:text-primary transition-colors">
                   expand_more
                 </span>
               </button>
               <div
                 id="profileMenu"
-                class="hidden absolute right-0 mt-2 w-56 bg-white dark:bg-[#1a202c] rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50 transform transition-all origin-top-right"
+                className={`${
+                  isProfileMenuOpen ? "" : "hidden"
+                } absolute right-0 mt-2 w-56 bg-white dark:bg-[#1a202c] rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 py-2 z-50 transform transition-all origin-top-right`}
               >
                 <div class="px-4 py-2 border-b border-gray-100 dark:border-gray-700 mb-1">
-                  {/* <p class="text-sm font-bold text-gray-900 dark:text-white truncate"><?php echo isset($_SESSION['fullName']) ? htmlspecialchars($_SESSION['fullName']) : 'Admin'; ?></p> */}
-                  {/* <p class="text-xs text-gray-500 dark:text-gray-400 truncate"><?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?></p> */}
+                  <p className="text-sm font-bold text-gray-900 dark:text-white truncate">
+                    {user ? user.fullName : "Student"}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                    {user ? user.email : ""}
+                  </p>
                 </div>
 
                 <a
