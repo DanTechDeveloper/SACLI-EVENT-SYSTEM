@@ -5,13 +5,15 @@ import { StudentContent } from "../components/Student/StudentContent";
 export default function StudentMainContent() {
   const [user, setUser] = useState(null);
   const [content, setContent] = useState(null);
+  const [event, setEvent] = useState(null);
 
   useEffect(() => {
     async function fetchInitialData() {
       try {
         const endpoints = [
           "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/userLogin.php",
-          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php", // Placeholder for your second endpoint
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php",
         ];
 
         // Fetch both endpoints in parallel
@@ -25,7 +27,7 @@ export default function StudentMainContent() {
         });
 
         // Parse JSON from both responses
-        const [userData, contentData] = await Promise.all(
+        const [userData, contentData, eventData] = await Promise.all(
           responses.map((res) => res.json()),
         );
 
@@ -37,6 +39,10 @@ export default function StudentMainContent() {
 
         if (contentData.success){
           setContent(contentData);
+        }
+        
+        if (eventData.success){
+          setEvent(eventData);
         }
 
       } catch (err) {
@@ -54,7 +60,7 @@ export default function StudentMainContent() {
         <div className="layout-container flex h-full grow flex-col">
           <StudentHeader user={user} />
           <main class="flex flex-1 py-5 sm:py-8 lg:py-10">
-            <StudentContent content={content} />
+            <StudentContent content={content} event={event} />
           </main>
         </div>
       </div>

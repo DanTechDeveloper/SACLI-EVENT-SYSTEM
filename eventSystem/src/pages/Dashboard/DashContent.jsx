@@ -1,4 +1,21 @@
+import apiRequest from "../../services/apiRequest";
+import {useState, useEffect} from "react";
+
 export default function DashContent() {
+  const [data,setData] = useState(null);
+  useEffect(() => {
+    async function fetchIntialMount() {
+      const response = await apiRequest(
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php"
+      );
+      if (response.success){
+         setData(response.data);
+       
+      }
+    }
+    fetchIntialMount();
+  }, []);
+ 
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -11,25 +28,23 @@ export default function DashContent() {
               Welcome, Admin! Here's a summary of school activities.
             </p>
           </div>
-          <div class="flex items-center gap-4">
-            <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-[#FFC107] text-black gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-4">
-              <span class="material-symbols-outlined">add_circle</span>
-              <span class="truncate">Create New Event</span>
-            </button>
-            <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-primary text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-4">
-              <span class="material-symbols-outlined">add_circle</span>
-              <span class="truncate">Create Announcement</span>
-            </button>
-          </div>
         </div>
         {/* <!-- Stats --> */}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
+            <p class="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
+              Total Posts
+            </p>
+            <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
+              {data?.totalPosts}
+            </p>
+          </div>
           <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
             <p class="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
               Total Announcements
             </p>
             <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              128
+              {data?.totalAnnouncement}
             </p>
           </div>
           <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
@@ -37,23 +52,7 @@ export default function DashContent() {
               Total Events
             </p>
             <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              42
-            </p>
-          </div>
-          <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-            <p class="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
-              Published This Week
-            </p>
-            <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              15
-            </p>
-          </div>
-          <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-            <p class="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
-              Upcoming Events
-            </p>
-            <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              5
+              {data?.totalEvents}
             </p>
           </div>
         </div>
@@ -66,7 +65,6 @@ export default function DashContent() {
           <div class="flex justify-between gap-4 py-2">
             <div class="flex gap-2">
               <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
-                <option>All Types</option>
                 <option>Announcements</option>
                 <option>Events</option>
               </select>

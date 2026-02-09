@@ -1,110 +1,122 @@
-import SacliLogo from "../../assets/logo.jpg"
+import { useNavigate, useLocation } from "react-router-dom";
+import SacliLogo from "../../assets/logo.jpg";
+
 export default function DashSidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
+
+  const sidebarLinks = [
+    {
+      type: "link",
+      label: "Dashboard",
+      icon: "dashboard",
+      path: "/dashboard",
+    },
+    {
+      type: "section",
+      label: "Events Management",
+      items: [
+        { label: "All Events", icon: "calendar_month", path: "/events" },
+        {
+          label: "Upcoming",
+          icon: "upcoming",
+          path: "/upcoming",
+          iconClass: "pl-1",
+        },
+        { label: "Add New", icon: "add_box", path: "/newEvent" },
+      ],
+    },
+    {
+      type: "section",
+      label: "Announcements",
+      items: [
+        { label: "All Posts", icon: "campaign", path: "/announcements" },
+        {
+          label: "Published",
+          icon: "check_circle",
+          path: "/announcements/published",
+          iconClass: "pl-1",
+        },
+        { label: "Add New", icon: "post_add", path: "/newAnnouncement" },
+      ],
+    },
+  ];
+
   return (
     <>
-      <div class="flex flex-col gap-4">
-        <div class="flex items-center gap-3">
+      <div className="flex flex-col gap-4">
+        <div className="flex items-center gap-3">
           <div
-            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
             data-alt="Official school crest"
           >
             <img src={SacliLogo} alt="" />
           </div>
-          <div class="flex flex-col">
-            <h1 class="text-[#212529] dark:text-white text-base font-bold leading-normal">
+          <div className="flex flex-col">
+            <h1 className="text-[#212529] dark:text-white text-base font-bold leading-normal">
               SACLIEventSys
             </h1>
-            <p class="text-[#6C757D] dark:text-slate-400 text-sm font-normal leading-normal">
+            <p className="text-[#6C757D] dark:text-slate-400 text-sm font-normal leading-normal">
               Admin Portal
             </p>
           </div>
         </div>
-        <nav class="flex flex-col gap-2 mt-4">
-          <a
-            class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:bg-primary/20"
-            href="dashboard.php"
-          >
-            <span class="material-symbols-outlined fill">dashboard</span>
-            <p class="text-sm font-semibold leading-normal">Dashboard</p>
-          </a>
-          <div class="">
-            <div class="flex items-center justify-between px-3 py-1 mb-1">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
-                Events Management
-              </span>
-              <span class="material-symbols-outlined text-slate-500 text-xs">
-                expand_more
-              </span>
-            </div>
-            <div class="space-y-1">
+        <nav className="flex flex-col gap-2 mt-4">
+          {sidebarLinks.map((item, index) =>
+            item.type === "link" ? (
               <a
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group"
-                href="#"
+                key={index}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
+                  isActive(item.path)
+                    ? "bg-primary/10 text-primary dark:bg-primary/20 font-semibold"
+                    : "hover:bg-slate-800 hover:text-white transition-colors group"
+                }`}
+                onClick={() => navigate(item.path)}
               >
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">
-                  calendar_month
+                <span className="material-symbols-outlined fill">
+                  {item.icon}
                 </span>
-                <p class="text-sm font-medium">All Events</p>
+                <p className="text-sm font-semibold leading-normal">
+                  {item.label}
+                </p>
               </a>
-              <a
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group"
-                href="#"
-              >
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400 pl-1">
-                  upcoming
-                </span>
-                <p class="text-sm font-medium">Upcoming</p>
-              </a>
-              <a
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group"
-                href="#"
-              >
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">
-                  add_box
-                </span>
-                <p class="text-sm font-medium">Add New</p>
-              </a>
-            </div>
-          </div>
-          <div class="">
-            <div class="flex items-center justify-between px-3 py-1 mb-1">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
-                Announcements
-              </span>
-              <span class="material-symbols-outlined text-slate-500 text-xs">
-                expand_more
-              </span>
-            </div>
-            <div class="space-y-1">
-              <a
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group"
-                href="#"
-              >
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">
-                  campaign
-                </span>
-                <p class="text-sm font-medium">All Posts</p>
-              </a>
-              <a
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group"
-                href="#"
-              >
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400 pl-1">
-                  check_circle
-                </span>
-                <p class="text-sm font-medium">Published</p>
-              </a>
-              <a
-                class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-white transition-colors group"
-                href="#"
-              >
-                <span class="material-symbols-outlined text-slate-500 group-hover:text-indigo-400">
-                  post_add
-                </span>
-                <p class="text-sm font-medium">Add New</p>
-              </a>
-            </div>
-          </div>
+            ) : (
+              <div key={index}>
+                <div className="flex items-center justify-between px-3 py-1 mb-1">
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                    {item.label}
+                  </span>
+                  <span className="material-symbols-outlined text-slate-500 text-xs">
+                    expand_more
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  {item.items.map((subItem, subIndex) => (
+                    <a
+                      key={subIndex}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group cursor-pointer ${
+                        isActive(subItem.path)
+                          ? "bg-primary/10 text-primary dark:bg-primary/20 font-semibold"
+                          : "hover:bg-slate-800 hover:text-white"
+                      }`}
+                      onClick={() => navigate(subItem.path)}
+                    >
+                      <span
+                        className={`material-symbols-outlined text-slate-500 group-hover:text-indigo-400 ${
+                          subItem.iconClass || ""
+                        }`}
+                      >
+                        {subItem.icon}
+                      </span>
+                      <p className="text-sm font-medium">{subItem.label}</p>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ),
+          )}
         </nav>
       </div>
     </>
