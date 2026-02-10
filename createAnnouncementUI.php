@@ -84,7 +84,7 @@ include 'dashboardDatabase.php';
                 </nav>
             </div>
             <div class="mt-auto flex flex-col gap-1">
-                <a class="flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" href="#">
+                <a href="login.php" class="flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" href="#">
                     <span class="material-symbols-outlined">logout</span>
                     <p class="text-sm font-medium leading-normal">Log Out</p>
                 </a>

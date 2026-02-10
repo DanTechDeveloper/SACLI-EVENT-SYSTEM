@@ -1,21 +1,42 @@
 import apiRequest from "../../services/apiRequest";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 export default function DashContent() {
-  const [data,setData] = useState(null);
+  const [selectedSort, setSelectedSort] = useState({
+    type: "Announcement",
+    sort: "ASC",
+  });
+  const [data, setData] = useState(null);
   useEffect(() => {
-    async function fetchIntialMount() {
+    async function fetchIntialMount({type, sort}) {
       const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php"
+        `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php?type=${type}&sort=${sort}`,
       );
-      if (response.success){
-         setData(response.data);
-       
+      if (response.success) {
+        setData(response.data);
       }
     }
-    fetchIntialMount();
-  }, []);
- 
+    fetchIntialMount(selectedSort);
+  }, [selectedSort]);
+
+  const typeOptions = [
+    { value: "Announcement", label: "Announcements" },
+    { value: "Event", label: "Events" },
+  ];
+
+  const sortOptions = [
+    { value: "ASC", label: "Newest First" },
+    { value: "DESC", label: "Oldest First" },
+  ];
+  const handleSort = (e) => {
+    const { name, value } = e.target;
+
+    setSelectedSort((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -63,14 +84,31 @@ export default function DashContent() {
           </h2>
           {/* <!-- ToolBar --> */}
           <div class="flex justify-between gap-4 py-2">
-            <div class="flex gap-2">
-              <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
-                <option>Announcements</option>
-                <option>Events</option>
+            <div className="flex gap-2">
+              <select
+                name="type"
+                value={selectedSort.type}
+                onChange={handleSort}
+                className="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary"
+              >
+                {typeOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
               </select>
-              <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
-                <option>Newest First</option>
-                <option>Oldest First</option>
+
+              <select
+                name="sort"
+                value={selectedSort.sort}
+                onChange={handleSort}
+                className="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary"
+              >
+                {sortOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
               </select>
             </div>
           </div>

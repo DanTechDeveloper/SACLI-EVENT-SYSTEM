@@ -1,36 +1,55 @@
 <?php
 include 'connect.php';
-function countAllPosts($conn)
+
+$type = isset($_GET['type']) ? $_GET['type'] : 'Announcement';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'ASC';
+
+function getStats($conn, $type)
 {
-    $sql = "SELECT COUNT(*) As 'totalPosts' FROM saqliqdb";
+    switch ($type) {
+        case 'totalPosts':
+            $sql = "SELECT COUNT(*) FROM saqliqdb";
+            break;
+        case 'totalAnnouncement':
+            $sql = "SELECT COUNT(*) FROM saqliqdb WHERE type ='Announcement'";
+            break;
+        case 'totalEvents':
+            $sql = "SELECT COUNT(*) FROM saqliqdb WHERE type = 'Event'";
+            break;
+        default:
+            return 0;
+    }
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $rows = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $rows['totalPosts'];
+    return $stmt->fetchColumn();
 }
-function countAllAnnouncement($conn)
+
+function populateData($conn, $type, $sort)
 {
-    $sql = "SELECT COUNT(*) As 'totalAnnouncement' FROM saqliqdb WHERE type ='Announcement'";
+    $direction = strtoupper($sort) === 'DESC' ? 'DESC' : 'ASC';
+    switch ($type) {
+        case 'Event':
+            $sql = "SELECT * FROM saqliqdb WHERE type = 'Event' ORDER BY id $direction";
+            break;
+        case 'Announcement':
+        default:
+            $sql = "SELECT * FROM saqliqdb WHERE type = 'Announcement' ORDER BY id $direction";
+            break;
+    }
     $stmt = $conn->prepare($sql);
     $stmt->execute();
-    $rows = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $rows['totalAnnouncement'];
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-function countAllEvent($conn)
-{
-    $sql = "SELECT COUNT(*) As 'totalEvents' FROM saqliqdb WHERE type = 'Event'";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $rows = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $rows['totalEvents'];
-}
+
+
 
 echo json_encode([
     "success" => true,
     "data" => [
-        "totalAnnouncement" => countAllAnnouncement($conn),
-        "totalPosts" => countAllPosts($conn),
-        "totalEvents" => countAllEvent($conn),
+        "totalAnnouncement" => getStats($conn, 'totalAnnouncement'),
+        "totalPosts" => getStats($conn, 'totalPosts'),
+        "totalEvents" => getStats($conn, 'totalEvents'),
+        "allAnnouncements" => populateData($conn, $type, $sort),
 
     ]
 ]);
