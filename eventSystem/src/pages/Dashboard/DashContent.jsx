@@ -1,6 +1,7 @@
 import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react";
 
+
 export default function DashContent() {
   const [selectedSort, setSelectedSort] = useState({
     type: "Announcement",
@@ -8,15 +9,17 @@ export default function DashContent() {
   });
   const [data, setData] = useState(null);
   useEffect(() => {
-    async function fetchIntialMount({type, sort}) {
-      const response = await apiRequest(
-        `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php?type=${type}&sort=${sort}`,
-      );
+    async function fetchData({ type, sort }) {
+      const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php?type=${type}&sort=${sort}`;
+      const response = await apiRequest(url);
+
       if (response.success) {
         setData(response.data);
+      } else {
+        console.error(`Error fetching data: ${response.error}`);
       }
     }
-    fetchIntialMount(selectedSort);
+    fetchData(selectedSort);
   }, [selectedSort]);
 
   const typeOptions = [
@@ -57,7 +60,7 @@ export default function DashContent() {
               Total Posts
             </p>
             <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              {data?.totalPosts}
+              {data?.totalPosts}cccccc
             </p>
           </div>
           <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
@@ -127,7 +130,7 @@ export default function DashContent() {
                     Date
                   </th>
                   <th class="px-6 py-3 font-medium" scope="col">
-                    Status
+                    {(selectedSort.type === "Announcement") ? "Category" : "Subtype"}
                   </th>
                   <th class="px-6 py-3 text-right font-medium" scope="col">
                     Actions
@@ -135,168 +138,44 @@ export default function DashContent() {
                 </tr>
               </thead>
               <tbody>
-                <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                  <td class="px-6 py-4 font-semibold">
-                    Midterm Examination Schedule
-                  </td>
-                  <td class="px-6 py-4">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                      Announcement
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">Oct 25, 2023</td>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                      <span class="size-1.5 rounded-full bg-green-600"></span>
-                      Published
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                  <td class="px-6 py-4 font-semibold">
-                    University Foundation Day Celebration
-                  </td>
-                  <td class="px-6 py-4">
-                    <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
-                      Event
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">Nov 15, 2023</td>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                      <span class="size-1.5 rounded-full bg-green-600"></span>
-                      Published
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                  <td class="px-6 py-4 font-semibold">
-                    Enrollment for Second Semester
-                  </td>
-                  <td class="px-6 py-4">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                      Announcement
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">Oct 20, 2023</td>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-2 py-1 text-xs font-medium text-orange-700 dark:bg-orange-900 dark:text-orange-300">
-                      <span class="size-1.5 rounded-full bg-orange-600"></span>
-                      Draft
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                  <td class="px-6 py-4 font-semibold">Campus Job Fair 2023</td>
-                  <td class="px-6 py-4">
-                    <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
-                      Event
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">Nov 05, 2023</td>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                      <span class="size-1.5 rounded-full bg-green-600"></span>
-                      Published
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="text-[#212529] dark:text-white">
-                  <td class="px-6 py-4 font-semibold">
-                    Holiday Notice: All Saints' Day
-                  </td>
-                  <td class="px-6 py-4">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                      Announcement
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">Oct 18, 2023</td>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                      <span class="size-1.5 rounded-full bg-green-600"></span>
-                      Published
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                {data?.allAnnouncements?.map((announcement) => (
+                  <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
+                    <td class="px-6 py-4 font-semibold">
+                      {announcement.title}
+                    </td>
+                    <td class="px-6 py-4">
+                      <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                        {announcement.type}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4">{announcement.date}</td>
+                    <td class="px-6 py-4">
+                      <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
+                        <span class="size-1.5 rounded-full bg-green-600"></span>
+                        {announcement.type}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex items-center justify-end gap-2">
+                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
+                          <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
+                          <span class="material-symbols-outlined">
+                            visibility
+                          </span>
+                        </button>
+                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          {/* <!-- Pagination --> */}
+          {/* <!-- Pagination -->
           <nav
             aria-label="Table navigation"
             class="flex items-center justify-between pt-4"
@@ -354,7 +233,7 @@ export default function DashContent() {
                 </a>
               </li>
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </div>
     </>
