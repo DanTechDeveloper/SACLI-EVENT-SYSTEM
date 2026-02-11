@@ -1,10 +1,22 @@
 import { useState } from "react";
 import SacliLogo from "../../assets/logo.jpg";
+import { useNavigate } from "react-router-dom";
+import apiRequest from "../../services/apiRequest";
 
 export default function StudentHeader({ user }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
+
+  const handleLogout = async () => {
+    const response = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/logout.php",
+      "POST",
+    );
+    if (response.success) {
+      navigate("/");
+    }
+  };
 
   return (
     <>
@@ -50,7 +62,7 @@ export default function StudentHeader({ user }) {
                 </div>
 
                 <a
-                  href="login.php"
+                  onClick={handleLogout}
                   class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                 >
                   <span class="material-symbols-outlined text-[18px]">

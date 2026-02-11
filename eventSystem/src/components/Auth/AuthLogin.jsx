@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import apiRequest from "../../services/apiRequest";
 
 export default function AuthLogin() {
@@ -15,6 +15,35 @@ export default function AuthLogin() {
     window.location.href = oauthUrl;
   };
 
+  useEffect(() => {
+    const handleGoogleLogin = async () => {
+      // Check URL hash for Google OAuth access token
+      const hash = window.location.hash;
+      if (hash && hash.includes("access_token")) {
+        const params = new URLSearchParams(hash.substring(1));
+        const accessToken = params.get("access_token");
+
+        if (accessToken) {
+          // Optional: Clear the hash from the URL for a cleaner look
+          window.history.replaceState(null, null, window.location.pathname);
+
+          const result = await apiRequest(
+            "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
+            "POST",
+            { action: "googleLogin", token: accessToken },
+          );
+
+          if (result.success) {
+            navigate("/studentView");
+          } else {
+            alert(result.message);
+          }
+        }
+      }
+    };
+    handleGoogleLogin();
+  }, [navigate]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,11 +53,11 @@ export default function AuthLogin() {
       alert("Please enter both email and password.");
       return;
     }
-    const user = { email : email, password : password, action: "login" };
+    const user = { email: email, password: password, action: "login" };
     const result = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
       "POST",
-      user
+      user,
     );
     if (result.success) {
       alert("Login successful! Welcome " + result.user.fullName);
@@ -99,7 +128,6 @@ export default function AuthLogin() {
               <button
                 class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
                 type="submit"
-                
               >
                 Sign In
                 <span class="material-symbols-outlined text-lg">login</span>
