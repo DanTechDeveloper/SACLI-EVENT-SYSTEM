@@ -10,6 +10,7 @@ import Callback from "./components/Auth/callback";
 import Upcomimg from "./pages/Dashboard/Upcoming";
 import AddNewEvent from "./pages/Dashboard/AddNewEvent";
 import AddNewAnnouncement from "./pages/Dashboard/AddNewAnnouncement";
+import StudentAnnouncement from "./pages/StudentAnnouncement";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
             <Route element={<AddNewAnnouncement />} path="/newAnnouncement" />
           </Route>
           <Route element={<StudentMainContent />} index path="/studentView" />
+          <Route element={<StudentAnnouncement />} path="/studentAnnouncement" />
+
         </Routes>
       </BrowserRouter>
     </>

@@ -8,6 +8,8 @@ export default function StudentHeader({ user }) {
   const navigate = useNavigate();
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
 
+  const handleAnnouncement = () => navigate("/studentAnnouncement");
+
   const handleLogout = async () => {
     const response = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/logout.php",
@@ -31,6 +33,9 @@ export default function StudentHeader({ user }) {
         </div>
         <div class="flex flex-1 justify-end items-center gap-4">
           <nav class="hidden lg:flex items-center gap-9">
+            <span onClick={handleAnnouncement} class="material-symbols-outlined text-gray-500 dark:text-gray-400 hover:text-primary cursor-pointer transition-colors">
+              notifications
+            </span>
             <div class="relative">
               <button
                 onClick={toggleProfileMenu}

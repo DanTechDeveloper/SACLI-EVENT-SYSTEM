@@ -53,7 +53,7 @@ export function StudentContent({ content, event }) {
           filteredAnnouncements.map((values, key) => (
             <div
               key={key}
-              class="mb-3 group bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark p-3 shadow-sm hover:shadow-md transition-all"
+              class="mb-3 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
             >
               <div class="flex items-start justify-between gap-4">
                 <div class="flex-1">
