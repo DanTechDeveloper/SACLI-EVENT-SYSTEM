@@ -1,87 +1,12 @@
 import { useState } from "react";
 
-export function StudentContent({ content, event }) {
+export function StudentContent({event}) {
   // debugger;
-  const [announcementFilter, setAnnouncementFilter] = useState("Academic");
   const [eventFilter, setEventFilter] = useState("Ongoing Event");
-
-  const filterKey = announcementFilter.toLowerCase();
-  const rawData = content ? content[filterKey] : [];
-  const filteredAnnouncements = Array.isArray(rawData) ? rawData : [];
 
   return (
     <>
       <div class="flex p-4 flex-col mt-[20px] ml-[30px] w-full gap-3">
-        <h1 class="text-gray-900 text-4xl font-black">Announcement</h1>
-        <div class="flex flex-col sm:flex-row justify-between gap-3 px- py-3">
-          <div class="flex gap-2 items-center flex-wrap">
-            <button
-              onClick={() => setAnnouncementFilter("Academic")}
-              class={`flex h-10 items-center justify-center gap-x-2 rounded-lg pl-4 pr-3 text-sm font-medium leading-normal transition-colors ${announcementFilter === "Academic" ? "bg-primary text-white" : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300"}`}
-            >
-              <p class="text-sm font-medium leading-normal">Academic</p>
-            </button>
-            <button
-              onClick={() => setAnnouncementFilter("Holiday")}
-              class={`flex h-10 items-center justify-center gap-x-2 rounded-lg pl-4 pr-3 text-sm font-medium leading-normal transition-colors ${announcementFilter === "Holiday" ? "bg-primary text-white" : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300"}`}
-            >
-              <p class="text-sm font-medium leading-normal">Holiday</p>
-            </button>
-            <button
-              onClick={() => setAnnouncementFilter("Sports")}
-              class={`flex h-10 items-center justify-center gap-x-2 rounded-lg pl-4 pr-3 text-sm font-medium leading-normal transition-colors ${announcementFilter === "Sports" ? "bg-primary text-white" : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300"}`}
-            >
-              <p class="text-sm font-medium leading-normal">Sports</p>
-            </button>
-          </div>
-          <div class="flex gap-2">
-            <div class="relative w-full max-w-xs">
-              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400">
-                  search
-                </span>
-              </div>
-              <input
-                placeholder="Search announcements..."
-                type="text"
-                class="block w-full h-10 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 pl-10 pr-3 text-sm text-gray-900 dark:text-gray-200 focus:border-primary focus:ring-primary ml-"
-              />
-            </div>
-          </div>
-        </div>
-        {filteredAnnouncements.length > 0 ? (
-          filteredAnnouncements.map((values, key) => (
-            <div
-              key={key}
-              class="mb-3 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div class="flex items-start justify-between gap-4">
-                <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-3">
-                    <span class="px-3 py-1 bg-primary text-[10px] bg-primary text-white font-extrabold rounded-full uppercase tracking-wider">
-                      {values.category || "Announcement"}
-                    </span>
-                  </div>
-                  <h3 class="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
-                    {values.title}
-                  </h3>
-                  <p class="whitenowrap text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-2xl">
-                    {values.content}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div class="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
-            <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">
-              {typeof rawData === "string"
-                ? rawData
-                : "No announcements found."}
-            </p>
-          </div>
-        )}
-
         <h1 class="text-gray-900 text-4xl font-black">Events</h1>
         <div class="flex flex-col sm:flex-row justify-between gap-3 px- py-3">
           {/* <div class="flex gap-2 items-center flex-wrap">

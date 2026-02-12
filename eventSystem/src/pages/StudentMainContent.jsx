@@ -4,7 +4,6 @@ import { StudentContent } from "../components/Student/StudentContent";
 
 export default function StudentMainContent() {
   const [user, setUser] = useState(null);
-  const [content, setContent] = useState(null);
   const [event, setEvent] = useState(null);
 
   useEffect(() => {
@@ -12,7 +11,6 @@ export default function StudentMainContent() {
       try {
         const endpoints = [
           "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/userLogin.php",
-          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
           "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php",
         ];
 
@@ -27,7 +25,7 @@ export default function StudentMainContent() {
         });
 
         // Parse JSON from both responses
-        const [userData, contentData, eventData] = await Promise.all(
+        const [userData, eventData] = await Promise.all(
           responses.map((res) => res.json()),
         );
 
@@ -37,10 +35,7 @@ export default function StudentMainContent() {
           console.log("Login failed or no user:", userData.message);
         }
 
-        if (contentData.success){
-          setContent(contentData);
-        }
-        
+
         if (eventData.success){
           setEvent(eventData);
         }
@@ -60,7 +55,7 @@ export default function StudentMainContent() {
         <div className="layout-container flex h-full grow flex-col">
           <StudentHeader user={user} />
           <main class="flex flex-1 py-5 sm:py-8 lg:py-10">
-            <StudentContent content={content} event={event} />
+            <StudentContent event={event} />
           </main>
         </div>
       </div>

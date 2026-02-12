@@ -1,12 +1,30 @@
-import { useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import apiRequest from "../services/apiRequest";
 
 export default function StudentAnnouncement() {
   const navigate = useNavigate();
   const handleOnClick = () => navigate("/studentView");
+
+  const [content, setContent] = useState(null);
+  const [announcementFilter, setAnnouncementFilter] = useState("Academic");
+
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      const response = await apiRequest(
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
+        "GET",
+      );
+      if (response && response.success) {
+        setContent(response);
+      }
+    };
+    fetchAnnouncements();
+  }, []);
+
   const filterKey = announcementFilter.toLowerCase();
   const rawData = content ? content[filterKey] : [];
   const filteredAnnouncements = Array.isArray(rawData) ? rawData : [];
-  const [announcementFilter, setAnnouncementFilter] = useState("Academic");
 
   return (
     <>
@@ -25,7 +43,7 @@ export default function StudentAnnouncement() {
               </span>
               Back
             </a>
-            <div class="mb-10">
+            <div class="mb-5">
               <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Announcements
               </h1>
@@ -33,8 +51,8 @@ export default function StudentAnnouncement() {
                 The latest updates and news from your community.
               </p>
             </div>
-            <div class="mb-10">
-              <div class="flex flex-col sm:flex-row justify-between gap-3 px- py-3">
+            <div class="mb-5">
+              <div class="flex flex-col sm:flex-row justify-between gap-2 py-2">
                 <div class="flex gap-2 items-center flex-wrap">
                   <button
                     onClick={() => setAnnouncementFilter("Academic")}
@@ -72,127 +90,47 @@ export default function StudentAnnouncement() {
               </div>
             </div>
             <div class="flex flex-col gap-6">
-              <article class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm">
-                <div class="flex items-start justify-between mb-3">
-                  <h3 class="font-bold text-lg text-slate-900 dark:text-white">
-                    Critical Server Maintenance Window
-                  </h3>
-                  <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
-                    Infrastructure
-                  </span>
-                </div>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
-                  We will be conducting scheduled security patching for
-                  production servers tonight starting at 11 PM EST. All internal
-                  services including the VPN and the HR portal may be
-                  intermittently unavailable during this four-hour window.
-                </p>
-                <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
-                  <div class="flex items-center gap-2">
-                    <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-xs text-slate-500">
-                        person
+              {filteredAnnouncements.length > 0 ? (
+                filteredAnnouncements.map((values, key) => (
+                  <article
+                    key={key}
+                    class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
+                  >
+                    <div class="flex items-start justify-between mb-3">
+                      <h3 class="font-bold text-lg text-slate-900 dark:text-white">
+                        {values.title}
+                      </h3>
+                      <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
+                        {values.category || "Announcement"}
                       </span>
                     </div>
-                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      David Miller
-                    </span>
-                  </div>
-                  <time class="text-xs text-slate-400">2 hours ago</time>
-                </footer>
-              </article>
-              <article class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm">
-                <div class="flex items-start justify-between mb-3">
-                  <h3 class="font-bold text-lg text-slate-900 dark:text-white">
-                    New Q4 Wellness &amp; Fitness Perks
-                  </h3>
-                  <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
-                    Benefits
-                  </span>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
+                      {values.content}
+                    </p>
+                    <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
+                      <div class="flex items-center gap-2">
+                        <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                          <span class="material-symbols-outlined text-xs text-slate-500">
+                            person
+                          </span>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                          Admin
+                        </span>
+                      </div>
+                      <time class="text-xs text-slate-400">{values.date}</time>
+                    </footer>
+                  </article>
+                ))
+              ) : (
+                <div class="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
+                  <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">
+                    {typeof rawData === "string"
+                      ? rawData
+                      : "No announcements found."}
+                  </p>
                 </div>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
-                  The gym reimbursement program has been expanded for Q4 2024.
-                  Employees can now claim up to $150 per month for any
-                  fitness-related subscriptions, including meditation apps and
-                  home gym equipment rentals.
-                </p>
-                <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
-                  <div class="flex items-center gap-2">
-                    <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-xs text-slate-500">
-                        person
-                      </span>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      Sarah Chen
-                    </span>
-                  </div>
-                  <time class="text-xs text-slate-400">6 hours ago</time>
-                </footer>
-              </article>
-              <article class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm">
-                <div class="flex items-start justify-between mb-3">
-                  <h3 class="font-bold text-lg text-slate-900 dark:text-white">
-                    Upcoming Q4 Town Hall Meeting
-                  </h3>
-                  <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
-                    Corporate
-                  </span>
-                </div>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
-                  Join our leadership team this Friday at 10 AM in the main
-                  cafeteria for our quarterly review. We will be discussing the
-                  2025 strategic roadmap and celebrating our recent project
-                  milestones. Remote link available on the internal calendar.
-                </p>
-                <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
-                  <div class="flex items-center gap-2">
-                    <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-xs text-slate-500">
-                        person
-                      </span>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      Marcus Thompson
-                    </span>
-                  </div>
-                  <time class="text-xs text-slate-400">Yesterday</time>
-                </footer>
-              </article>
-              <article class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm">
-                <div class="flex items-start justify-between mb-3">
-                  <h3 class="font-bold text-lg text-slate-900 dark:text-white">
-                    Main Parking Lot Resurfacing
-                  </h3>
-                  <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
-                    Facilities
-                  </span>
-                </div>
-                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
-                  The main visitor parking lot will be closed for resurfacing
-                  starting next Monday. All employees are requested to use the
-                  North parking deck during this period. We apologize for the
-                  temporary inconvenience.
-                </p>
-                <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
-                  <div class="flex items-center gap-2">
-                    <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                      <span class="material-symbols-outlined text-xs text-slate-500">
-                        person
-                      </span>
-                    </div>
-                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      Janet Wilson
-                    </span>
-                  </div>
-                  <time class="text-xs text-slate-400">2 days ago</time>
-                </footer>
-              </article>
-            </div>
-            <div class="mt-12 text-center">
-              <button class="text-sm font-bold text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all uppercase tracking-widest">
-                Load More Announcements
-              </button>
+              )}
             </div>
           </div>
         </div>
