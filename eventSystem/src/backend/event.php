@@ -1,6 +1,5 @@
 <?php
 include 'connect.php';
-header('Content-Type: application/json');
 try {
 
     $sql = "SELECT * FROM saqliqdb WHERE type='Event'";
