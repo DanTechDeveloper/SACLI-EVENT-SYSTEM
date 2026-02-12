@@ -14,7 +14,7 @@ if (isset($_SESSION['user_id'])) {
 
         if ($stmt->rowCount() > 0) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo json_encode(['success' => true, 'user' => $user]);
+            echo json_encode(value: ['success' => true, 'user' => $user]);
         } else {
             echo json_encode(['success' => false, 'message' => 'User not found']);
         }

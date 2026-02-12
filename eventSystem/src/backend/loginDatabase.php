@@ -83,7 +83,7 @@ try {
 
         // 2. Connect to DB and insert/check user
         $checkStmt = $conn->prepare("SELECT id, fullName, profile_picture FROM register WHERE email = ?");
-        $checkStmt->execute([$email]);
+        $checkStmt->execute(params: [$email]);
 
         if ($checkStmt->rowCount() > 0) {
             // User exists, fetch details
@@ -102,6 +102,7 @@ try {
 
             $_SESSION['user_id'] = $conn->lastInsertId();
             $_SESSION['fullName'] = $fullName;
+            $_SESSION['profile_picture'] = $profile_picture;
         }
 
         // 3. Set remaining session and return response
@@ -112,7 +113,8 @@ try {
             'message' => 'Google login successful',
             'user' => [
                 'fullName' => $_SESSION['fullName'],
-                'email' => $_SESSION['email']
+                'email' => $_SESSION['email'],
+                'profile_picture' => $_SESSION['profile_picture'],
             ]
         ]);
     }

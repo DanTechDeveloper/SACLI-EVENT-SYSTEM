@@ -60,7 +60,7 @@ export default function DashContent() {
               Total Posts
             </p>
             <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              {data?.totalPosts}cccccc
+              {data?.totalPosts}
             </p>
           </div>
           <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">

@@ -38,7 +38,7 @@ export default function StudentHeader({ user }) {
               >
                 <div class="size-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 group-hover:text-primary transition-colors overflow-hidden">
                   <img
-                    src={user?.profile_photo}
+                    src={user?.profile_picture}
                     alt="Profile"
                     class="w-full h-full object-cover"
                   />
