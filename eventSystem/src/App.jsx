@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AuthLayout from "./layouts/AuthLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
@@ -7,6 +6,7 @@ import AuthLogin from "./components/Auth/AuthLogin";
 import AuthRegister from "./components/Auth/AuthRegister";
 import StudentMainContent from "./pages/StudentMainContent";
 import AllEvent from "./pages/Dashboard/AllEvent";
+import Callback from "./components/Auth/callback";
 import Upcomimg from "./pages/Dashboard/Upcoming";
 import AddNewEvent from "./pages/Dashboard/AddNewEvent";
 import AddNewAnnouncement from "./pages/Dashboard/AddNewAnnouncement";
@@ -19,6 +19,7 @@ function App() {
           <Route element={<AuthLayout />}>
             <Route index element={<AuthLogin />} />
             <Route path="/register" element={<AuthRegister />} />
+            <Route path="/callback" element={<Callback />} />
           </Route>
           <Route element={<DashboardLayout />}>
             <Route index element={<DashContent />} path="/dashboard" />

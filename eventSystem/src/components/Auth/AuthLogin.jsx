@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import apiRequest from "../../services/apiRequest";
 
 export default function AuthLogin() {
@@ -7,42 +7,14 @@ export default function AuthLogin() {
   const handleGoogleAuth = () => {
     const clientId =
       "1070483531281-lfru2nob62sbeojao9vc74q12o1fia9f.apps.googleusercontent.com";
-    const redirectUri = encodeURIComponent("http://localhost:5173");
+    // Updated redirect URI to point to the callback route
+    const redirectUri = encodeURIComponent("http://localhost:5173/callback");
     const scope = encodeURIComponent("openid email profile");
     const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=select_account`;
 
     // Redirect to Google's OAuth2 endpoint
     window.location.href = oauthUrl;
   };
-
-  useEffect(() => {
-    const handleGoogleLogin = async () => {
-      // Check URL hash for Google OAuth access token
-      const hash = window.location.hash;
-      if (hash && hash.includes("access_token")) {
-        const params = new URLSearchParams(hash.substring(1));
-        const accessToken = params.get("access_token");
-
-        if (accessToken) {
-          // Optional: Clear the hash from the URL for a cleaner look
-          window.history.replaceState(null, null, window.location.pathname);
-
-          const result = await apiRequest(
-            "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
-            "POST",
-            { action: "googleLogin", token: accessToken },
-          );
-
-          if (result.success) {
-            navigate("/studentView");
-          } else {
-            alert(result.message);
-          }
-        }
-      }
-    };
-    handleGoogleLogin();
-  }, [navigate]);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -180,7 +152,6 @@ export default function AuthLogin() {
               </button>
               <button
                 type="button"
-                onclick="handle3rdPartyLogin('facebook')"
                 class="flex-1 bg-white dark:bg-gray-800 border border-[#dbdee6] dark:border-gray-700 text-[#111318] dark:text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2"
               >
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2">

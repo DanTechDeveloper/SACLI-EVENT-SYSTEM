@@ -37,7 +37,11 @@ export default function StudentHeader({ user }) {
                 class="flex items-center gap-2 text-sm font-bold text-[#111318] dark:text-white hover:text-primary transition-colors group focus:outline-none"
               >
                 <div class="size-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 group-hover:text-primary transition-colors overflow-hidden">
-                  <img alt="Profile" class="w-full h-full object-cover" />
+                  <img
+                    src={user?.profile_photo}
+                    alt="Profile"
+                    class="w-full h-full object-cover"
+                  />
                 </div>
                 <span className="truncate">
                   {user ? user.fullName : "Student"}
