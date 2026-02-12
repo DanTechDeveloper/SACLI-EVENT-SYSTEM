@@ -36,7 +36,6 @@ export default function StudentAnnouncement() {
               class="flex items-center text-slate-600 hover:text-slate-900 font-medium mb-6 transition-colors group"
             >
               <span
-                // onClick={handleOnClick}
                 class="material-symbols-outlined mr-1 text-xl group-hover:-translate-x-1 transition-transform"
               >
                 arrow_back
