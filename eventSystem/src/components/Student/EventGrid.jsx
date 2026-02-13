@@ -38,10 +38,12 @@ export default function EventGrid() {
                 <span>Main Auditorium</span>
               </div>
             </div>
-            <div class="mt-5 flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/50">
-              <span class="text-lg font-bold text-primary">Free</span>
-              <button class="text-primary font-semibold hover:underline text-sm">
-                Details
+            <div class="mt-auto flex items-center justify-between">
+              <button class="text-sm font-semibold text-primary hover:underline">
+                View Details
+              </button>
+              <button class="bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg hover:brightness-110 active:scale-95 transition-all">
+                Register
               </button>
             </div>
           </div>

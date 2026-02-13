@@ -33,8 +33,16 @@ export default function StudentHeader({ user }) {
         </div>
         <div class="flex flex-1 justify-end items-center gap-4">
           <nav class="hidden lg:flex items-center gap-9">
-            <span onClick={handleAnnouncement} class="material-symbols-outlined text-gray-500 dark:text-gray-400 hover:text-primary cursor-pointer transition-colors">
-              notifications
+            <span
+              onClick={handleAnnouncement}
+              class="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white hover:text-primary cursor-pointer transition-colors"
+            >
+              <span class="material-symbols-outlined">campaign</span>
+              Announcements
+            </span>
+            <span class="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white hover:text-primary cursor-pointer transition-colors">
+              <span class="material-symbols-outlined">history</span>
+              My Recently Joined
             </span>
             <div class="relative">
               <button

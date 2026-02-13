@@ -1,4 +1,39 @@
+import { useState, useEffect } from "react";
+import apiRequest from "../../services/apiRequest";
+
 export default function AddNewEvent() {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [criteria, setCriteria] = useState("");
+  const [location, setLocation] = useState("");
+  const [formStorage, setFormStorage] = useState([]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = {
+      title,
+      description,
+      category,
+      date,
+      time,
+      criteria,
+      location,
+    };
+
+    const response = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createEvent.php",
+      "POST",
+      formData,
+    );
+
+    if (response.success) {
+      alert("Event created successfully!");
+    }
+  };
+
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -15,6 +50,7 @@ export default function AddNewEvent() {
         {/* <!-- Form Container --> */}
         <div class="w-full rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
           <form
+            onSubmit={handleSubmit}
             class="flex flex-col gap-6"
             method="POST"
             action="#"
@@ -35,6 +71,8 @@ export default function AddNewEvent() {
                 name="title"
                 class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
                 placeholder="e.g., University Foundation Day"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
 
@@ -53,30 +91,41 @@ export default function AddNewEvent() {
                 rows="6"
                 class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
                 placeholder="Provide details about the event..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
               ></textarea>
             </div>
 
             {/* <!-- Date and Time --> */}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label
-                  for="subtype"
+                  for="category"
                   class="block text-sm font-medium text-gray-700 dark:text-slate-300"
                 >
-                  Subtype
+                  Category
                 </label>
                 <select
                   required
-                  id="subtype"
-                  name="subtype"
+                  id="category"
+                  name="category"
                   class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
                 >
                   <option value="" disabled selected>
-                    -- Select an Subtype --
+                    -- Select an Category --
                   </option>
-                  <option value="General Event">General Event</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Social">Social</option>
+                  <option value="Business">Business</option>
+                  <option value="Outdoors">Outdoors</option>
+                  <option value="Arts">Arts</option>
+                  <option value="Programming">Programming</option>
                   <option value="School Activity">School Activity</option>
                   <option value="Campus Program">Campus Program</option>
+                  <option value="Community">Community</option>
+                  <option value="Health">Health</option>
                 </select>
               </div>
               <div>
@@ -92,26 +141,71 @@ export default function AddNewEvent() {
                   id="date"
                   name="date"
                   class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <label
+                  for="event_time"
+                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
+                >
+                  Event Time
+                </label>
+                <input
+                  required
+                  type="time"
+                  id="time"
+                  name="time"
+                  class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
                 />
               </div>
             </div>
 
             {/* <!-- Location --> */}
-            <div>
-              <label
-                for="event_location"
-                class="block text-sm font-medium text-gray-700 dark:text-slate-300"
-              >
-                Location
-              </label>
-              <input
-                required
-                type="text"
-                id="location"
-                name="location"
-                class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
-                placeholder="e.g., University Gymnasium"
-              />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  for="criteria"
+                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
+                >
+                  Select an Criteria
+                </label>
+                <select
+                  required
+                  id="criteria"
+                  name="criteria"
+                  class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  value={criteria}
+                  onChange={(e) => setCriteria(e.target.value)}
+                >
+                  <option value="" disabled selected>
+                    -- Select an Criteria --
+                  </option>
+                  <option value="Online">Online</option>
+                  <option value="Free">Free</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  for="event_location"
+                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
+                >
+                  Location
+                </label>
+                <input
+                  required
+                  type="text"
+                  id="location"
+                  name="location"
+                  class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  placeholder="e.g., University Gymnasium"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              </div>
             </div>
 
             {/* <!-- Action Buttons --> */}
