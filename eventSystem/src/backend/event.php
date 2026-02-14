@@ -2,7 +2,9 @@
 include 'connect.php';
 try {
 
-    $sql = "SELECT * FROM saqliqdb WHERE type='Event'";
+    $sql = "SELECT * FROM events";
+    $conn->exec("SET time_zone = '+08:00';");
+    $sql = "SELECT id, title, description, category, DATE_FORMAT(date, '%M %d, %Y') as date, TIME_FORMAT(time, '%h:%i %p') as time, criteria, location FROM events";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

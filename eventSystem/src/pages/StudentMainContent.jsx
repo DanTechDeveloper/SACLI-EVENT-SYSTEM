@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import StudentHeader from "../components/Student/StudentHeader";
-import { StudentContent } from "../components/Student/StudentContent";
+import EventFilter from "../components/Student/EventFilter";
+import EventGrid from "../components/Student/EventGrid";
 
 export default function StudentMainContent() {
   const [user, setUser] = useState(null);
@@ -16,7 +17,7 @@ export default function StudentMainContent() {
 
         // Fetch both endpoints in parallel
         const responses = await Promise.all(
-          endpoints.map((url) => fetch(url, { credentials: "include" }))
+          endpoints.map((url) => fetch(url, { credentials: "include" })),
         );
 
         // Check for HTTP errors
@@ -35,11 +36,9 @@ export default function StudentMainContent() {
           console.log("Login failed or no user:", userData.message);
         }
 
-
-        if (eventData.success){
-          setEvent(eventData);
+        if (eventData.success) {
+          setEvent(eventData.data);
         }
-
       } catch (err) {
         console.error("Data fetching failed:", err.message);
       }
@@ -54,8 +53,11 @@ export default function StudentMainContent() {
       <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
         <div className="layout-container flex h-full grow flex-col">
           <StudentHeader user={user} />
-          <main class="flex flex-1 py-5 sm:py-8 lg:py-10">
-            <StudentContent event={event} />
+          <main className="flex flex-1 py-5 sm:py-8 lg:py-10">
+            <div className="flex p-4 flex-col mt-[20px] ml-[30px] w-full gap-3">
+              <EventFilter />
+              <EventGrid events={event} />
+            </div>
           </main>
         </div>
       </div>
