@@ -9,7 +9,7 @@ if (isset($_SESSION['user_id'])) {
 
     try {
         // Fetch the latest user info from the database using the session ID
-        $stmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM register WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM users WHERE id = ?");
         $stmt->execute([$userId]);
 
         if ($stmt->rowCount() > 0) {
