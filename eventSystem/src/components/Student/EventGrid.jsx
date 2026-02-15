@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import ModalEventDescription from "./ModalEventDescription";
+import { useState } from "react";
 export default function EventGrid({ events }) {
   const categoryColors = {
     Technology: "bg-indigo-500",
@@ -11,6 +14,18 @@ export default function EventGrid({ events }) {
     "School Activity": "bg-orange-500",
     "Campus Program": "bg-teal-500",
   };
+
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasBeenSelected, setHasBeenSelected] = useState(null);
+  const toggleModal = (event) => {
+    setIsModalOpen(!isModalOpen);
+    if (event) setHasBeenSelected(event.id);
+  };
+
+  const selectedEventDetails = events?.find(
+    (event) => event.id === hasBeenSelected,
+  ); // Replace with actual selected event logic
 
   return (
     <>
@@ -29,8 +44,9 @@ export default function EventGrid({ events }) {
                 />
                 <div class="absolute top-3 left-3">
                   <span
-                    class={`${categoryColors[event.category] || "bg-gray-500"
-                      } text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider`}
+                    class={`${
+                      categoryColors[event.category] || "bg-gray-500"
+                    } text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider`}
                   >
                     {event.category}
                   </span>
@@ -62,10 +78,18 @@ export default function EventGrid({ events }) {
                   </div>
                 </div>
                 <div class="mt-4 flex items-center justify-between">
-                  <button class="text-sm font-semibold text-primary hover:underline">
+                  <button
+                    onClick={() => toggleModal(event)}
+                    class="text-sm font-semibold text-primary hover:underline"
+                  >
                     View Details
                   </button>
-                  <button class="bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg hover:brightness-110 active:scale-95 transition-all">
+                  <button
+                    onClick={() =>
+                      navigate(`/eventRegistration`, { state: { event } })
+                    }
+                    class="bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg hover:brightness-110 active:scale-95 transition-all"
+                  >
                     Register
                   </button>
                 </div>
@@ -78,6 +102,13 @@ export default function EventGrid({ events }) {
           </div>
         )}
       </div>
+
+      {isModalOpen && (
+        <ModalEventDescription
+          event={selectedEventDetails}
+          toggleModal={toggleModal}
+        />
+      )}
     </>
   );
 }

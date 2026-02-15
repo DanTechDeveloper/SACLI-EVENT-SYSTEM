@@ -11,6 +11,8 @@ import Upcomimg from "./pages/Dashboard/Upcoming";
 import AddNewEvent from "./pages/Dashboard/AddNewEvent";
 import AddNewAnnouncement from "./pages/Dashboard/AddNewAnnouncement";
 import StudentAnnouncement from "./pages/StudentAnnouncement";
+import EventRegistration from "./pages/Dashboard/EventRegistration";
+
 
 function App() {
   return (
@@ -31,7 +33,7 @@ function App() {
           </Route>
           <Route element={<StudentMainContent />} index path="/studentView" />
           <Route element={<StudentAnnouncement />} path="/studentAnnouncement" />
-
+          <Route element={<EventRegistration />} path="/eventRegistration" />
         </Routes>
       </BrowserRouter>
     </>

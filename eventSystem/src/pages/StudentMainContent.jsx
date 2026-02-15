@@ -48,7 +48,6 @@ export default function StudentMainContent() {
   }, []);
 
   return (
-    // &lt;&gt;
     <div className="font-display bg-background-light dark:bg-background-dark">
       <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
         <div className="layout-container flex h-full grow flex-col">
