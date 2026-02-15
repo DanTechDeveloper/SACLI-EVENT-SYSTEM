@@ -2,8 +2,9 @@
 include 'connect.php';
 function readAnnouncement($conn, $type)
 {
-    $sql = "SELECT * from saqliqdb WHERE category='$type'";
+    $sql = "SELECT * from saqliqdb WHERE category = :type";
     $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':type', $type, PDO::PARAM_STR);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if (count($rows) === 0) {

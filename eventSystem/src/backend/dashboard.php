@@ -9,17 +9,21 @@ function getStats($conn, $type)
     switch ($type) {
         case 'totalPosts':
             $sql = "SELECT COUNT(*) FROM saqliqdb";
+            $stmt = $conn->prepare($sql);
             break;
         case 'totalAnnouncement':
-            $sql = "SELECT COUNT(*) FROM saqliqdb WHERE type ='Announcement'";
+            $sql = "SELECT COUNT(*) FROM saqliqdb WHERE type = :type";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':type', 'Announcement', PDO::PARAM_STR);
             break;
         case 'totalEvents':
-            $sql = "SELECT COUNT(*) FROM saqliqdb WHERE type = 'Event'";
+            $sql = "SELECT COUNT(*) FROM saqliqdb WHERE type = :type";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':type', 'Event', PDO::PARAM_STR);
             break;
         default:
             return 0;
     }
-    $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetchColumn();
 }
@@ -27,16 +31,11 @@ function getStats($conn, $type)
 function populateData($conn, $type, $sort)
 {
     $direction = strtoupper($sort) === 'DESC' ? 'DESC' : 'ASC';
-    switch ($type) {
-        case 'Event':
-            $sql = "SELECT * FROM saqliqdb WHERE type = 'Event' ORDER BY id $direction";
-            break;
-        case 'Announcement':
-        default:
-            $sql = "SELECT * FROM saqliqdb WHERE type = 'Announcement' ORDER BY id $direction";
-            break;
-    }
+    $validType = ($type === 'Event') ? 'Event' : 'Announcement';
+
+    $sql = "SELECT * FROM saqliqdb WHERE type = :type ORDER BY id $direction";
     $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':type', $validType, PDO::PARAM_STR);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

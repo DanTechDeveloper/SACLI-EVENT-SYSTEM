@@ -21,8 +21,9 @@ try {
         }
 
         // Check if email already exists
-        $checkEmail = $conn->prepare("SELECT id FROM register WHERE email = ?");
-        $checkEmail->execute([$email]);
+        $checkEmail = $conn->prepare("SELECT id FROM register WHERE email = :email");
+        $checkEmail->bindValue(':email', $email, PDO::PARAM_STR);
+        $checkEmail->execute();
 
         if ($checkEmail->rowCount() > 0) {
             echo json_encode([
@@ -36,8 +37,11 @@ try {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert new user
-        $stmt = $conn->prepare("INSERT INTO register (fullName, email, password) VALUES (?, ?, ?)");
-        $stmt->execute([$fullName, $email, $hashedPassword]);
+        $stmt = $conn->prepare("INSERT INTO register (fullName, email, password) VALUES (:fullName, :email, :password)");
+        $stmt->bindValue(':fullName', $fullName, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        $stmt->execute();
 
         echo json_encode([
             'success' => true,

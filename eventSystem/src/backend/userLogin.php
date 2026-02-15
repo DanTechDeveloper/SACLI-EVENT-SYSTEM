@@ -9,8 +9,9 @@ if (isset($_SESSION['user_id'])) {
 
     try {
         // Fetch the latest user info from the database using the session ID
-        $stmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM register WHERE id = ?");
-        $stmt->execute([$userId]);
+        $stmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM users WHERE id = :userId");
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);

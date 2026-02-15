@@ -16,6 +16,16 @@ export default function AuthLogin() {
     window.location.href = oauthUrl;
   };
 
+  const handleFacebookAuth = () => {
+    const appId = "YOUR_FACEBOOK_APP_ID"; // Replace with your actual Facebook App ID
+    const redirectUri = encodeURIComponent("http://localhost:5173/callback");
+    const scope = encodeURIComponent("email,public_profile");
+    const oauthUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
+
+    // Redirect to Facebook's OAuth2 endpoint
+    window.location.href = oauthUrl;
+  };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -152,6 +162,7 @@ export default function AuthLogin() {
               </button>
               <button
                 type="button"
+                onClick={handleFacebookAuth}
                 class="flex-1 bg-white dark:bg-gray-800 border border-[#dbdee6] dark:border-gray-700 text-[#111318] dark:text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2"
               >
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2">
