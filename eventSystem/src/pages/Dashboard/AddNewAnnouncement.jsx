@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import apiRequest from "../../services/apiRequest";
+import { useNavigate } from "react-router-dom";
 export default function AddNewAnnouncement() {
   // debugger;
   const [title, setTitle] = useState("");
@@ -7,6 +8,8 @@ export default function AddNewAnnouncement() {
   const [category, setCategory] = useState("");
   const [date, setDate] = useState("");
   const [formStorage, setFormStorage] = useState([]);
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -18,23 +21,18 @@ export default function AddNewAnnouncement() {
     };
     setFormStorage((prev) => [...prev, formData]);
 
-    async function fetchData() {
-      const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createAnnouncement.php",
-        "POST",
-        formStorage,
-      );
-      if (result.success) {
-        navigate("/dashboard");
-      } else {
-        alert("Login failed: " + result.message);
-      }
-    }
-  };
+    // async function fetchData() {
+    //   const response = await apiRequest(
+    //     "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createAnnouncement.php",
+    //     "POST",
+    //     formStorage,
+    //   );
+    // }
 
-  useEffect(() => {
-    console.table(formStorage);
-  }, [formStorage]);
+    // if (result.success) {
+      navigate("/dashboard");
+    // }
+  };
 
   return (
     <>

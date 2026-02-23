@@ -36,7 +36,7 @@ export default function DashSidebar() {
         {
           label: "Published",
           icon: "check_circle",
-          path: "/announcements/published",
+          path: "/publishedAnnouncement",
           iconClass: "pl-1",
         },
         { label: "Add New", icon: "post_add", path: "/newAnnouncement" },

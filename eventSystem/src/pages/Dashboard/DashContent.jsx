@@ -1,7 +1,6 @@
 import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react";
 
-
 export default function DashContent() {
   const [selectedSort, setSelectedSort] = useState({
     type: "Announcement",
@@ -80,162 +79,167 @@ export default function DashContent() {
             </p>
           </div>
         </div>
-        <div class="flex flex-col gap-4">
-          {/* <!-- SectionHeader --> */}
-          <h2 class="text-[#212529] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
-            Recent Activity
-          </h2>
-          {/* <!-- ToolBar --> */}
-          <div class="flex justify-between gap-4 py-2">
-            <div className="flex gap-2">
-              <select
-                name="type"
-                value={selectedSort.type}
-                onChange={handleSort}
-                className="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary"
-              >
-                {typeOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                name="sort"
-                value={selectedSort.sort}
-                onChange={handleSort}
-                className="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary"
-              >
-                {sortOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          {/* <!-- Data Table --> */}
-          <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-            <table class="w-full text-left text-sm">
-              <thead class="bg-slate-50 text-xs uppercase text-[#6C757D] dark:bg-slate-800 dark:text-slate-400">
-                <tr>
-                  <th class="px-6 py-3 font-medium" scope="col">
-                    Title
-                  </th>
-                  <th class="px-6 py-3 font-medium" scope="col">
-                    Type
-                  </th>
-                  <th class="px-6 py-3 font-medium" scope="col">
-                    Date
-                  </th>
-                  <th class="px-6 py-3 font-medium" scope="col">
-                    {(selectedSort.type === "Announcement") ? "Category" : "Subtype"}
-                  </th>
-                  <th class="px-6 py-3 text-right font-medium" scope="col">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.allAnnouncements?.map((announcement) => (
-                  <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                    <td class="px-6 py-4 font-semibold">
-                      {announcement.title}
-                    </td>
-                    <td class="px-6 py-4">
-                      <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                        {announcement.type}
+          {/* <!-- Recent Events Section --> */}
+          <div class="lg:col-span-2 space-y-8">
+            <section class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+              <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <h4 class="text-lg font-bold text-primary dark:text-white">
+                  Recent Events
+                </h4>
+                <button class="text-sm font-semibold text-primary/60 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors">
+                  View All Events
+                </button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                  <thead class="bg-slate-50 dark:bg-slate-800/50">
+                    <tr>
+                      <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                        Event Name
+                      </th>
+                      <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                        Status
+                      </th>
+                      <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td class="px-6 py-4">
+                        <div class="font-medium text-slate-900 dark:text-slate-100">
+                          Annual Charity Gala
+                        </div>
+                        <div class="text-xs text-slate-400">
+                          Dec 15, 2024 • Grand Ballroom
+                        </div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                          Active
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 text-right">
+                        <button class="text-sm font-bold text-primary dark:text-white hover:underline">
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td class="px-6 py-4">
+                        <div class="font-medium text-slate-900 dark:text-slate-100">
+                          Tech Conference 2024
+                        </div>
+                        <div class="text-xs text-slate-400">
+                          Jan 22, 2024 • Convention Center
+                        </div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                          Draft
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 text-right">
+                        <button class="text-sm font-bold text-primary dark:text-white hover:underline">
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                      <td class="px-6 py-4">
+                        <div class="font-medium text-slate-900 dark:text-slate-100">
+                          Internal Workshop
+                        </div>
+                        <div class="text-xs text-slate-400">
+                          Nov 10, 2023 • Main Office
+                        </div>
+                      </td>
+                      <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300">
+                          Closed
+                        </span>
+                      </td>
+                      <td class="px-6 py-4 text-right">
+                        <button class="text-sm font-bold text-primary dark:text-white hover:underline">
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            {/* <!-- Recent Announcements Section --> */}
+            <section class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+              <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <h4 class="text-lg font-bold text-primary dark:text-white">
+                  Recent Announcements
+                </h4>
+                <button class="text-sm font-semibold text-primary/60 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors">
+                  Manage Announcements
+                </button>
+              </div>
+              <div class="divide-y divide-slate-100 dark:divide-slate-800">
+                <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors flex items-center justify-between">
+                  <div class="flex items-center gap-4">
+                    <div class="bg-slate-100 dark:bg-slate-800 h-10 w-10 flex items-center justify-center rounded-lg">
+                      <span class="material-symbols-outlined text-primary dark:text-white text-[20px]">
+                        info
                       </span>
-                    </td>
-                    <td class="px-6 py-4">{announcement.date}</td>
-                    <td class="px-6 py-4">
-                      <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                        <span class="size-1.5 rounded-full bg-green-600"></span>
-                        {announcement.type}
+                    </div>
+                    <div>
+                      <h5 class="font-semibold text-slate-900 dark:text-slate-100">
+                        Holiday Office Hours Update
+                      </h5>
+                      <p class="text-xs text-slate-500 mt-1">
+                        Published 2 hours ago • By HR Department
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                      Published
+                    </span>
+                    <button class="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
+                      <span class="material-symbols-outlined">
+                        chevron_right
                       </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <div class="flex items-center justify-end gap-2">
-                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                          <span class="material-symbols-outlined">edit</span>
-                        </button>
-                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                          <span class="material-symbols-outlined">
-                            visibility
-                          </span>
-                        </button>
-                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                          <span class="material-symbols-outlined">delete</span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </button>
+                  </div>
+                </div>
+                <div class="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors flex items-center justify-between">
+                  <div class="flex items-center gap-4">
+                    <div class="bg-slate-100 dark:bg-slate-800 h-10 w-10 flex items-center justify-center rounded-lg">
+                      <span class="material-symbols-outlined text-primary dark:text-white text-[20px]">
+                        notification_important
+                      </span>
+                    </div>
+                    <div>
+                      <h5 class="font-semibold text-slate-900 dark:text-slate-100">
+                        New Safety Protocols 2024
+                      </h5>
+                      <p class="text-xs text-slate-500 mt-1">
+                        Scheduled for Dec 01 • By Compliance
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+                      Scheduled
+                    </span>
+                    <button class="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
+                      <span class="material-symbols-outlined">
+                        chevron_right
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
-          {/* <!-- Pagination -->
-          <nav
-            aria-label="Table navigation"
-            class="flex items-center justify-between pt-4"
-          >
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Showing{" "}
-              <span class="font-semibold text-gray-900 dark:text-white">
-                1-5
-              </span>{" "}
-              of{" "}
-              <span class="font-semibold text-gray-900 dark:text-white">
-                100
-              </span>
-            </span>
-            <ul class="inline-flex -space-x-px text-sm h-8">
-              <li>
-                <a
-                  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  href="#"
-                >
-                  Previous
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  href="#"
-                >
-                  1
-                </a>
-              </li>
-              <li>
-                <a
-                  aria-current="page"
-                  class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                  href="#"
-                >
-                  2
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  href="#"
-                >
-                  3
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                  href="#"
-                >
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav> */}
+         
         </div>
-      </div>
     </>
   );
 }

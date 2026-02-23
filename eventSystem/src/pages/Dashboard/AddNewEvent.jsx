@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import apiRequest from "../../services/apiRequest";
+import {useNavigate} from 'react-router-dom'
 
 export default function AddNewEvent() {
   const [title, setTitle] = useState("");
@@ -10,6 +11,8 @@ export default function AddNewEvent() {
   const [criteria, setCriteria] = useState("");
   const [location, setLocation] = useState("");
   const [formStorage, setFormStorage] = useState([]);
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +34,8 @@ export default function AddNewEvent() {
 
     if (response.success) {
       alert("Event created successfully!");
-    }
+      navigate("/dashboard");
+    } 
   };
 
   return (

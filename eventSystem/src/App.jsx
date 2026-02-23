@@ -12,7 +12,9 @@ import AddNewEvent from "./pages/Dashboard/AddNewEvent";
 import AddNewAnnouncement from "./pages/Dashboard/AddNewAnnouncement";
 import StudentAnnouncement from "./pages/StudentAnnouncement";
 import EventRegistration from "./pages/Dashboard/EventRegistration";
-
+import PublishedAnnouncement from "./pages/Dashboard/PublishedAnnouncement";
+import PublishedEvent from "./pages/Dashboard/PublishedEvent";
+import Announcement from "./pages/Dashboard/Announcement";
 
 function App() {
   return (
@@ -30,9 +32,21 @@ function App() {
             <Route element={<Upcomimg />} path="/upcoming" />
             <Route element={<AddNewEvent />} path="/newEvent" />
             <Route element={<AddNewAnnouncement />} path="/newAnnouncement" />
+            <Route element={<Announcement />} path="/announcements" />
+            <Route
+              element={<PublishedAnnouncement />}
+              path="/publishedAnnouncement"
+            />
+            <Route
+              element={<PublishedEvent />}
+              path="/publishEvent"
+            />
           </Route>
           <Route element={<StudentMainContent />} index path="/studentView" />
-          <Route element={<StudentAnnouncement />} path="/studentAnnouncement" />
+          <Route
+            element={<StudentAnnouncement />}
+            path="/studentAnnouncement"
+          />
           <Route element={<EventRegistration />} path="/eventRegistration" />
         </Routes>
       </BrowserRouter>
