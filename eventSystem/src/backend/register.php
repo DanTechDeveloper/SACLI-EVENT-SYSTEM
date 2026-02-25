@@ -8,12 +8,12 @@ try {
 
     if (isset($inputData['action']) && $inputData['action'] === 'register') {
 
-        $username = $inputData['fullName'] ?? '';
+        $fullName = $inputData['fullName'] ?? '';
         $email = $inputData['email'] ?? '';
         $password = $inputData['password'] ?? '';
 
     // 2. Input validation
-    if (empty($username) || empty($email) || empty($password)) {
+    if (empty($fullName) || empty($email) || empty($password)) {
         echo json_encode(['success' => false, 'message' => 'All fields are required']);
         exit;
     }
