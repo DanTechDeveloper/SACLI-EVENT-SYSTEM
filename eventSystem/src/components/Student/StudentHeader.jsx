@@ -51,9 +51,13 @@ export default function StudentHeader({ user }) {
               >
                 <div class="size-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 group-hover:text-primary transition-colors overflow-hidden">
                   <img
-                    src={user?.profile_picture}
+                    src={
+                      user?.profile_picture && user?.profile_picture !== ""
+                        ? user.profile_picture
+                        : "https://images.unsplash.com/photo-1502767089025-6572583495fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
+                    }
                     alt="Profile"
-                    class="w-full h-full object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <span className="truncate">

@@ -22,7 +22,7 @@ try {
         }
 
         // Fetch user from database by email
-        $stmt = $conn->prepare("SELECT id, fullName, email, password FROM register WHERE email = :email");
+        $stmt = $conn->prepare("SELECT id, fullName, email, password FROM students WHERE email = :email");
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
 
@@ -83,7 +83,7 @@ try {
         $profile_picture = $user['picture'];
 
         // 2. Connect to DB and insert/check user
-        $checkStmt = $conn->prepare("SELECT id, fullName, profile_picture FROM register WHERE email = :email");
+        $checkStmt = $conn->prepare("SELECT id, fullName, profile_picture FROM students WHERE email = :email");
         $checkStmt->bindValue(':email', $email, PDO::PARAM_STR);
         $checkStmt->execute();
 
@@ -99,7 +99,7 @@ try {
             $randomPassword = bin2hex(random_bytes(16));
             $hashedPassword = password_hash($randomPassword, PASSWORD_DEFAULT);
 
-            $insertStmt = $conn->prepare("INSERT INTO register (fullName, email, profile_picture, password) VALUES (:fullName, :email, :profile_picture, :password)");
+            $insertStmt = $conn->prepare("INSERT INTO students (fullName, email, profile_picture, password) VALUES (:fullName, :email, :profile_picture, :password)");
             $insertStmt->bindValue(':fullName', $fullName, PDO::PARAM_STR);
             $insertStmt->bindValue(':email', $email, PDO::PARAM_STR);
             $insertStmt->bindValue(':profile_picture', $profile_picture, PDO::PARAM_STR);

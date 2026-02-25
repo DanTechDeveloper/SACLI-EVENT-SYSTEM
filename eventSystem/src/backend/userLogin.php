@@ -9,7 +9,7 @@ if (isset($_SESSION['user_id'])) {
 
     try {
         // Fetch the latest user info from the database using the session ID
-        $stmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM users WHERE id = :userId");
+        $stmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM students WHERE id = :userId");
         $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
         $stmt->execute();
 
