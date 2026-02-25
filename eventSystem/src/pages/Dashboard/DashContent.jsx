@@ -2,42 +2,23 @@ import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react";
 
 export default function DashContent() {
-  const [selectedSort, setSelectedSort] = useState({
-    type: "Announcement",
-    sort: "ASC",
-  });
+
   const [data, setData] = useState(null);
   useEffect(() => {
-    async function fetchData({ type, sort }) {
-      const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php?type=${type}&sort=${sort}`;
+    async function fetchData() {
+      const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
       const response = await apiRequest(url);
-
       if (response.success) {
         setData(response.data);
       } else {
         console.error(`Error fetching data: ${response.error}`);
       }
     }
-    fetchData(selectedSort);
-  }, [selectedSort]);
+    fetchData();
+  }, []);
 
-  const typeOptions = [
-    { value: "Announcement", label: "Announcements" },
-    { value: "Event", label: "Events" },
-  ];
-
-  const sortOptions = [
-    { value: "ASC", label: "Newest First" },
-    { value: "DESC", label: "Oldest First" },
-  ];
-  const handleSort = (e) => {
-    const { name, value } = e.target;
-
-    setSelectedSort((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+ 
+  
 
   return (
     <>

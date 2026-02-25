@@ -1,27 +1,27 @@
 <?php
-include 'connect.php';
-
-
 try {
 
     include 'connect.php';
 
-    if (isset($_POST['publishAnnouncement'])) {
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $category = $_POST['category'] ?? "";
-        $date = $_POST['date'];
+   $data = json_decode(file_get_contents("php://input"), true);
+      if ($data) {
+        $title = $data['title'];
+        $message = $data['message'];
+        $category = $data['category'];
 
-        $sql = "INSERT INTO saqliqdb (title,content,category,date,type)
-            VALUES(:title, :content, :category, :date, :type)";
+        $sql = "INSERT INTO announcements (title, message, category) VALUES (:title, :message, :category)";
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue(":title", $title);
-        $stmt->bindValue(":content", $content);
-        $stmt->bindValue(":category", $category);
-        $stmt->bindValue(":date", $date);
-        $stmt->bindValue(":type", "Announcement");
-        $stmt->execute();
+        $stmt->bindValue(':title', $title);
+        $stmt->bindValue(':message', $message);
+        $stmt->bindValue(':category', $category);
+        
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Announcement created successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to create announcement']);
+        }
     }
+    exit;
 } catch (Exception $th) {
     echo "Error in: " . $th->getMessage();
 }

@@ -4,34 +4,29 @@ import { useNavigate } from "react-router-dom";
 export default function AddNewAnnouncement() {
   // debugger;
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [message, setMessage] = useState("");
   const [category, setCategory] = useState("");
-  const [date, setDate] = useState("");
-  const [formStorage, setFormStorage] = useState([]);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = {
       title: title,
-      description: description,
+      message: message,
       category: category,
-      date: date,
     };
-    setFormStorage((prev) => [...prev, formData]);
 
-    // async function fetchData() {
-    //   const response = await apiRequest(
-    //     "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createAnnouncement.php",
-    //     "POST",
-    //     formStorage,
-    //   );
-    // }
 
-    // if (result.success) {
+    const response = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createAnnouncement.php",
+      "POST",
+      formData,
+    );
+
+    if (response.success) {
       navigate("/dashboard");
-    // }
+    }
   };
 
   return (
@@ -90,13 +85,13 @@ export default function AddNewAnnouncement() {
                 rows="6"
                 class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
                 placeholder="Write the full details of the announcement here..."
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
+                onChange={(e) => setMessage(e.target.value)}
+                value={message}
               ></textarea>
             </div>
 
             {/* <!-- Category --> */}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
               <div>
                 <label
                   for="announcement_category"
@@ -115,29 +110,16 @@ export default function AddNewAnnouncement() {
                   <option value="" disabled selected>
                     -- Select an Category --
                   </option>
-                  <option value="Academic">Academic</option>
-                  <option value="Holiday">Holiday</option>
-                  <option value="Sports">Sports</option>
+                  <option value="IMPORTANT">IMPORTANT</option>
+                  <option value="REMINDER">REMINDER</option>
+                  <option value="GENERAL">GENERAL</option>
+                  <option value="EVENT">EVENT</option>
+                  <option value="ACHIEVEMENT">ACHIEVEMENT</option>
+                  <option value="EMERGENCY">EMERGENCY</option>
                 </select>
               </div>
 
-              <div>
-                <label
-                  for="event_date"
-                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
-                >
-                  Event Date
-                </label>
-                <input
-                  value={date}
-                  onChange={(E) => setDate(E.target.value)}
-                  required
-                  type="date"
-                  id="date"
-                  name="date"
-                  class=" mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
-                />
-              </div>
+             
             </div>
 
             {/* <!-- Action Buttons --> */}
