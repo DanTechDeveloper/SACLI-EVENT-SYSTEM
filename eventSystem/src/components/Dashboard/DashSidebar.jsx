@@ -33,12 +33,6 @@ export default function DashSidebar() {
       label: "Announcements",
       items: [
         { label: "All Posts", icon: "campaign", path: "/announcements" },
-        {
-          label: "Published",
-          icon: "check_circle",
-          path: "/publishedAnnouncement",
-          iconClass: "pl-1",
-        },
         { label: "Add New", icon: "post_add", path: "/newAnnouncement" },
       ],
     },

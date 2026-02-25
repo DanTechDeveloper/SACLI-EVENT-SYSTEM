@@ -12,6 +12,7 @@ export default function Announcement() {
             </p>
           </div>
         </div>
+
         {/* <!-- Stats --> */}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
@@ -37,6 +38,23 @@ export default function Announcement() {
             <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
               {/* {data?.totalEvents} */}
             </p>
+          </div>
+        </div>
+        <h2 class="text-[#212529] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+          Recent Activity
+        </h2>
+        {/* <!-- ToolBar --> */}
+        <div class="flex justify-between gap-4 py-2">
+          <div class="flex gap-2">
+            <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+              <option>All Types</option>
+              <option>Announcements</option>
+              <option>Events</option>
+            </select>
+            <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+              <option>Newest First</option>
+              <option>Oldest First</option>
+            </select>
           </div>
         </div>
         <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
