@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import apiRequest from "../../services/apiRequest";
 export default function AllEvent() {
   const statsData = [
     {
@@ -112,6 +114,21 @@ export default function AllEvent() {
     },
   ];
 
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await apiRequest(
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php",
+      );
+
+      if (response.success) {
+        setData(response.data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -166,168 +183,57 @@ export default function AllEvent() {
                   Title
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
-                  Type
+                  Category
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
-                  Date
+                  Event Date
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
-                  Status
+                  Event Time
+                </th>
+                <th class="px-6 py-3 font-medium" scope="col">
+                  Criteria
                 </th>
                 <th class="px-6 py-3 text-right font-medium" scope="col">
-                  Actions
+                  Action
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                <td class="px-6 py-4 font-semibold">
-                  Midterm Examination Schedule
-                </td>
-                <td class="px-6 py-4">
-                  <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                    Announcement
-                  </span>
-                </td>
-                <td class="px-6 py-4">Oct 25, 2023</td>
-                <td class="px-6 py-4">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                    <span class="size-1.5 rounded-full bg-green-600"></span>
-                    Published
-                  </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <div class="flex items-center justify-end gap-2">
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                <td class="px-6 py-4 font-semibold">
-                  University Foundation Day Celebration
-                </td>
-                <td class="px-6 py-4">
-                  <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
-                    Event
-                  </span>
-                </td>
-                <td class="px-6 py-4">Nov 15, 2023</td>
-                <td class="px-6 py-4">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                    <span class="size-1.5 rounded-full bg-green-600"></span>
-                    Published
-                  </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <div class="flex items-center justify-end gap-2">
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                <td class="px-6 py-4 font-semibold">
-                  Enrollment for Second Semester
-                </td>
-                <td class="px-6 py-4">
-                  <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                    Announcement
-                  </span>
-                </td>
-                <td class="px-6 py-4">Oct 20, 2023</td>
-                <td class="px-6 py-4">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-2 py-1 text-xs font-medium text-orange-700 dark:bg-orange-900 dark:text-orange-300">
-                    <span class="size-1.5 rounded-full bg-orange-600"></span>
-                    Draft
-                  </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <div class="flex items-center justify-end gap-2">
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                <td class="px-6 py-4 font-semibold">Campus Job Fair 2023</td>
-                <td class="px-6 py-4">
-                  <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
-                    Event
-                  </span>
-                </td>
-                <td class="px-6 py-4">Nov 05, 2023</td>
-                <td class="px-6 py-4">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                    <span class="size-1.5 rounded-full bg-green-600"></span>
-                    Published
-                  </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <div class="flex items-center justify-end gap-2">
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr class="text-[#212529] dark:text-white">
-                <td class="px-6 py-4 font-semibold">
-                  Holiday Notice: All Saints' Day
-                </td>
-                <td class="px-6 py-4">
-                  <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                    Announcement
-                  </span>
-                </td>
-                <td class="px-6 py-4">Oct 18, 2023</td>
-                <td class="px-6 py-4">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                    <span class="size-1.5 rounded-full bg-green-600"></span>
-                    Published
-                  </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                  <div class="flex items-center justify-end gap-2">
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">edit</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                      <span class="material-symbols-outlined">visibility</span>
-                    </button>
-                    <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                      <span class="material-symbols-outlined">delete</span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              {data?.map((value, key) => (
+                <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
+                  <td class="px-6 py-4 font-semibold">{value.title}</td>
+                  <td class="px-6 py-4">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                      {value.category}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">{value.date}</td>
+                  <td class="px-6 py-4">
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
+                      <span class="size-1.5 rounded-full bg-green-600"></span>
+                      {value.time}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">{value.criteria}</td>
+
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
+                        <span class="material-symbols-outlined">edit</span>
+                      </button>
+                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
+                        <span class="material-symbols-outlined">
+                          visibility
+                        </span>
+                      </button>
+                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
+                        <span class="material-symbols-outlined">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
