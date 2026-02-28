@@ -1,134 +1,63 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/apiRequest";
 export default function AllEvent() {
-  const statsData = [
-    {
-      title: "Total Techonology",
-      value: "842,512",
-      icon: "group",
-      iconColor: "text-blue-600",
-      iconBg: "bg-blue-50 dark:bg-blue-900/20",
-      trend: "12%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-    {
-      title: "Total Social",
-      value: "1,204",
-      icon: "event",
-      iconColor: "text-purple-600",
-      iconBg: "bg-purple-50 dark:bg-purple-900/20",
-      trend: "4%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-    {
-      title: "Total Business",
-      value: "42",
-      icon: "pending_actions",
-      iconColor: "text-orange-600",
-      iconBg: "bg-orange-50 dark:bg-orange-900/20",
-      trend: "8%",
-      trendIcon: "trending_down",
-      trendColor: "text-red-600",
-      trendBg: "bg-red-50",
-    },
-    {
-      title: "Total Outdoors",
-      value: "892",
-      icon: "campaign",
-      iconColor: "text-teal-600",
-      iconBg: "bg-teal-50 dark:bg-teal-900/20",
-      trend: "0%",
-      trendIcon: "horizontal_rule",
-      trendColor: "text-slate-500",
-      trendBg: "bg-slate-100",
-    },
-    {
-      title: "Total Arts",
-      value: "12.5%",
-      icon: "monitoring",
-      iconColor: "text-indigo-600",
-      iconBg: "bg-indigo-50 dark:bg-indigo-900/20",
-      trend: "1.2%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-    {
-      title: "Total Programming",
-      value: "64.8%",
-      icon: "favorite",
-      iconColor: "text-rose-600",
-      iconBg: "bg-rose-50 dark:bg-rose-900/20",
-      trend: "2%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-    {
-      title: "Total School Activity",
-      value: "$2.4M",
-      icon: "payments",
-      iconColor: "text-emerald-600",
-      iconBg: "bg-emerald-50 dark:bg-emerald-900/20",
-      trend: "24%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-    {
-      title: "Total Campus Program",
-      value: "128",
-      icon: "support_agent",
-      iconColor: "text-yellow-600",
-      iconBg: "bg-yellow-50 dark:bg-yellow-900/20",
-      trend: "15%",
-      trendIcon: "trending_up",
-      trendColor: "text-red-600",
-      trendBg: "bg-red-50",
-    },
-    {
-      title: "Total Community",
-      value: "99.98%",
-      icon: "timer",
-      iconColor: "text-cyan-600",
-      iconBg: "bg-cyan-50 dark:bg-cyan-900/20",
-      trend: "0.01%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-    {
-      title: "Total Health",
-      value: "4,120",
-      icon: "person_add",
-      iconColor: "text-amber-600",
-      iconBg: "bg-amber-50 dark:bg-amber-900/20",
-      trend: "32%",
-      trendIcon: "trending_up",
-      trendColor: "text-green-600",
-      trendBg: "bg-green-50",
-    },
-  ];
-
+  
   const [data, setData] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       const response = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php",
       );
-
+      
       if (response.success) {
         setData(response.data);
       }
     };
-
+    
     fetchData();
   }, []);
-
+  const statsData = [
+    {
+      title: "Total Techonology",
+      value: data?.categoryCounts.total_technology
+    },
+    {
+      title: "Total Social",
+      value: data?.categoryCounts.total_social
+    },
+    {
+      title: "Total Business",
+      value: data?.categoryCounts.total_business
+    },
+    {
+      title: "Total Outdoors",
+      value: data?.categoryCounts.total_outdoors
+    },
+    {
+      title: "Total Arts",
+      value: data?.categoryCounts.total_arts
+    },
+    {
+      title: "Total Programming",
+      value: data?.categoryCounts.total_programming
+    },
+    {
+      title: "Total School Activity",
+      value: data?.categoryCounts.total_school_activity
+    },
+    {
+      title: "Total Campus Program",
+      value: data?.categoryCounts.total_campus_program
+    },
+    {
+      title: "Total Community",
+      value: data?.categoryCounts.total_community
+    },
+    {
+      title: "Total Health",
+      value: data?.categoryCounts.total_health
+    },
+  ];
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -200,7 +129,7 @@ export default function AllEvent() {
               </tr>
             </thead>
             <tbody>
-              {data?.map((value, key) => (
+              {data?.tableRows.map((value, key) => (
                 <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
                   <td class="px-6 py-4 font-semibold">{value.title}</td>
                   <td class="px-6 py-4">

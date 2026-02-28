@@ -7,7 +7,6 @@ import AuthRegister from "./components/Auth/AuthRegister";
 import StudentMainContent from "./pages/StudentMainContent";
 import AllEvent from "./pages/Dashboard/AllEvent";
 import Callback from "./components/Auth/callback";
-import Upcomimg from "./pages/Dashboard/Upcoming";
 import AddNewEvent from "./pages/Dashboard/AddNewEvent";
 import AddNewAnnouncement from "./pages/Dashboard/AddNewAnnouncement";
 import StudentAnnouncement from "./pages/StudentAnnouncement";
@@ -29,7 +28,6 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route index element={<DashContent />} path="/dashboard" />
             <Route element={<AllEvent />} path="/events" />
-            <Route element={<Upcomimg />} path="/upcoming" />
             <Route element={<AddNewEvent />} path="/newEvent" />
             <Route element={<AddNewAnnouncement />} path="/newAnnouncement" />
             <Route element={<Announcement />} path="/announcements" />

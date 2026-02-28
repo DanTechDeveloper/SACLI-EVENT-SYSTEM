@@ -1,4 +1,5 @@
 export default function Announcement() {
+  
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -14,7 +15,7 @@ export default function Announcement() {
         </div>
 
         {/* <!-- Stats --> */}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
           <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
             <p class="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
               Total Academic

@@ -19,12 +19,7 @@ export default function DashSidebar() {
       label: "Events Management",
       items: [
         { label: "All Events", icon: "calendar_month", path: "/events" },
-        {
-          label: "Upcoming",
-          icon: "upcoming",
-          path: "/upcoming",
-          iconClass: "pl-1",
-        },
+       
         { label: "Add New", icon: "add_box", path: "/newEvent" },
       ],
     },
