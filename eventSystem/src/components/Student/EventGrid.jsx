@@ -23,15 +23,15 @@ export default function EventGrid({ events }) {
     if (event) setHasBeenSelected(event.id);
   };
 
-  const selectedEventDetails = events?.find(
+  const selectedEventDetails = events?.tableRows.find(
     (event) => event.id === hasBeenSelected,
   ); // Replace with actual selected event logic
 
   return (
     <>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {Array.isArray(events) && events.length > 0 ? (
-          events.map((event, index) => (
+        {events?.tableRows && events?.tableRows.length > 0 ? (
+          events?.tableRows.map((event, index) => (
             <div
               key={index}
               class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"

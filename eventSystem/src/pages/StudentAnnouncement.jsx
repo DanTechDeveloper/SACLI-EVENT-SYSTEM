@@ -11,11 +11,10 @@ export default function StudentAnnouncement() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
-        "GET",
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php"
       );
-      if (response && response.success) {
-        setAnnouncement(response);
+      if (response.success) {
+        setAnnouncement(response.data);
       }
     };
     fetchAnnouncements();
@@ -45,8 +44,8 @@ export default function StudentAnnouncement() {
             </div>
 
             <div class="flex flex-col gap-6">
-              {announcement?.data.length > 0 ? (
-                announcement?.data.map((values, key) => (
+              {announcement.allAnnouncements.length > 0 ? (
+                announcement.allAnnouncements.map((values, key) => (
                   <article
                     key={key}
                     class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
@@ -73,7 +72,9 @@ export default function StudentAnnouncement() {
                           Admin
                         </span>
                       </div>
-                      <time class="text-xs text-slate-400">{values.date_posted}</time>
+                      <time class="text-xs text-slate-400">
+                        {values.date_posted}
+                      </time>
                     </footer>
                   </article>
                 ))
