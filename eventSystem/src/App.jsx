@@ -14,6 +14,7 @@ import EventRegistration from "./pages/Dashboard/EventRegistration";
 import PublishedAnnouncement from "./pages/Dashboard/PublishedAnnouncement";
 import PublishedEvent from "./pages/Dashboard/PublishedEvent";
 import Announcement from "./pages/Dashboard/Announcement";
+import StudentRecentlyJoined from "./pages/StudentRecentlyJoined";
 
 function App() {
   return (
@@ -44,6 +45,10 @@ function App() {
           <Route
             element={<StudentAnnouncement />}
             path="/studentAnnouncement"
+          />
+          <Route
+            element={<StudentRecentlyJoined />}
+            path="/studentRecentlyJoined"
           />
           <Route element={<EventRegistration />} path="/eventRegistration" />
         </Routes>

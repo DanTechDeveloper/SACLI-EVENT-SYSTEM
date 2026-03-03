@@ -1,25 +1,10 @@
-import { useState, useEffect } from "react";
+import { use, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiRequest from "../services/apiRequest";
-
-export default function StudentAnnouncement() {
-  const navigate = useNavigate();
-  const handleOnClick = () => navigate("/studentView");
-
-  const [announcement, setAnnouncement] = useState(null);
-
-  useEffect(() => {
-    const fetchAnnouncements = async () => {
-      const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php"
-      );
-      if (response.success) {
-        setAnnouncement(response.data);
-      }
-    };
-    fetchAnnouncements();
-  }, []);
-
+export default function StudentRecentlyJoined() {
+    const [recentlyJoined, setRecentlyJoined] = useState(null);
+    const navigate = useNavigate();
+    const handleOnClick = () => navigate("/studentView");
+    
   return (
     <>
       <div class="cursor-pointer bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen">
@@ -36,30 +21,25 @@ export default function StudentAnnouncement() {
             </a>
             <div class="mb-5">
               <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                Announcements
+                My Recently Joined Event's
               </h1>
-              <p class="text-slate-500 mt-2">
-                The latest updates and news from your community.
-              </p>
             </div>
 
             <div class="flex flex-col gap-6">
-              {announcement?.allAnnouncements.length > 0 ? (
-                announcement?.allAnnouncements.map((values, key) => (
                   <article
-                    key={key}
+                    // key={key}
                     class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
                   >
                     <div class="flex items-start justify-between mb-3">
                       <h3 class="font-bold text-lg text-slate-900 dark:text-white">
-                        {values.title}
+                        {/* {values.title} */}
                       </h3>
                       <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
-                        {values.category}
+                        {/* {values.category} */}
                       </span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
-                      {values.message}
+                      {/* {values.message} */}
                     </p>
                     <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
                       <div class="flex items-center gap-2">
@@ -73,20 +53,19 @@ export default function StudentAnnouncement() {
                         </span>
                       </div>
                       <time class="text-xs text-slate-400">
-                        {values.date_posted}
+                        {/* {values.date_posted} */}
                       </time>
                     </footer>
                   </article>
-                ))
-              ) : (
-                <div class="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
+               
+                {/* <div class="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
                   <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">
                     {typeof rawData === "string"
                       ? rawData
                       : "No announcements found."}
                   </p>
                 </div>
-              )}
+            */}
             </div>
           </div>
         </div>

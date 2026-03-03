@@ -7,8 +7,8 @@ export default function StudentHeader({ user }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
-
   const handleAnnouncement = () => navigate("/studentAnnouncement");
+  const handleRecentlyJoined = () => navigate("/studentRecentlyJoined");
 
   const handleLogout = async () => {
     const response = await apiRequest(
@@ -40,7 +40,7 @@ export default function StudentHeader({ user }) {
               <span class="material-symbols-outlined">campaign</span>
               Announcements
             </span>
-            <span class="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white hover:text-primary cursor-pointer transition-colors">
+            <span onClick={handleRecentlyJoined} class="flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white hover:text-primary cursor-pointer transition-colors">
               <span class="material-symbols-outlined">history</span>
               My Recently Joined
             </span>
