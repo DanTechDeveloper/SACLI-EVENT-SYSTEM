@@ -1,9 +1,17 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import apiRequest from "../services/apiRequest.js";
 export default function StudentRecentlyJoined() {
     const [recentlyJoined, setRecentlyJoined] = useState(null);
     const navigate = useNavigate();
-    const handleOnClick = () => navigate("/studentView");
+  const handleOnClick = () => navigate("/studentView");
+  
+  useEffect(() => {
+    const fetchData = async() => {
+      const response = await apiRequest("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/recentlyJoined.php");
+    }
+    fetchData();
+  }, []);
     
   return (
     <>
