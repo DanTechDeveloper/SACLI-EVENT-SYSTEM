@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ModalEventDescription from "./ModalEventDescription";
 import { useState } from "react";
-export default function EventGrid({ events }) {
+export default function EventGrid({ events, userSession }) {
   const categoryColors = {
     Technology: "bg-indigo-500",
     Social: "bg-pink-500",
@@ -86,11 +86,14 @@ export default function EventGrid({ events }) {
                   </button>
                   <button
                     onClick={() =>
-                      navigate(`/eventRegistration`, { state: { event } })
+                      navigate(`/eventRegistration`, { state: { event, userSession } })
                     }
-                    class="bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg hover:brightness-110 active:scale-95 transition-all"
+                    class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${event.joined
+                        ? "bg-green-500 text-white cursor-not-allowed"
+                        : "bg-primary text-white hover:brightness-110 active:scale-95"
+                      }`}
                   >
-                    Register
+                    {event.joined ? "Registered" : "Register"}
                   </button>
                 </div>
               </div>

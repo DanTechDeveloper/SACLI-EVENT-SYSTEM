@@ -42,8 +42,7 @@ export default function StudentMainContent() {
       } catch (err) {
         console.error("Data fetching failed:", err.message);
       }
-    }
-
+  }
     fetchInitialData();
   }, []);
 
@@ -55,7 +54,7 @@ export default function StudentMainContent() {
           <main className="flex flex-1 py-5 sm:py-8 lg:py-10">
             <div className="flex p-4 flex-col mt-[20px] ml-[30px] w-full gap-3">
               <EventFilter />
-              <EventGrid events={event} />
+              <EventGrid events={event} userSession={user} />
             </div>
           </main>
         </div>

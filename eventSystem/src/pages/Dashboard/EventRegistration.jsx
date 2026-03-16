@@ -4,8 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function EventRegistration() {
   const location = useLocation();
   const event = location.state?.event;
+  const userSession = location.state?.userSession;
   const navigate = useNavigate();
-
+  console.log(userSession);
   return (
     <div class="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-slate-100">
       {/* <!-- Top Navigation Bar --> */}
@@ -97,7 +98,7 @@ export default function EventRegistration() {
                     placeholder="e.g. John Doe"
                     readonly="readonly"
                     type="text"
-                    value="John Doe"
+                    value={userSession?.fullName}
                   />
                 </div>
               </div>
@@ -120,7 +121,7 @@ export default function EventRegistration() {
                     placeholder="e.g. john@example.com"
                     readonly="readonly"
                     type="email"
-                    value="john@email.com"
+                    value={userSession?.email}
                   />
                 </div>
               </div>

@@ -23,24 +23,45 @@ function getCategoryCounts($conn) {
 
 
 try {
+    $student_id = 1; // current logged-in student
 
-    $sql = "SELECT * FROM events";
     $conn->exec("SET time_zone = '+08:00';");
-    $sql = "SELECT id, title, description, category, DATE_FORMAT(date, '%M %d, %Y') as date, TIME_FORMAT(time, '%h:%i %p') as time, criteria, location FROM events";
+
+    $sql = "
+        SELECT 
+            e.id, 
+            e.title, 
+            e.description, 
+            e.category, 
+            DATE_FORMAT(e.date, '%M %d, %Y') as date, 
+            TIME_FORMAT(e.time, '%h:%i %p') as time, 
+            e.criteria, 
+            e.location,
+            CASE 
+                WHEN eu.student_id IS NULL THEN 0 
+                ELSE 1 
+            END AS joined
+        FROM events e
+        LEFT JOIN event_user eu 
+            ON e.id = eu.event_id AND eu.student_id = :student_id
+    ";
+
     $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':student_id', $student_id, PDO::PARAM_INT);
     $stmt->execute();
+
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // if (count($rows) === 0) {
-    //     echo json_encode([
-    //         "success" => true,
-    //         "message" => "No current announcements or events at this time.",
-    //         "data" => []
-    //     ]);
-    //     return;
-    // }
-    echo json_encode(["success" => true, "data" => ["tableRows" => $rows, "categoryCounts" => getCategoryCounts($conn)]]);
-    // echo json_encode(["success" => true, "data" => $rows);
+
+    echo json_encode([
+        "success" => true, 
+        "data" => [
+            "tableRows" => $rows, 
+            "categoryCounts" => getCategoryCounts($conn)
+        ]
+    ]);
+
 } catch (Exception $th) {
     echo json_encode(["success" => false, "message" => "Error: " . $th->getMessage()]);
 }
+
 ?>
