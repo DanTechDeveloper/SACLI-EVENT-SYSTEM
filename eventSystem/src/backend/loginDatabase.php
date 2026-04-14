@@ -1,7 +1,6 @@
 <?php
 
 include 'connect.php';
-header('Content-Type: application/json');
 session_start();
 try {
     // Get the request data
@@ -60,7 +59,8 @@ try {
                 'email' => $user['email']
             ]
         ]);
-    } elseif (isset($data['action']) && $data['action'] === 'googleLogin') {
+        
+    } else if (isset($data['action']) && $data['action'] === 'googleLogin') {
         $accessToken = $data['token'] ?? '';
 
         if (empty($accessToken)) {

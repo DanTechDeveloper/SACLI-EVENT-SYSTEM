@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit(0);
 }
 
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -23,4 +24,3 @@ try {
   echo json_encode(["success" => false, "message" => "Connection failed: " . $e->getMessage()]);
   exit;
 }
-?>

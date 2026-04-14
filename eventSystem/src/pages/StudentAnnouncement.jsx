@@ -5,6 +5,7 @@ import apiRequest from "../services/apiRequest";
 export default function StudentAnnouncement() {
   const navigate = useNavigate();
   const handleOnClick = () => navigate("/studentView");
+  
 
   const [announcement, setAnnouncement] = useState(null);
 

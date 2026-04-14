@@ -1,6 +1,5 @@
 <?php
 include 'connect.php';
-header('Content-Type: application/json');
 try {
     // Get the request data
     $data = json_decode(file_get_contents("php://input"), true);
@@ -21,7 +20,7 @@ try {
         }
 
         // Check if email already exists
-        $checkEmail = $conn->prepare("SELECT id FROM register WHERE email = :email");
+        $checkEmail = $conn->prepare("SELECT id FROM students WHERE email = :email");
         $checkEmail->bindValue(':email', $email, PDO::PARAM_STR);
         $checkEmail->execute();
 
@@ -37,7 +36,7 @@ try {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert new user
-        $stmt = $conn->prepare("INSERT INTO register (fullName, email, password) VALUES (:fullName, :email, :password)");
+        $stmt = $conn->prepare("INSERT INTO students (fullName, email, password) VALUES (:fullName, :email, :password)");
         $stmt->bindValue(':fullName', $fullName, PDO::PARAM_STR);
         $stmt->bindValue(':email', $email, PDO::PARAM_STR);
         $stmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
