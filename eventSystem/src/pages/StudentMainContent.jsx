@@ -53,7 +53,7 @@ export default function StudentMainContent() {
           <StudentHeader user={user} />
           <main className="flex flex-1 py-5 sm:py-8 lg:py-10">
             <div className="flex p-4 flex-col mt-[20px] ml-[30px] w-full gap-3">
-              <EventFilter />
+              {/* <EventFilter /> */}
               <EventGrid events={event} userSession={user} />
             </div>
           </main>

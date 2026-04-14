@@ -6,7 +6,17 @@ export default function EventRegistration() {
   const event = location.state?.event;
   const userSession = location.state?.userSession;
   const navigate = useNavigate();
-  console.log(userSession);
+
+  const handleOnClick = () => {
+    navigate("/studentView");
+  };
+
+  const handleJoined = () => {
+    navigate("/studentView");
+  };
+
+
+
   return (
     <div class="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-slate-100">
       {/* <!-- Top Navigation Bar --> */}
@@ -53,26 +63,7 @@ export default function EventRegistration() {
             </div>
           </div>
         </div>
-        {/* <!-- Progress Indicator --> */}
-        <div class="mb-10 max-w-xl mx-auto">
-          <div class="flex justify-between items-end mb-3">
-            <div>
-              <span class="text-xs font-bold uppercase tracking-widest text-primary">
-                Registration Status
-              </span>
-              <h2 class="text-xl font-bold text-slate-900 dark:text-white">
-                Step 1 of 2: Your Information
-              </h2>
-            </div>
-            <span class="text-sm font-bold text-primary">50% Complete</span>
-          </div>
-          <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div
-              class="h-full bg-primary rounded-full transition-all duration-500"
-              style={{ width: "50%" }}
-            ></div>
-          </div>
-        </div>
+       
         {/* <!-- Form Container --> */}
         <div class="bg-white dark:bg-slate-900/50 rounded-xl shadow-xl shadow-primary/5 border border-slate-200 dark:border-slate-800 overflow-hidden">
           <div class="p-8 sm:p-10">
@@ -224,13 +215,11 @@ export default function EventRegistration() {
           </div>
           {/* <!-- Action Buttons Footer --> */}
           <div class="px-8 py-6 bg-slate-50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row-reverse gap-3 items-center">
-            <button class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary text-white font-bold text-sm tracking-wide hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
-              Next Step
-              <span class="material-symbols-outlined ml-2 text-lg">
-                arrow_forward
-              </span>
+            <button onClick={handleJoined} class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 rounded-lg bg-primary text-white font-bold text-sm tracking-wide hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 active:scale-95 transition-all">
+              Join To Event
+
             </button>
-            <button class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 rounded-lg bg-white dark:bg-transparent border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95 transition-all">
+            <button onClick={handleOnClick} class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 rounded-lg bg-white dark:bg-transparent border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-95 transition-all">
               Cancel
             </button>
           </div>

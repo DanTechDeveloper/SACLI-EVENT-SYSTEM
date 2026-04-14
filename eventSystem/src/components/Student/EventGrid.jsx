@@ -27,11 +27,54 @@ export default function EventGrid({ events, userSession }) {
     (event) => event.id === hasBeenSelected,
   ); // Replace with actual selected event logic
 
+  const [activeFilter, setActiveFilter] = useState("all");
+  const activeClass =
+    "px-5 py-2.5 rounded-xl bg-primary text-white font-medium shadow-lg shadow-primary/20 flex items-center gap-2 transition-all";
+  const inactiveClass =
+    "px-5 py-2.5 rounded-xl bg-white dark:bg-primary/10 text-slate-600 dark:text-slate-300 hover:bg-primary/5 dark:hover:bg-primary/20 transition-all flex items-center gap-2 border border-transparent hover:border-primary/20";
+
+  const filters = [
+    { id: "all", label: "All Events", icon: "explore" },
+    { id: "weekend", label: "This Weekend", icon: "calendar_today" },
+    { id: "free", label: "Free", icon: "payments" },
+    { id: "online", label: "Online", icon: "videocam" },
+  ];
+
+  const filteredEvents = events?.tableRows.filter((event) => {
+    if (activeFilter === "all") return true;
+    return event.criteria === activeFilter;
+  });
+
+
   return (
     <>
+      <section class="mb-10">
+        <div class="flex flex-col gap-6">
+          <div class="flex items-center justify-between">
+            <h2 class="text-3xl font-bold">Discover Events</h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            {filters.map((filter) => (
+              <button
+                key={filter.id}
+                class={activeFilter === filter.id ? activeClass : inactiveClass}
+                onClick={() => setActiveFilter(filter.id)}
+              >
+                <span class="material-icons-round text-lg">{filter.icon}</span>{" "}
+                {filter.label}
+              </button>
+            ))}
+            <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+            <button class={inactiveClass}>
+              <span class="material-icons-round text-lg">filter_list</span>{" "}
+              Advanced Filters
+            </button>
+          </div>
+        </div>
+      </section>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {events?.tableRows && events?.tableRows.length > 0 ? (
-          events?.tableRows.map((event, index) => (
+        {filteredEvents && (
+          filteredEvents.map((event, index) => (
             <div
               key={index}
               class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"
@@ -86,12 +129,15 @@ export default function EventGrid({ events, userSession }) {
                   </button>
                   <button
                     onClick={() =>
-                      navigate(`/eventRegistration`, { state: { event, userSession } })
+                      navigate(`/eventRegistration`, {
+                        state: { event, userSession },
+                      })
                     }
-                    class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${event.joined
+                    class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
+                      event.joined
                         ? "bg-green-500 text-white cursor-not-allowed"
                         : "bg-primary text-white hover:brightness-110 active:scale-95"
-                      }`}
+                    }`}
                   >
                     {event.joined ? "Registered" : "Register"}
                   </button>
@@ -99,11 +145,7 @@ export default function EventGrid({ events, userSession }) {
               </div>
             </div>
           ))
-        ) : (
-          <div className="col-span-full text-center py-10 text-gray-500">
-            No events available.
-          </div>
-        )}
+      )}
       </div>
 
       {isModalOpen && (
