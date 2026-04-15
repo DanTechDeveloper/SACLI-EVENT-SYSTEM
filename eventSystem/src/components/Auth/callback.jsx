@@ -6,22 +6,24 @@ export default function Callback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleGoogleLogin = async () => {
-      // Check URL hash for Google OAuth access token
+    const handleSocialLogin = async () => {
+      // Check URL hash for OAuth access token
       const hash = window.location.hash;
       if (hash && hash.includes("access_token")) {
         const params = new URLSearchParams(hash.substring(1));
         const accessToken = params.get("access_token");
+        const state = params.get("state") || "google";
 
         if (accessToken) {
           // Optional: Clear the hash from the URL for a cleaner look
           window.history.replaceState(null, null, window.location.pathname);
 
           try {
+            const actionType = state === "facebook" ? "facebookLogin" : "googleLogin";
             const result = await apiRequest(
               "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
               "POST",
-              { action: "googleLogin", token: accessToken }
+              { action: actionType, token: accessToken }
             );
 
             if (result.success) {
@@ -44,7 +46,7 @@ export default function Callback() {
       }
     };
 
-    handleGoogleLogin();
+    handleSocialLogin();
   }, [navigate]);
 
   return (

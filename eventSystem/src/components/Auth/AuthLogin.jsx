@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { useState } from "react";
 import apiRequest from "../../services/apiRequest";
+import AuthPhoneNumber from "./AuthPhoneNumber";
 
 export default function AuthLogin() {
   const navigate = useNavigate(); // Initialize useNavigate
+  const [isPhoneNumberOpen, setIsPhoneNumberOpen] = useState(false);
   const handleGoogleAuth = () => {
     const clientId =
       "1070483531281-lfru2nob62sbeojao9vc74q12o1fia9f.apps.googleusercontent.com";
     // Updated redirect URI to point to the callback route
     const redirectUri = encodeURIComponent("http://localhost:5173/callback");
     const scope = encodeURIComponent("openid email profile");
-    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=select_account`;
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=${scope}&prompt=select_account&state=google`;
 
     // Redirect to Google's OAuth2 endpoint
     window.location.href = oauthUrl;
@@ -20,11 +22,17 @@ export default function AuthLogin() {
     const appId = "YOUR_FACEBOOK_APP_ID"; // Replace with your actual Facebook App ID
     const redirectUri = encodeURIComponent("http://localhost:5173/callback");
     const scope = encodeURIComponent("email,public_profile");
-    const oauthUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token`;
+    const oauthUrl = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${appId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=token&state=facebook`;
 
     // Redirect to Facebook's OAuth2 endpoint
     window.location.href = oauthUrl;
   };
+
+
+  const handleModal = () => {
+     setIsPhoneNumberOpen(!isPhoneNumberOpen);
+  }
+
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -142,6 +150,16 @@ export default function AuthLogin() {
               <span className="text-xs text-gray-500">or continue with</span>
               <div className="flex-1 border-t border-[#dbdee6] dark:border-gray-700"></div>
             </div>
+            <div className="flex flex-col gap-3 justify-center">
+
+              <button
+                type="button"
+                className="w-full bg-white dark:bg-gray-800 border border-[#dbdee6] dark:border-gray-700 text-[#111318] dark:text-white font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2"
+                onClick={handleModal}
+              >
+                <span className="material-symbols-outlined text-[20px]">call</span>
+                <span className="text-sm">Phone Number</span>
+              </button>
 
             <div className="flex gap-3">
               <button
@@ -181,8 +199,12 @@ export default function AuthLogin() {
                 <span className="text-sm">Facebook</span>
               </button>
             </div>
+            </div>
           </div>
         </div>
+        <>
+        {isPhoneNumberOpen && <AuthPhoneNumber toggleModal={handleModal} />}
+        </>
       </div>
     </>
   );

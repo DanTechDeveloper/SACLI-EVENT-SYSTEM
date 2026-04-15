@@ -7,7 +7,9 @@ export default function AuthHeader() {
   const navigate = useNavigate();
   const toggleModal = () => {
       setIsModalOpen(!isModalOpen);
-  };
+  };{
+    
+  }
 
   return (
     <>

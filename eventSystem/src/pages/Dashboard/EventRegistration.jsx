@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import apiRequest from "../../services/apiRequest";
 
 export default function EventRegistration() {
   const location = useLocation();
@@ -11,8 +12,24 @@ export default function EventRegistration() {
     navigate("/studentView");
   };
 
-  const handleJoined = () => {
-    navigate("/studentView");
+  const handleJoined = async () => {
+    if (!event?.id) {
+      alert("Event information is missing.");
+      return;
+    }
+
+    const response = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/joinEvent.php",
+      "POST",
+      { event_id: event.id }
+    );
+
+    if (response.success) {
+      alert(response.message);
+      navigate("/studentView");
+    } else {
+      alert("Registration failed: " + response.message);
+    }
   };
 
 
