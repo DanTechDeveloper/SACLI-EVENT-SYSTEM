@@ -123,6 +123,53 @@ try {
                 'profile_picture' => $_SESSION['profile_picture'],
             ]
         ]);
+    } else if (isset($data['action']) && $data['action'] === 'phoneLogin') {
+        $phoneNumber = $data['phoneNumber'] ?? '';
+        $fullName = $data['fullName'] ?? '';
+
+        if (empty($phoneNumber)) {
+            echo json_encode(['success' => false, 'message' => 'Phone number is required']);
+            exit;
+        }
+
+        // Check if user exists by phone number
+        $checkStmt = $conn->prepare("SELECT id, fullName, email, profile_picture FROM students WHERE phone_number = :phone_number");
+        $checkStmt->bindValue(':phone_number', $phoneNumber, PDO::PARAM_STR);
+        $checkStmt->execute();
+
+        if ($checkStmt->rowCount() > 0) {
+            // User exists
+            $user = $checkStmt->fetch(PDO::FETCH_ASSOC);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['fullName'] = $user['fullName'];
+            $_SESSION['profile_picture'] = $user['profile_picture'] ?? null;
+            $_SESSION['phone_number'] = $phoneNumber;
+        } else {
+            // User does not exist, set up an account
+            $randomPassword = bin2hex(random_bytes(16));
+            $hashedPassword = password_hash($randomPassword, PASSWORD_DEFAULT);
+            $fullNameToInsert = !empty($fullName) ? $fullName : 'Phone User';
+            
+            $insertStmt = $conn->prepare("INSERT INTO students (fullName, phone_number, password) VALUES (:fullName, :phone_number, :password)");
+            $insertStmt->bindValue(':fullName', $fullNameToInsert, PDO::PARAM_STR);
+            $insertStmt->bindValue(':phone_number', $phoneNumber, PDO::PARAM_STR);
+            $insertStmt->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+            $insertStmt->execute();
+
+            $_SESSION['user_id'] = $conn->lastInsertId();
+            $_SESSION['fullName'] = $fullNameToInsert;
+            $_SESSION['phone_number'] = $phoneNumber;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Phone login successful',
+            'user' => [
+                'fullName' => $_SESSION['fullName'],
+                'phone_number' => $_SESSION['phone_number'],
+                'profile_picture' => $_SESSION['profile_picture'] ?? null
+            ]
+        ]);
     }
 } catch (\Throwable $th) {
     echo json_encode([

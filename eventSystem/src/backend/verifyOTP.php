@@ -4,7 +4,7 @@ include 'connect.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$userOtp = $data["otp"] ?? null;
+$userOtp = $data["code"] ?? null;
 $phoneNumber = $data["phoneNumber"] ?? null;
 
 // basic validation
@@ -54,7 +54,7 @@ if ($userOtp == $_SESSION["otp"]) {
     // OPTIONAL: mark user as logged in
     $_SESSION["authenticated"] = true;
 
-    echo json_encode([
+echo json_encode([
         "success" => true,
         "message" => "OTP verified"
     ]);

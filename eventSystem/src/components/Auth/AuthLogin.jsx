@@ -203,9 +203,9 @@ export default function AuthLogin() {
           </div>
         </div>
         <>
-        {isPhoneNumberOpen && <AuthPhoneNumber toggleModal={handleModal} />}
         </>
       </div>
+        {isPhoneNumberOpen && <AuthPhoneNumber toggleModal={handleModal} />}
     </>
   );
 }

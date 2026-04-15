@@ -11,6 +11,7 @@ export default function AuthPhoneNumber({ toggleModal }) {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         phoneNumber,
         fullName,
@@ -30,6 +31,7 @@ export default function AuthPhoneNumber({ toggleModal }) {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         phoneNumber,
         code,
