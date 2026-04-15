@@ -16,9 +16,9 @@ if (isset($_SESSION['user_id'])) {
         if ($stmt->rowCount() > 0) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             echo json_encode(value: ['success' => true, 'user' => $user]);
-        } else {
+    } else {
             echo json_encode(['success' => false, 'message' => 'User not found']);
-        }
+    }
     } catch (\Throwable $th) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $th->getMessage()]);
     }

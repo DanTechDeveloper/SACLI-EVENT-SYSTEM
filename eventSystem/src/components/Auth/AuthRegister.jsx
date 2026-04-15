@@ -12,7 +12,7 @@ export default function AuthRegister() {
     const user = { fullName : fullName, password : password, email : email,  action: "register" };
     try {
       const result = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/registerDatabase.php",
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/register.php",
         "POST",
         user,
       );

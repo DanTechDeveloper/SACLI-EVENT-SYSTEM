@@ -1,6 +1,13 @@
 <?php
 include 'connect.php';
 
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(["success" => false, "message" => "Not authorized"]);
+    exit;
+}
+
 function getCategoryCounts($conn) {
     $sql = "SELECT 
                 SUM(CASE WHEN category = 'Technology' THEN 1 ELSE 0 END) AS total_technology,
@@ -23,27 +30,29 @@ function getCategoryCounts($conn) {
 
 
 try {
-    $student_id = 1; // current logged-in student
+    $student_id = $_SESSION['user_id'];
 
     $conn->exec("SET time_zone = '+08:00';");
 
     $sql = "
         SELECT 
-            e.id, 
-            e.title, 
-            e.description, 
-            e.category, 
-            DATE_FORMAT(e.date, '%M %d, %Y') as date, 
-            TIME_FORMAT(e.time, '%h:%i %p') as time, 
-            e.criteria, 
-            e.location,
-            CASE 
-                WHEN eu.student_id IS NULL THEN 0 
-                ELSE 1 
-            END AS joined
-        FROM events e
-        LEFT JOIN event_user eu 
-            ON e.id = eu.event_id AND eu.student_id = :student_id
+    e.id,
+    e.title,
+    e.description,
+    e.category,
+    DATE_FORMAT(e.event_date, '%M %d, %Y') AS date,
+    TIME_FORMAT(e.event_time, '%h:%i %p') AS time,
+    e.criteria,
+    e.location,
+    CASE 
+        WHEN eu.event_id IS NULL THEN 0 
+        ELSE 1 
+    END AS joined
+FROM events e
+LEFT JOIN event_participants eu
+    ON e.id = eu.event_id
+   AND eu.student_id = :student_id
+ORDER BY e.created_at DESC;
     ";
 
     $stmt = $conn->prepare($sql);

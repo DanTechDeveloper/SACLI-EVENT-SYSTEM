@@ -1,6 +1,24 @@
 <?php
 include 'connect.php';
 
+session_start();
+
+// 1. Critical Security: Only allow logged-in users to create events
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(["success" => false, "message" => "Unauthorized access. Please log in."]);
+    exit;
+}
+
+function convertDateAndTime($date, $time){
+    // HTML5 date is Y-m-d, time is H:i (24h)
+    $dt = DateTime::createFromFormat('Y-m-d H:i', $date . ' ' . $time);
+
+    if (!$dt) {
+        throw new Exception("Invalid Date or Time format provided.");
+    }
+    return $dt;
+}
+
 try {
     $data = json_decode(file_get_contents("php://input"), true);
 
@@ -8,19 +26,22 @@ try {
         $title = $data['title'];
         $description = $data['description'];
         $category = $data['category'];
-        $date = $data['date'];
-        $time = $data['time'];
         $criteria = $data['criteria'];
         $location = $data['location'];
-        $sql = "INSERT INTO events (title, description, category, date, time, criteria, location) 
-                VALUES (:title, :description, :category, :date, :time, :criteria, :location)";
+        $dateAndTimeConvert = convertDateAndTime($data['date'], $data['time']);
+        
+        // The user ID who created this event (assuming your table has a created_by column)
+        $created_by = $_SESSION['user_id'];
+
+        $sql = "INSERT INTO events (title, description, category, event_date, event_time, criteria, location) 
+                VALUES (:title, :description, :category, :event_date, :event_time, :criteria, :location)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":title", $title);
         $stmt->bindValue(":description", $description);
         $stmt->bindValue(":category", $category);
-        $stmt->bindValue(":date", $date);
-        $stmt->bindValue(":time", $time);
+        $stmt->bindValue(":event_date", $dateAndTimeConvert->format('Y-m-d'));
+        $stmt->bindValue(":event_time", $dateAndTimeConvert->format('H:i:s'));
         $stmt->bindValue(":criteria", $criteria);
         $stmt->bindValue(":location", $location);
         $stmt->execute();

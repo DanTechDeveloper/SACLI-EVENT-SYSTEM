@@ -1,4 +1,5 @@
 <?php
+// Ensure NO whitespace or BOM exists before the opening tag above.
 $origin = $_SERVER['HTTP_ORIGIN'] ?? 'http://localhost:5173';
 header("Access-Control-Allow-Origin: $origin");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
@@ -8,9 +9,9 @@ header('Content-Type: application/json');
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  exit(0);
+    http_response_code(204);
+    exit;
 }
-
 
 $servername = "localhost";
 $username = "root";

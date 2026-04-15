@@ -10,7 +10,6 @@ export default function AddNewEvent() {
   const [time, setTime] = useState("");
   const [criteria, setCriteria] = useState("");
   const [location, setLocation] = useState("");
-  const [formStorage, setFormStorage] = useState([]);
   const navigate = useNavigate();
 
 
@@ -36,7 +35,9 @@ export default function AddNewEvent() {
       alert("Event created successfully!");
       navigate("/dashboard");
     } 
+    console.table(formData);
   };
+
 
   return (
     <>

@@ -1,6 +1,6 @@
 <?php
 
-include 'connect.php';
+require_once 'connect.php';
 session_start();
 try {
     // Get the request data
@@ -59,7 +59,7 @@ try {
                 'email' => $user['email']
             ]
         ]);
-        
+
     } else if (isset($data['action']) && $data['action'] === 'googleLogin') {
         $accessToken = $data['token'] ?? '';
 
