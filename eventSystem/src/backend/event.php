@@ -30,6 +30,7 @@ function getCategoryCounts($conn) {
 
 
 try {
+    $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
     $student_id = $_SESSION['user_id'];
 
     $conn->exec("SET time_zone = '+08:00';");
@@ -52,11 +53,19 @@ FROM events e
 LEFT JOIN event_participants eu
     ON e.id = eu.event_id
    AND eu.student_id = :student_id
-ORDER BY e.created_at DESC;
     ";
+
+    if ($filter !== 'all') {
+        $sql .= " WHERE e.criteria = :filter ";
+    }
+
+    $sql .= " ORDER BY e.created_at DESC;";
 
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':student_id', $student_id, PDO::PARAM_INT);
+    if ($filter !== 'all') {
+        $stmt->bindParam(':filter', $filter, PDO::PARAM_STR);
+    }
     $stmt->execute();
 
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -125,7 +125,6 @@ export default function AddNewAnnouncement() {
             {/* <!-- Action Buttons --> */}
             <div class="flex justify-end gap-4 mt-4">
               <button
-                // onClick={handleOnClick}
                 name="publishAnnouncement"
                 type="submit"
                 class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"

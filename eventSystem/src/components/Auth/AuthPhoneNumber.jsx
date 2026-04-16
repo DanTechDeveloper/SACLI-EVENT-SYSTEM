@@ -3,9 +3,35 @@ import { useNavigate } from "react-router-dom";
 export default function AuthPhoneNumber({ toggleModal }) {
 
     const handleStudentContent = async (e) => {
+      e.preventDefault();
+      
+      const res = await fetch("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          action: "phoneLogin",
+          phoneNumber,
+          fullName
+        })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        navigate("/studentView");
+      } else {
+        alert(data.message || "Login failed on server");
+      }
     }
 
   const handleSendOTP = async () => {
+    if (!fullName || fullName.trim() === "") {
+      alert("Please enter your Full Name first.");
+      return;
+    }
+
     const res = await fetch("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/sendOtp.php", {
       method: "POST",
       headers: {
@@ -42,11 +68,15 @@ export default function AuthPhoneNumber({ toggleModal }) {
 
     if (data.success) {
       alert("OTP verified");
+      setIsVerified(true);
+    } else {
+      alert(data.message || "OTP verification failed");
     }
   }
   const [phoneNumber, setPhoneNumber] = useState("");
   const [fullName, setFullName] = useState("");
   const [code, setCode] = useState("");
+  const [isVerified, setIsVerified] = useState(false);
   const navigate = useNavigate();
 
   return (
@@ -101,9 +131,9 @@ export default function AuthPhoneNumber({ toggleModal }) {
                 />
                 <button
                   type="button"
-                  className="text-sm text-primary font-bold hover:underline hover:text-primary/80 transition-colors whitespace-nowrap"
+                  className="text-sm text-primary font-bold hover:underline hover:text-primary/80 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
                   onClick={handleSendOTP}
-                  disabled={(phoneNumber.length !== 11) ? true : false}
+                  disabled={phoneNumber.length !== 11 || isVerified}
                 >
                   SEND OTP
                 </button>
@@ -131,8 +161,8 @@ export default function AuthPhoneNumber({ toggleModal }) {
                 />
                 <button
                   type="button"
-                  disabled={(code.length !== 6) ? true : false}
-                  className="text-sm text-primary font-bold hover:underline hover:text-primary/80 transition-colors whitespace-nowrap"
+                  disabled={code.length !== 6 || isVerified}
+                  className="text-sm text-primary font-bold hover:underline hover:text-primary/80 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:no-underline"
                   onClick={handleVerifyOTP}
                 >
                   VERIFY OTP
@@ -154,19 +184,22 @@ export default function AuthPhoneNumber({ toggleModal }) {
                 type="text"
                 onChange={(e) => setFullName(e.target.value)}
                 value={fullName}
+                required
                 placeholder="Juan Dela Cruz"
                 className="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-12 pl-10 pr-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-gray-400"
               />
             </div>
           </div>
-          <button
-            type="submit"
-            onClick={handleStudentContent}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-6 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2 mt-4"
-          >
-            <span>VERIFY OTP</span>
-            <span className="material-symbols-outlined text-lg">login</span>
-          </button>
+          {isVerified && (
+            <button
+              type="submit"
+              onClick={handleStudentContent}
+              className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-6 rounded-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2 mt-4"
+            >
+              <span>LOGIN</span>
+              <span className="material-symbols-outlined text-lg">login</span>
+            </button>
+          )}
         </form>
       </div>
     </div>

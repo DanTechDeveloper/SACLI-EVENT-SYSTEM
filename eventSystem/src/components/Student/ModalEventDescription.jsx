@@ -88,11 +88,20 @@ export default function ModalEventDescription({ event, toggleModal }) {
               >
                 Close
               </button>
-              <button class="px-6 py-2.5 text-sm font-semibold text-white bg-primary hover:bg-primary/90 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
-                Go to Registration
-                <span class="material-symbols-outlined text-sm">
-                  arrow_forward
-                </span>
+              <button 
+                disabled={event?.joined}
+                class={`px-6 py-2.5 text-sm font-semibold text-white rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 ${
+                  event?.joined
+                    ? "bg-green-500 cursor-not-allowed opacity-80"
+                    : "bg-primary hover:bg-primary/90 shadow-primary/20"
+                }`}
+              >
+                {event?.joined ? "Already Registered" : "Go to Registration"}
+                {!event?.joined && (
+                  <span class="material-symbols-outlined text-sm">
+                    arrow_forward
+                  </span>
+                )}
               </button>
             </footer>
           </div>

@@ -6,13 +6,13 @@ try {
    $data = json_decode(file_get_contents("php://input"), true);
       if ($data) {
         $title = $data['title'];
-        $message = $data['message'];
+        $description = $data['message'];
         $category = $data['category'];
 
-        $sql = "INSERT INTO announcements (title, message, category) VALUES (:title, :message, :category)";
+        $sql = "INSERT INTO announcements (title, description, category) VALUES (:title, :description, :category)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':title', $title);
-        $stmt->bindValue(':message', $message);
+        $stmt->bindValue(':description', $description);
         $stmt->bindValue(':category', $category);
         
         if ($stmt->execute()) {

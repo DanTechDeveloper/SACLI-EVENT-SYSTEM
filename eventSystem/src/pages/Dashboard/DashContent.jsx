@@ -83,14 +83,14 @@ export default function DashContent() {
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                  {data?.readEvent.map((value, key) => (
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  {data?.readEvent?.map((value, key) => (
+                    <tr key={key} class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                       <td class="px-6 py-4">
                         <div class="font-medium text-slate-900 dark:text-slate-100">
                           {value.title}
                         </div>
                         <div class="text-xs text-slate-400">
-                          {`${value.date} • ${value.location}`}
+                          {`${value.date} • ${value.time} • ${value.location}`}
                         </div>
                       </td>
                       <td class="px-6 py-4">
@@ -120,7 +120,7 @@ export default function DashContent() {
               </button>
             </div>
             <div class="divide-y divide-slate-100 dark:divide-slate-800">
-              {data?.readAnnouncement.map((values, key) => (
+              {data?.readAnnouncement?.map((values, key) => (
                 <div
                   key={key}
                   class="p-6 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors flex items-center justify-between"

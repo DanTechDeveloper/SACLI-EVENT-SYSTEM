@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/apiRequest";
 export default function Announcement() {
-
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php",
       );
       
       if (response.success) {
@@ -16,15 +16,20 @@ export default function Announcement() {
     fetchData();
   }, []);
 
-  const [data, setData] = useState(null);
+  // Calculate category totals from the event list returned by dashboard.php
+  const eventCounts = data?.readEvent?.reduce((acc, item) => {
+    acc[item.category] = (acc[item.category] || 0) + 1;
+    return acc;
+  }, {}) || {};
+
   const statisticalData = [
-    {title : "IMPORTANT", value : data?.announcementCount.total_important},
-    {title : "REMINDER", value : data?.announcementCount.total_reminder},
-    {title : "GENERAL", value : data?.announcementCount.total_general},
-    {title : "EVENT", value : data?.announcementCount.total_event},
-    {title : "ACHIEVEMENT", value : data?.announcementCount.total_achievement},
-    {title : "EMERGENCY", value : data?.announcementCount.total_emergency},
-  ]
+    { title: "TECHNOLOGY", value: eventCounts["Technology"] || 0 },
+    { title: "SOCIAL", value: eventCounts["Social"] || 0 },
+    { title: "BUSINESS", value: eventCounts["Business"] || 0 },
+    { title: "OUTDOORS", value: eventCounts["Outdoors"] || 0 },
+    { title: "ARTS", value: eventCounts["Arts"] || 0 },
+    { title: "PROGRAMMING", value: eventCounts["Programming"] || 0 },
+  ];
 
   return (
     <>
@@ -32,7 +37,7 @@ export default function Announcement() {
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div class="flex flex-col gap-1">
             <p class="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
-              Announcement Posts
+              Events Statistical Overview
             </p>
             <p class="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">
               Welcome, Admin! Here's a summary of school activities.
@@ -78,13 +83,13 @@ export default function Announcement() {
                   Title
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
-                  Message
+                  Description
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
                   Category
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
-                  Date Posted
+                  Event Schedule
                 </th>
                 <th class="px-6 py-3 text-right font-medium" scope="col">
                   Actions
@@ -92,21 +97,21 @@ export default function Announcement() {
               </tr>
             </thead>
             <tbody>
-              {data?.allAnnouncements.map((value, key) => (
-                <tr class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
+              {data?.readEvent?.map((value, key) => (
+                <tr key={key} class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
                   <td class="px-6 py-4 font-semibold">
                     {value.title}
                   </td>
                   <td class="px-6 py-4">
                     <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                     {value.message}
+                     {value.description}
                     </span>
                   </td>
                   <td class="px-6 py-4">{value.category}</td>
                   <td class="px-6 py-4">
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
                       <span class="size-1.5 rounded-full bg-green-600"></span>
-                      {value.date_posted}
+                      {`${value.date} • ${value.time}`}
                     </span>
                   </td>
                   <td class="px-6 py-4 text-right">

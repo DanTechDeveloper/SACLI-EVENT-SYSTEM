@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ModalEventDescription from "./ModalEventDescription";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 export default function EventGrid({ events, userSession }) {
   const categoryColors = {
     Technology: "bg-indigo-500",
@@ -40,11 +40,30 @@ export default function EventGrid({ events, userSession }) {
     { id: "online", label: "Online", icon: "videocam" },
   ];
 
-  const filteredEvents = events?.tableRows.filter((event) => {
-    if (activeFilter === "all") return true;
-    return event.criteria === activeFilter;
-  });
+  const [fetchedEvents, setFetchedEvents] = useState([]);
 
+  useEffect(() => {
+    if (events?.tableRows) {
+      setFetchedEvents(events.tableRows);
+    }
+  }, [events]);
+
+  const handleFilterClick = async (filterId) => {
+    setActiveFilter(filterId);
+
+    try {
+      const res = await fetch(
+        `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?filter=${filterId}`,
+        { credentials: "include" },
+      );
+      const data = await res.json();
+      if (data.success) {
+        setFetchedEvents(data.data.tableRows);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <>
@@ -58,7 +77,7 @@ export default function EventGrid({ events, userSession }) {
               <button
                 key={filter.id}
                 class={activeFilter === filter.id ? activeClass : inactiveClass}
-                onClick={() => setActiveFilter(filter.id)}
+                onClick={() => handleFilterClick(filter.id)}
               >
                 <span class="material-icons-round text-lg">{filter.icon}</span>{" "}
                 {filter.label}
@@ -73,8 +92,8 @@ export default function EventGrid({ events, userSession }) {
         </div>
       </section>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredEvents && (
-          filteredEvents.map((event, index) => (
+        {fetchedEvents && (
+          fetchedEvents.map((event, index) => (
             <div
               key={index}
               class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"
@@ -133,9 +152,10 @@ export default function EventGrid({ events, userSession }) {
                         state: { event, userSession },
                       })
                     }
+                    disabled={event.joined}
                     class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
                       event.joined
-                        ? "bg-green-500 text-white cursor-not-allowed"
+                        ? "bg-green-500 text-white cursor-not-allowed opacity-80"
                         : "bg-primary text-white hover:brightness-110 active:scale-95"
                     }`}
                   >

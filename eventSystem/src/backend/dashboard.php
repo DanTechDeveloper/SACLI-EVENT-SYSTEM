@@ -28,34 +28,25 @@ function getStats($conn, $type)
 
 function readAnnouncement($conn)
 {
-    $sql = "SELECT * FROM announcements ORDER BY date_posted DESC";
+    $sql = "SELECT id, title, description, category, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    if (count($rows) === 0) {
-        echo json_encode([
-            "success"=> false,
-            "message" => "No current announcements or events at this time.",
-            "data" => []
-        ]);
-    }
-   return $rows;
+    return $rows;
 }
 
 
 function readEvents($conn){
     try {
-
-    $sql = "SELECT * FROM events";
-    $conn->exec("SET time_zone = '+08:00';");
-    $sql = "SELECT id, title, description, category, DATE_FORMAT(date, '%M %d, %Y') as date, TIME_FORMAT(time, '%h:%i %p') as time, criteria, location FROM events ORDER BY created_at DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn->exec("SET time_zone = '+08:00';");
+        $sql = "SELECT id, title, description, category, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time, criteria, location FROM events ORDER BY created_at DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
-} catch (Exception $th) {
-    echo json_encode(["success" => false, "message" => "Error: " . $th->getMessage()]);
-}
+    } catch (Exception $th) {
+        return [];
+    }
 }
 
 
