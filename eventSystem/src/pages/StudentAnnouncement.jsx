@@ -14,6 +14,8 @@ export default function StudentAnnouncement() {
       const response = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php"
       );
+
+      
       if (response.success) {
         setAnnouncement(response.data);
       }
@@ -23,68 +25,66 @@ export default function StudentAnnouncement() {
 
   return (
     <>
-      <div class="cursor-pointer bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen">
-        <div class="py-5 px-6">
-          <div class="mx-auto">
+      <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen">
+        <div className="py-5 px-6">
+          <div className="mx-auto">
             <a
               onClick={handleOnClick}
-              class="flex items-center text-slate-600 hover:text-slate-900 font-medium mb-6 transition-colors group"
+              className="cursor-pointer flex items-center text-slate-600 hover:text-slate-900 font-medium mb-6 transition-colors group"
             >
-              <span class="material-symbols-outlined mr-1 text-xl group-hover:-translate-x-1 transition-transform">
+              <span className="material-symbols-outlined mr-1 text-xl group-hover:-translate-x-1 transition-transform">
                 arrow_back
               </span>
               Back
             </a>
-            <div class="mb-5">
-              <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            <div className="mb-5">
+              <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 Announcements
               </h1>
-              <p class="text-slate-500 mt-2">
+              <p className="text-slate-500 mt-2">
                 The latest updates and news from your community.
               </p>
             </div>
 
-            <div class="flex flex-col gap-6">
-              {announcement?.allAnnouncements.length > 0 ? (
+            <div className="flex flex-col gap-6">
+              {announcement?.allAnnouncements && announcement.allAnnouncements.length > 0 ? (
                 announcement?.allAnnouncements.map((values, key) => (
                   <article
                     key={key}
-                    class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
+                    className="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
                   >
-                    <div class="flex items-start justify-between mb-3">
-                      <h3 class="font-bold text-lg text-slate-900 dark:text-white">
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-bold text-lg text-slate-900 dark:text-white">
                         {values.title}
                       </h3>
-                      <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
+                      <span className="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
                         {values.category}
                       </span>
                     </div>
-                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
                       {values.message}
                     </p>
-                    <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
-                      <div class="flex items-center gap-2">
-                        <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                          <span class="material-symbols-outlined text-xs text-slate-500">
+                    <footer className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
+                      <div className="flex items-center gap-2">
+                        <div className="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                          <span className="material-symbols-outlined text-xs text-slate-500">
                             person
                           </span>
                         </div>
-                        <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                           Admin
                         </span>
                       </div>
-                      <time class="text-xs text-slate-400">
+                      <time className="text-xs text-slate-400">
                         {values.date_posted}
                       </time>
                     </footer>
                   </article>
                 ))
               ) : (
-                <div class="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
-                  <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">
-                    {typeof rawData === "string"
-                      ? rawData
-                      : "No announcements found."}
+                <div className="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
+                  <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
+                    No announcements found.
                   </p>
                 </div>
               )}
