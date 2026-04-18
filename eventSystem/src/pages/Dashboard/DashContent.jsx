@@ -1,8 +1,10 @@
 import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react";
+import ApprovalModel from "../../components/Dashboard/ApprovalModel";
 
 export default function DashContent() {
   const [data, setData] = useState(null);
+  const [toggleModal, setToggleModal] = useState(false);
   useEffect(() => {
     async function fetchData() {
       const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
@@ -61,7 +63,7 @@ export default function DashContent() {
           <section class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <h4 class="text-lg font-bold text-primary dark:text-white">
-                Recent Events
+                Approval Events
               </h4>
               <button class="text-sm font-semibold text-primary/60 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors">
                 View All Events
@@ -76,6 +78,8 @@ export default function DashContent() {
                     </th>
                     <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
                       Category
+                    </th>  <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                      Author
                     </th>
                     <th class="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">
                       Action
@@ -97,6 +101,11 @@ export default function DashContent() {
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
                           {value.category}
                         </span>
+                      </td> 
+                      <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">
+                          {value.author}
+                        </span>
                       </td>
                       <td class="px-6 py-4 text-right">
                         <button class="text-sm font-bold text-primary dark:text-white hover:underline">
@@ -113,7 +122,7 @@ export default function DashContent() {
           <section class="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <h4 class="text-lg font-bold text-primary dark:text-white">
-                Recent Announcements
+                Approval Announcements
               </h4>
               <button class="text-sm font-semibold text-primary/60 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors">
                 Manage Announcements
@@ -155,6 +164,7 @@ export default function DashContent() {
             </div>
           </section>
         </div>
+        {<ApprovalModel toggleModal={toggleModal} />}
       </div>
     </>
   );

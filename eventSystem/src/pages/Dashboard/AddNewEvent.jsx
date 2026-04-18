@@ -10,6 +10,7 @@ export default function AddNewEvent() {
   const [time, setTime] = useState("");
   const [criteria, setCriteria] = useState("");
   const [location, setLocation] = useState("");
+  const [author, setAuthor] = useState("");
   const navigate = useNavigate();
 
 
@@ -170,7 +171,7 @@ export default function AddNewEvent() {
             </div>
 
             {/* <!-- Location --> */}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label
                   for="criteria"
@@ -209,6 +210,24 @@ export default function AddNewEvent() {
                   placeholder="e.g., University Gymnasium"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                />
+              </div> 
+              <div>
+                <label
+                  for="eventAuthor"
+                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
+                >
+                  Event Author
+                </label>
+                <input
+                  required
+                  type="text"
+                  id="author"
+                  name="author"
+                  class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  placeholder="e.g., Ms Garcia"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
                 />
               </div>
             </div>

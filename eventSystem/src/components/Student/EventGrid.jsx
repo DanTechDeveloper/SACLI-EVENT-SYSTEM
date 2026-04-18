@@ -46,7 +46,7 @@ export default function EventGrid({ events, userSession }) {
     if (events?.tableRows) {
       setFetchedEvents(events.tableRows);
     }
-  }, [events]);
+}, [events]);
 
   const handleFilterClick = async (filterId) => {
     setActiveFilter(filterId);

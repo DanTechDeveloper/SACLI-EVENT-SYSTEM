@@ -8,16 +8,22 @@ export default function StudentAnnouncement() {
   
 
   const [announcement, setAnnouncement] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
-      const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php"
-      );
-
-      
-      if (response.success) {
-        setAnnouncement(response.data);
+      try {
+        const response = await apiRequest(
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php"
+        );
+        if (response.success) {
+          setAnnouncement(response.data);
+        } else {
+          setError(response.message || "Failed to load announcements.");
+        }
+      } catch (err) {
+        setError("A server error occurred. Please try again later.");
+        console.error("API Error:", err);
       }
     };
     fetchAnnouncements();
@@ -47,7 +53,13 @@ export default function StudentAnnouncement() {
             </div>
 
             <div className="flex flex-col gap-6">
-              {announcement?.allAnnouncements && announcement.allAnnouncements.length > 0 ? (
+              {error ? (
+                <div className="w-full flex justify-center items-center p-6 bg-red-50 dark:bg-red-900/10 rounded-xl border border-red-200 dark:border-red-800 border-dashed">
+                  <p className="text-red-500 dark:text-red-400 text-lg font-medium">
+                    {error}
+                  </p>
+                </div>
+              ) : announcement?.allAnnouncements && announcement.allAnnouncements.length > 0 ? (
                 announcement?.allAnnouncements.map((values, key) => (
                   <article
                     key={key}

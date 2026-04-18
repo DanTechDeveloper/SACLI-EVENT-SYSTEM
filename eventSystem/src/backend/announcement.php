@@ -19,7 +19,7 @@ function getAnnouncementCategoryCounts($conn) {
 
 function readAnnouncement($conn)
 {
-    $sql = "SELECT * FROM announcements ORDER BY date_posted DESC";
+    $sql = "SELECT * FROM announcements ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
