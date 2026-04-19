@@ -3,17 +3,18 @@ import { useState, useEffect } from "react";
 
 export default function DashContent() {
   const [data, setData] = useState(null);
-  useEffect(() => {
-    async function fetchData() {
-      const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
-      const response = await apiRequest(url);
-      if (response.success) {
-        setData(response.data);
-      } else {
-        console.error(`Error fetching data: ${response.error}`);
-      }
+  const fetchDashboardData = async () => {
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
+    const response = await apiRequest(url);
+    if (response.success) {
+      setData(response.data);
+    } else {
+      console.error(`Error fetching data: ${response.error}`);
     }
-    fetchData();
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
   }, []);
 
   const handleApprove = async (id, status) => {
@@ -37,9 +38,9 @@ export default function DashContent() {
     const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${status}`;
     const response = await apiRequest(url);
     if (response.success) {
-      setData(response.data);
+      await fetchDashboardData();
     } else {
-      console.error(`Error fetching data: ${response.error}`);
+      console.error(`Error updating event: ${response.error}`);
     }
   };
 
