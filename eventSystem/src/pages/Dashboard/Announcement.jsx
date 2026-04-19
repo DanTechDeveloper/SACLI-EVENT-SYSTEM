@@ -6,7 +6,7 @@ export default function Announcement() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php",
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
       );
       
       if (response.success) {
@@ -16,19 +16,13 @@ export default function Announcement() {
     fetchData();
   }, []);
 
-  // Calculate category totals from the event list returned by dashboard.php
-  const eventCounts = data?.readEvent?.reduce((acc, item) => {
-    acc[item.category] = (acc[item.category] || 0) + 1;
-    return acc;
-  }, {}) || {};
-
   const statisticalData = [
-    { title: "TECHNOLOGY", value: eventCounts["Technology"] || 0 },
-    { title: "SOCIAL", value: eventCounts["Social"] || 0 },
-    { title: "BUSINESS", value: eventCounts["Business"] || 0 },
-    { title: "OUTDOORS", value: eventCounts["Outdoors"] || 0 },
-    { title: "ARTS", value: eventCounts["Arts"] || 0 },
-    { title: "PROGRAMMING", value: eventCounts["Programming"] || 0 },
+    { title: "IMPORTANT", value: data?.getAnnouncementCategoryCount?.total_important || 0 },
+    { title: "REMINDERS", value: data?.getAnnouncementCategoryCount?.total_reminder || 0 },
+    { title: "GENERAL", value: data?.getAnnouncementCategoryCount?.total_general || 0 },
+    { title: "EVENTS", value: data?.getAnnouncementCategoryCount?.total_event || 0 },
+    { title: "ACHIEVEMENTS", value: data?.getAnnouncementCategoryCount?.total_achievement || 0 },
+    { title: "EMERGENCY", value: data?.getAnnouncementCategoryCount?.total_emergency || 0 },
   ];
 
   return (
@@ -37,7 +31,7 @@ export default function Announcement() {
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div class="flex flex-col gap-1">
             <p class="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
-              Events Statistical Overview
+              Announcements
             </p>
             <p class="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">
               Welcome, Admin! Here's a summary of school activities.
@@ -89,7 +83,7 @@ export default function Announcement() {
                   Category
                 </th>
                 <th class="px-6 py-3 font-medium" scope="col">
-                  Event Schedule
+                  Date Posted
                 </th>
                 <th class="px-6 py-3 text-right font-medium" scope="col">
                   Actions
@@ -97,11 +91,18 @@ export default function Announcement() {
               </tr>
             </thead>
             <tbody>
-              {data?.readEvent?.map((value, key) => (
-                <tr key={key} class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                  <td class="px-6 py-4 font-semibold">
-                    {value.title}
+              {data?.allAnnouncements?.length === 0 ? (
+                <tr>
+                  <td class="px-6 py-4 text-center" colspan="5">
+                    No announcements found
                   </td>
+                </tr>
+              ) : (
+                data?.allAnnouncements?.map((value, key) => (
+                  <tr key={key} class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
+                    <td class="px-6 py-4 font-semibold">
+                      {value.title}
+                    </td>
                   <td class="px-6 py-4">
                     <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
                      {value.description}
@@ -111,7 +112,7 @@ export default function Announcement() {
                   <td class="px-6 py-4">
                     <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
                       <span class="size-1.5 rounded-full bg-green-600"></span>
-                      {`${value.date} • ${value.time}`}
+                      {value.date_posted}
                     </span>
                   </td>
                   <td class="px-6 py-4 text-right">
@@ -130,7 +131,7 @@ export default function Announcement() {
                     </div>
                   </td>
                 </tr>
-              ))}
+              )))}
             </tbody>
           </table>
         </div>

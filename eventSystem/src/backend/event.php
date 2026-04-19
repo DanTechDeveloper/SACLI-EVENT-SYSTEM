@@ -16,7 +16,7 @@ function getCategoryCounts($conn) {
                 SUM(CASE WHEN category = 'Campus Program' THEN 1 ELSE 0 END) AS total_campus_program,
                 SUM(CASE WHEN category = 'Community' THEN 1 ELSE 0 END) AS total_community,
                 SUM(CASE WHEN category = 'Health' THEN 1 ELSE 0 END) AS total_health
-            FROM events";
+            FROM events WHERE status = 'approved'";
             
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -83,7 +83,7 @@ WHERE e.status = 'approved'
         "success" => true, 
         "data" => [
             "tableRows" => $rows, 
-            "categoryCounRts" => getCategoryCounts($conn),
+            "categoryCounts" => getCategoryCounts($conn),
             "handleApprove" => handleApprove($conn, $id, $status),
         ]
     ]);

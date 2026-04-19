@@ -58,6 +58,14 @@ export default function AllEvent() {
       value: data?.categoryCounts.total_health
     },
   ];
+  const handleAction = (action, id) => {
+    switch (action){
+      case "edit":
+        break;
+      case "delete":
+       break;
+    }
+  }
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -148,15 +156,10 @@ export default function AllEvent() {
 
                   <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
+                      <button type="button" onClick={() => handleAction('edit', value.id)} class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
                         <span class="material-symbols-outlined">edit</span>
                       </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
+                      <button type="button" onClick={() => handleAction('delete', value.id)} class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
                         <span class="material-symbols-outlined">delete</span>
                       </button>
                     </div>

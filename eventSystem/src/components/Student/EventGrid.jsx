@@ -38,6 +38,7 @@ export default function EventGrid({ events, userSession }) {
     { id: "weekend", label: "This Weekend", icon: "calendar_today" },
     { id: "free", label: "Free", icon: "payments" },
     { id: "online", label: "Online", icon: "videocam" },
+    { id: "upcoming_events", label: "Upcoming Events", icon: "event" },
   ];
 
   const [fetchedEvents, setFetchedEvents] = useState([]);
@@ -83,11 +84,6 @@ export default function EventGrid({ events, userSession }) {
                 {filter.label}
               </button>
             ))}
-            <div class="h-6 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
-            <button class={inactiveClass}>
-              <span class="material-icons-round text-lg">filter_list</span>{" "}
-              Advanced Filters
-            </button>
           </div>
         </div>
       </section>

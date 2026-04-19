@@ -28,7 +28,7 @@ function getStats($conn, $type)
 
 function readAnnouncement($conn)
 {
-    $sql = "SELECT id, title, description, category, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements ORDER BY created_at DESC";
+    $sql = "SELECT id, title, description, category, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements WHERE status = 'pending' ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
