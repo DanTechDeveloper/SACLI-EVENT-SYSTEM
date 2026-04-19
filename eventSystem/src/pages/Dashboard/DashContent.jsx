@@ -1,10 +1,9 @@
 import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react";
-import ApprovalModel from "../../components/Dashboard/ApprovalModel";
+
 
 export default function DashContent() {
   const [data, setData] = useState(null);
-  const [toggleModal, setToggleModal] = useState(false);
   useEffect(() => {
     async function fetchData() {
       const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
@@ -17,6 +16,30 @@ export default function DashContent() {
     }
     fetchData();
   }, []);
+
+  const handleApprove = async (id, status) => {
+    switch (status){
+      case "check":
+        const checkPrompt = confirm("Are you sure you want to approve this event?");
+        if (checkPrompt){
+          status = 1;
+        }
+        break;
+      case "close":
+        const closePrompt = confirm("Are you sure you want to close this event?");
+        if (closePrompt){
+          status = 0;
+        }
+        break;
+    }
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${status}`;
+    const response = await apiRequest(url);
+    if (response.success) {
+      setData(response.data);
+    } else {
+      console.error(`Error fetching data: ${response.error}`);
+    }
+  };
 
   return (
     <>
@@ -109,12 +132,22 @@ export default function DashContent() {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">
+                        <div className="flex gap-3 justify-end">
                         <button
                           type="button"
-                          onClick={() => setToggleModal(true)}
+                          onClick={() => handleApprove(value.id, "check")}
                           className="text-sm font-bold text-primary dark:text-white hover:underline">
-                          View Details
+                          <span class="material-symbols-outlined">
+                            check
+                          </span>
                         </button>
+                        <button
+                          type="button"
+                          onClick={() => handleReject(value.id, "close")}
+                          className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline">
+                          <span class="material-symbols-outlined">close</span>
+                        </button>
+                            </div>
                       </td>
                     </tr>
                   ))}
@@ -168,7 +201,7 @@ export default function DashContent() {
             </div>
           </section>
         </div>
-        {toggleModal && <ApprovalModel toggleModal={() => setToggleModal(false)} />}
+
       </div>
     </>
   );

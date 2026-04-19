@@ -77,7 +77,7 @@ export default function EventGrid({ events, userSession }) {
               <button
                 key={filter.id}
                 class={activeFilter === filter.id ? activeClass : inactiveClass}
-                onClick={() => handleFilterClick(filter.id)}
+              onClick={() => handleFilterClick(filter.id)}
               >
                 <span class="material-icons-round text-lg">{filter.icon}</span>{" "}
                 {filter.label}

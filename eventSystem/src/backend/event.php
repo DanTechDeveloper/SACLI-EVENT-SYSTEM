@@ -27,11 +27,19 @@ function getCategoryCounts($conn) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-
+function handleApprove($conn, $id, $status) {
+    $sql = "UPDATE events SET pending = :status WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
 
 try {
     $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
     $student_id = $_SESSION['user_id'];
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    $status = isset($_GET['status']) ? $_GET['status'] : null;
 
     $conn->exec("SET time_zone = '+08:00';");
 
@@ -54,7 +62,6 @@ LEFT JOIN event_participants eu
     ON e.id = eu.event_id
    AND eu.student_id = :student_id
     ";
-
     if ($filter !== 'all') {
         $sql .= " WHERE e.criteria = :filter ";
     }
@@ -74,7 +81,8 @@ LEFT JOIN event_participants eu
         "success" => true, 
         "data" => [
             "tableRows" => $rows, 
-            "categoryCounts" => getCategoryCounts($conn)
+            "categoryCounts" => getCategoryCounts($conn),
+            "handleApprove" => ($status === "check") ? handleApprove($conn, $id, 1) : handleApprove($conn, $id, 0)
         ]
     ]);
 
