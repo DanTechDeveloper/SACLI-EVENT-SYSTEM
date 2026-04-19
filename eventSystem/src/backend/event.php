@@ -3,10 +3,6 @@ include 'connect.php';
 
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Not authorized"]);
-    exit;
-}
 
 function getCategoryCounts($conn) {
     $sql = "SELECT 
@@ -28,10 +24,15 @@ function getCategoryCounts($conn) {
 }
 
 function handleApprove($conn, $id, $status) {
-    $sql = "UPDATE events SET pending = :status WHERE id = :id";
+
+    $newStatus = ($status === "approved") ? "approved" : "rejected";
+
+    $sql = "UPDATE events SET status = :status WHERE id = :id";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+
+    $stmt->bindParam(':status', $newStatus, PDO::PARAM_STR);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
     $stmt->execute();
 }
 
@@ -61,9 +62,10 @@ FROM events e
 LEFT JOIN event_participants eu
     ON e.id = eu.event_id
    AND eu.student_id = :student_id
+WHERE e.status = 'approved'
     ";
     if ($filter !== 'all') {
-        $sql .= " WHERE e.criteria = :filter ";
+        $sql .= " AND e.criteria = :filter ";
     }
 
     $sql .= " ORDER BY e.created_at DESC;";
@@ -81,8 +83,8 @@ LEFT JOIN event_participants eu
         "success" => true, 
         "data" => [
             "tableRows" => $rows, 
-            "categoryCounts" => getCategoryCounts($conn),
-            "handleApprove" => ($status === "check") ? handleApprove($conn, $id, 1) : handleApprove($conn, $id, 0)
+            "categoryCounRts" => getCategoryCounts($conn),
+            "handleApprove" => handleApprove($conn, $id, $status),
         ]
     ]);
 

@@ -1,7 +1,6 @@
 import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react";
 
-
 export default function DashContent() {
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -18,19 +17,22 @@ export default function DashContent() {
   }, []);
 
   const handleApprove = async (id, status) => {
-    switch (status){
-      case "check":
-        const checkPrompt = confirm("Are you sure you want to approve this event?");
-        if (checkPrompt){
-          status = 1;
-        }
-        break;
-      case "close":
-        const closePrompt = confirm("Are you sure you want to close this event?");
-        if (closePrompt){
-          status = 0;
-        }
-        break;
+    if (status === "approved") {
+      const approvedPrompt = confirm(
+        "Are you sure you want to approve this event?",
+      );
+      if (!approvedPrompt) {
+        return;
+      }
+      status = "approved";
+    } else {
+      const rejectedPrompt = confirm(
+        "Are you sure you want to reject this event?",
+      );
+      if (!rejectedPrompt) {
+        return;
+      }
+      status = "rejected";
     }
     const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${status}`;
     const response = await apiRequest(url);
@@ -112,7 +114,10 @@ export default function DashContent() {
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                   {data?.readEvent?.map((value, key) => (
-                    <tr key={key} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                    <tr
+                      key={key}
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <div className="font-medium text-slate-900 dark:text-slate-100">
                           {value.title}
@@ -133,21 +138,21 @@ export default function DashContent() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex gap-3 justify-end">
-                        <button
-                          type="button"
-                          onClick={() => handleApprove(value.id, "check")}
-                          className="text-sm font-bold text-primary dark:text-white hover:underline">
-                          <span class="material-symbols-outlined">
-                            check
-                          </span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleReject(value.id, "close")}
-                          className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline">
-                          <span class="material-symbols-outlined">close</span>
-                        </button>
-                            </div>
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(value.id, "approved")}
+                            className="text-sm font-bold text-primary dark:text-white hover:underline"
+                          >
+                            <span class="material-symbols-outlined">check</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(value.id, "rejected")}
+                            className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline"
+                          >
+                            <span class="material-symbols-outlined">close</span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -201,7 +206,6 @@ export default function DashContent() {
             </div>
           </section>
         </div>
-
       </div>
     </>
   );

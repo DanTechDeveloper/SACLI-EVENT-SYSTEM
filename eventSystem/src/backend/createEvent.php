@@ -3,11 +3,6 @@ include 'connect.php';
 
 session_start();
 
-// 1. Critical Security: Only allow logged-in users to create events
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(["success" => false, "message" => "Unauthorized access. Please log in."]);
-    exit;
-}
 
 function convertDateAndTime($date, $time){
     // HTML5 date is Y-m-d, time is H:i (24h)
@@ -34,8 +29,8 @@ try {
         // The user ID who created this event (assuming your table has a created_by column)
         $created_by = $_SESSION['user_id'];
 
-        $sql = "INSERT INTO events (title, description, category, event_date, event_time, criteria, location, author) 
-                VALUES (:title, :description, :category, :event_date, :event_time, :criteria, :location, :author)";
+        $sql = "INSERT INTO events (title, description, category, event_date, event_time, criteria, location, event_author) 
+                VALUES (:title, :description, :category, :event_date, :event_time, :criteria, :location, :event_author)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":title", $title);
@@ -45,7 +40,7 @@ try {
         $stmt->bindValue(":event_time", $dateAndTimeConvert->format('H:i:s'));
         $stmt->bindValue(":criteria", $criteria);
         $stmt->bindValue(":location", $location);
-        $stmt->bindValue(":author", $author);
+        $stmt->bindValue(":event_author", $author);
         $stmt->execute();
 
         echo json_encode(["success" => true, "message" => "Event created successfully"]);

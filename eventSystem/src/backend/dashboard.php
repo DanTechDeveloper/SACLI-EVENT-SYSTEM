@@ -8,7 +8,7 @@ function getStats($conn, $type)
 {
     switch ($type) {
         case 'totalPosts':
-            $sql = "SELECT (SELECT COUNT(*) FROM announcements) + (SELECT COUNT(*) FROM events)";
+            $sql = "SELECT (SELECT COUNT(*) FROM announcements) + (SELECT COUNT(*) FROM events WHERE status = 'approved')";
             $stmt = $conn->prepare($sql);
             break;
         case 'totalAnnouncement':
@@ -16,7 +16,7 @@ function getStats($conn, $type)
             $stmt = $conn->prepare($sql);
             break;
         case 'totalEvents':
-            $sql = "SELECT COUNT(*) FROM events";
+            $sql = "SELECT COUNT(*) FROM events WHERE status = 'approved'";
             $stmt = $conn->prepare($sql);
             break;
         default:
@@ -39,7 +39,7 @@ function readAnnouncement($conn)
 function readEvents($conn){
     try {
         $conn->exec("SET time_zone = '+08:00';");
-        $sql = "SELECT id, title, description, category, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time, criteria, location FROM events ORDER BY created_at DESC";
+        $sql = "SELECT id, title, description, category, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time, criteria, location FROM events WHERE status = 'pending' ORDER BY created_at DESC";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
