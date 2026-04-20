@@ -241,7 +241,7 @@ export default function DashContent() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {data?.handleAnnouncement?.length === 0 ? (
+                  {data?.readAnnouncement?.length === 0 ? (
                     <tr>
                       <td
                         colSpan={4}
@@ -251,7 +251,7 @@ export default function DashContent() {
                       </td>
                     </tr>
                   ) : (
-                    data?.handleAnnouncement?.map((values, key) => (
+                    data?.readAnnouncement?.map((values, key) => (
                       <tr
                         key={key}
                         className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"

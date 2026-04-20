@@ -31,36 +31,35 @@ function readAnnouncement($conn)
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
 
-
-
-try {
-    $status = isset($_GET['status']) ? $_GET['status'] : null;
-    $conn->exec("SET time_zone = '+08:00';");
-    if ($status === "edit") {
-        $data = json_decode(file_get_contents("php://input"), true);
+function handleAction($conn, $status, $id, $data){
+    if ($status === "edit"){
         $title = isset($data['title']) ? $data['title'] : null;
         $description = isset($data['description']) ? $data['description'] : null;
         $category = isset($data['category']) ? $data['category'] : null;
         $sql = "UPDATE announcements SET title = ?, description = ?, category = ? WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$title, $description, $category, $id]);
-        echo json_encode([
-            "success" => true,
-        ]);
     } else if ($status === "delete"){
-        $id = isset($_GET['id']) ? $_GET['id'] : null;
         $sql = "DELETE FROM announcements WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
-        echo json_encode([
-            "success" => true,
-        ]);
     }
+  
+}
+
+
+try {
+    $status = isset($_GET['status']) ? $_GET['status'] : null;
+    $id = isset($_GET["id"]) ? $_GET["id"] : null;
+    $data = json_decode(file_get_contents("php://input"), true);
+    $conn->exec("SET time_zone = '+08:00';");
+  
     echo json_encode([
         "success" => true,
         "data" => [
             "allAnnouncements" => readAnnouncement($conn),
-            "getAnnouncementCategoryCount" => getAnnouncementCategoryCounts($conn)
+            "getAnnouncementCategoryCount" => getAnnouncementCategoryCounts($conn),
+            "handleAction" => handleAction($conn, $status, $id, $data),
         ]
     ]);
 } catch (Exception $e) {

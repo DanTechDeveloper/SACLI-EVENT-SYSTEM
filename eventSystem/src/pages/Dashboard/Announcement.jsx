@@ -55,7 +55,7 @@ export default function Announcement() {
         if (!editCategory) return;
         const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php?id=${id}&status=${action}`
         const response = await apiRequest(api, 
-          "PUT",
+          "POST",
           {
             title: editTitle,
             description: editDescription,
