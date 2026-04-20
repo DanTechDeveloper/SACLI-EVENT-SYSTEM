@@ -32,7 +32,7 @@ export default function AuthPhoneNumber({ toggleModal }) {
       return;
     }
 
-    const res = await fetch("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/sendOtp.php", {
+    const res = await fetch("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/SendOTP.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function AuthPhoneNumber({ toggleModal }) {
   };
 
   const handleVerifyOTP = async () => {
-    const res = await fetch("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/verifyOTP.php", {
+    const res = await fetch("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/VerifyOTP.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

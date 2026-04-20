@@ -19,7 +19,7 @@ export default function EventRegistration() {
     }
 
     const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/joinEvent.php",
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/JoinedEvent.php",
       "POST",
       { event_id: event.id }
     );

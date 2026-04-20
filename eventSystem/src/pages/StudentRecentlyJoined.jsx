@@ -9,7 +9,7 @@ export default function StudentRecentlyJoined() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/joinedEvent.php",
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/RecentlyJoined.php",
       );
     
       if (response.success) {

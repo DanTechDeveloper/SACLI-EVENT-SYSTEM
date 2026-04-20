@@ -1,5 +1,5 @@
 <?php
-require_once 'connect.php';
+include '../connect.php';
 
 try {
     // 1. Get the raw POST data (from fetch application/json)

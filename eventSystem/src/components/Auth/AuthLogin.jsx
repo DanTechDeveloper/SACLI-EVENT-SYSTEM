@@ -45,7 +45,7 @@ export default function AuthLogin() {
     }
     const user = { email: email, password: password, action: "login" };
     const result = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Login.php",
       "POST",
       user,
     );

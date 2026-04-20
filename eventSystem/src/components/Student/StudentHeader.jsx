@@ -12,7 +12,7 @@ export default function StudentHeader({ user }) {
 
   const handleLogout = async () => {
     const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/logout.php",
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/Logout.php",
       "POST",
     );
     if (response.success) {

@@ -1,5 +1,5 @@
 <?php
-include 'connect.php';
+include '../connect.php';
 session_start();
 
 // Security: Siguraduhing naka-login ang user

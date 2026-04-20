@@ -14,7 +14,7 @@ export default function StudentAnnouncement() {
     const fetchAnnouncements = async () => {
       try {
         const response = await apiRequest(
-          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php"
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/Announcements.php"
         );
         if (response.success) {
           setAnnouncement(response.data);
@@ -84,7 +84,7 @@ export default function StudentAnnouncement() {
                           </span>
                         </div>
                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                          Admin
+                          {values.author}
                         </span>
                       </div>
                       <time className="text-xs text-slate-400">
