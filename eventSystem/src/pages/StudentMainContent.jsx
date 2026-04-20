@@ -11,8 +11,8 @@ export default function StudentMainContent() {
     async function fetchInitialData() {
       try {
         const endpoints = [
-          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/userLogin.php",
-          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php",
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserProfile.php",
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/Event.php",
         ];
 
         // Fetch both endpoints in parallel

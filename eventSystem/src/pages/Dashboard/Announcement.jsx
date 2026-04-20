@@ -5,7 +5,7 @@ export default function Announcement() {
 
   const fetchData = async () => {
     const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/Announcement.php",
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllAnnouncement.php",
     );
 
     if (response.success) {

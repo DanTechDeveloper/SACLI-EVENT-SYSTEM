@@ -54,7 +54,7 @@ export default function EventGrid({ events, userSession }) {
 
     try {
       const res = await fetch(
-        `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?filter=${filterId}`,
+        `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/Event.php?filter=${filterId}`,
         { credentials: "include" },
       );
       const data = await res.json();

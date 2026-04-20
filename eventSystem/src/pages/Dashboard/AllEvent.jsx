@@ -1,65 +1,63 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/apiRequest";
 export default function AllEvent() {
-  
   const [data, setData] = useState(null);
+  const fetchData = async () => {
+    const response = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php",
+    );
+
+    if (response.success) {
+      setData(response.data);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php",
-      );
-      
-      if (response.success) {
-        setData(response.data);
-      }
-    };
-    
     fetchData();
   }, []);
   const statsData = [
     {
       title: "Total Techonology",
-      value: data?.categoryCounts.total_technology
+      value: data?.categoryCounts.total_technology,
     },
     {
       title: "Total Social",
-      value: data?.categoryCounts.total_social
+      value: data?.categoryCounts.total_social,
     },
     {
       title: "Total Business",
-      value: data?.categoryCounts.total_business
+      value: data?.categoryCounts.total_business,
     },
     {
       title: "Total Outdoors",
-      value: data?.categoryCounts.total_outdoors
+      value: data?.categoryCounts.total_outdoors,
     },
     {
       title: "Total Arts",
-      value: data?.categoryCounts.total_arts
+      value: data?.categoryCounts.total_arts,
     },
     {
       title: "Total Programming",
-      value: data?.categoryCounts.total_programming
+      value: data?.categoryCounts.total_programming,
     },
     {
       title: "Total School Activity",
-      value: data?.categoryCounts.total_school_activity
+      value: data?.categoryCounts.total_school_activity,
     },
     {
       title: "Total Campus Program",
-      value: data?.categoryCounts.total_campus_program
+      value: data?.categoryCounts.total_campus_program,
     },
     {
       title: "Total Community",
-      value: data?.categoryCounts.total_community
+      value: data?.categoryCounts.total_community,
     },
     {
       title: "Total Health",
-      value: data?.categoryCounts.total_health
+      value: data?.categoryCounts.total_health,
     },
   ];
   const handleAction = async (action, id) => {
-    switch (action){
+    switch (action) {
       case "edit":
         const title = prompt("Enter title");
         const description = prompt("Enter description");
@@ -75,27 +73,31 @@ export default function AllEvent() {
           time,
           location,
           criteria,
-          eventAuthor
-        }
+          eventAuthor,
+        };
         const editApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php?id=${id}&status=${action}`;
         const editResponse = await apiRequest(editApi, "POST", data);
         if (editResponse.success) {
+          await fetchData();
           alert("Event updated successfully.");
         }
         break;
       case "delete":
-        const deletePrompt = confirm("Are you sure you want to delete this event?");
+        const deletePrompt = confirm(
+          "Are you sure you want to delete this event?",
+        );
         if (!deletePrompt) {
           return;
         }
         const deleteApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php?id=${id}&status=${action}`;
         const deleteResponse = await apiRequest(deleteApi);
         if (deleteResponse.success) {
+          await fetchData();
           alert("Event removed successfully.");
         }
-       break;
+        break;
     }
-  }
+  };
   return (
     <>
       <div class="flex flex-col gap-8">
@@ -186,10 +188,18 @@ export default function AllEvent() {
 
                   <td class="px-6 py-4 text-right">
                     <div class="flex items-center justify-end gap-2">
-                      <button type="button" onClick={() => handleAction('edit', value.id)} class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
+                      <button
+                        type="button"
+                        onClick={() => handleAction("edit", value.id)}
+                        class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary"
+                      >
                         <span class="material-symbols-outlined">edit</span>
                       </button>
-                      <button type="button" onClick={() => handleAction('delete', value.id)} class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
+                      <button
+                        type="button"
+                        onClick={() => handleAction("delete", value.id)}
+                        class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500"
+                      >
                         <span class="material-symbols-outlined">delete</span>
                       </button>
                     </div>

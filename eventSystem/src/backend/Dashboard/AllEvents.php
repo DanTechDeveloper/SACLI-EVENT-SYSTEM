@@ -50,12 +50,15 @@ try {
     $id = isset($_GET['id']) ? $_GET['id'] : null;
     $status = isset($_GET['status']) ? $_GET['status'] : null;
     $data = json_decode(file_get_contents("php://input"), true);
+
+    if ($id !== null && $status !== null) {
+        handleAction($conn, $status, $id, $data);
+    }
     
     $conn->exec("SET time_zone = '+08:00';");
     echo json_encode([
         "success" => true, 
         "data" => [
-            "handleAction" => handleAction($conn, $status, $id, $data),
             "tableRows" => tableRows($conn), 
             "categoryCounts" => getCategoryCounts($conn),
         ]

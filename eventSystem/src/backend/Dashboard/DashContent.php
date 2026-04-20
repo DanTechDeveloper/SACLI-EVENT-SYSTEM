@@ -4,7 +4,7 @@ function getStats($conn, $type)
 {
     switch ($type) {
         case 'totalPosts':
-            $sql = "SELECT (SELECT COUNT(*) FROM announcements) + (SELECT COUNT(*) FROM events WHERE status = 'approved')";
+            $sql = "SELECT (SELECT COUNT(*) FROM announcements WHERE status = 'approved') + (SELECT COUNT(*) FROM events WHERE status = 'approved')";
             $stmt = $conn->prepare($sql);
             break;
         case 'totalAnnouncement':
@@ -72,11 +72,10 @@ function handleApproveAnnouncement($conn, $id, $status) {
     $stmt->execute();
 }
 
-// require_once must be outside the try-catch to ensure CORS headers 
-// from connect.php are sent even if the database logic fails.
+
+require_once '../connect.php';
 
 try {
-    include  '../connect.php';
     $eventID = isset($_GET['eventID']) ? $_GET['eventID'] : null;
     $eventStatus = isset($_GET['eventStatus']) ? $_GET['eventStatus']: null;
 
@@ -87,14 +86,12 @@ try {
     $sort = isset($_GET['sort']) ? $_GET['sort'] : 'ASC';
 
     // Only attempt updates if the specific parameters are provided
-    $eventResult = null;
-    if ($eventID && $eventStatus) {
-        $eventResult = handleApproveEvent($conn, $eventID, $eventStatus);
+    if ($eventID !== null && $eventStatus !== null) {
+        handleApproveEvent($conn, $eventID, $eventStatus);
     }
 
-    $announcementResult = null;
-    if ($announcementID && $announcementStatus) {
-        $announcementResult = handleApproveAnnouncement($conn, $announcementID, $announcementStatus);
+    if ($announcementID !== null && $announcementStatus !== null) {
+       handleApproveAnnouncement($conn, $announcementID, $announcementStatus);
     }
     
     echo json_encode([
@@ -110,13 +107,4 @@ try {
 } catch (\Throwable $th) {
     echo json_encode(["success" => false, "message" => "Error: " . $th->getMessage()]);
 }
-
-/* 
-MENTOR NOTE: 
-1. Fix the casing in your frontend fetch call: 
-   Change 'backend/dashboard/DashContent.php' to 'backend/Dashboard/DashContent.php'.
-2. By moving require_once outside the try-catch, you guarantee that connect.php 
-   runs first. If the database connection fails, connect.php itself 
-   already has a try-catch that echoes a JSON error WITH the proper CORS headers.
-*/
 ?>

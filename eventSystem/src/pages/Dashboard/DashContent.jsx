@@ -14,6 +14,7 @@ export default function DashContent() {
       console.error(`Error fetching data: ${response.error}`);
     }
   };
+  
   useEffect(() => {
     fetchDashboardData();
   }, []);
@@ -36,9 +37,10 @@ export default function DashContent() {
       }
       eventStatus = "rejected";
     }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?id=${eventID}&status=${eventStatus}`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?eventID=${eventID}&eventStatus=${eventStatus}`;
     const response = await apiRequest(url);
     if (response.success) {
+      await fetchDashboardData();
       alert("Event status updated successfully!");
       navigate("/events");
     } else {
@@ -64,7 +66,7 @@ export default function DashContent() {
       }
       announcementStatus = "rejected";
     }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?id=${announcementID}&status=${announcementStatus}`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?announcementID=${announcementID}&announcementStatus=${announcementStatus}`;
     const response = await apiRequest(url);
     if (response.success) {
       await fetchDashboardData();
