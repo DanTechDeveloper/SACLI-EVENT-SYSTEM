@@ -3,6 +3,21 @@ include 'connect.php';
 
 session_start();
 
+function handleAction($conn, $status, $id, $data){
+    if ($status === "edit"){
+        $title = isset($data['title']) ? $data['title'] : null;
+        $description = isset($data['description']) ? $data['description'] : null;
+        $category = isset($data['category']) ? $data['category'] : null;
+        $sql = "UPDATE events SET title = ?, description = ?, category = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$title, $description, $category, $id]);
+    } else if ($status === "delete"){
+        $sql = "DELETE FROM events WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id]);
+    }
+  
+}
 
 function getCategoryCounts($conn) {
     $sql = "SELECT 
@@ -39,8 +54,6 @@ function handleApprove($conn, $id, $status) {
 try {
     $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
     $student_id = $_SESSION['user_id'];
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
-    $status = isset($_GET['status']) ? $_GET['status'] : null;
 
     $conn->exec("SET time_zone = '+08:00';");
 
@@ -78,6 +91,9 @@ WHERE e.status = 'approved'
     $stmt->execute();
 
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    $status = isset($_GET['status']) ? $_GET['status'] : null;
+    $data = json_decode(file_get_contents("php://input"), true);
 
     echo json_encode([
         "success" => true, 
@@ -85,6 +101,7 @@ WHERE e.status = 'approved'
             "tableRows" => $rows, 
             "categoryCounts" => getCategoryCounts($conn),
             "handleApprove" => handleApprove($conn, $id, $status),
+            "handleAction" => handleAction($conn, $status, $id, $data)
         ]
     ]);
 

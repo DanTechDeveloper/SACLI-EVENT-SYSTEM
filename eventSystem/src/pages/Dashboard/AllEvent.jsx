@@ -58,11 +58,21 @@ export default function AllEvent() {
       value: data?.categoryCounts.total_health
     },
   ];
-  const handleAction = (action, id) => {
+  const handleAction = async (action, id) => {
     switch (action){
       case "edit":
         break;
       case "delete":
+        const deletePrompt = confirm("Are you sure you want to delete this event?");
+        if (!deletePrompt) {
+          return;
+        }
+        const deleteApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${action}`;
+        const deleteResponse = await apiRequest(deleteApi);
+        if (deleteResponse.success) {
+          await fetchData();
+          alert("Event removed successfully.");
+        }
        break;
     }
   }
