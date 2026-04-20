@@ -9,7 +9,23 @@ export default function AuthRegister() {
   
   const handleRegisterForm = async (e) => {
     e.preventDefault();
-    const user = { fullName : fullName, password : password, email : email,  action: "register" };
+    
+    // Trim and Clean inputs
+    const cleanFullName = fullName.trim().replace(/\s+/g, ' ');
+    const cleanEmail = email.trim().toLowerCase();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    
+    if (cleanFullName.length < 3) {
+      alert("Please enter a valid full name.");
+      return;
+    }
+
+    const user = { fullName : cleanFullName, password : password, email : cleanEmail,  action: "register" };
     try {
       const result = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Register.php",

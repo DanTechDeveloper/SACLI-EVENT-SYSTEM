@@ -6,6 +6,7 @@ import AuthPhoneNumber from "./AuthPhoneNumber";
 export default function AuthLogin() {
   const navigate = useNavigate(); // Initialize useNavigate
   const [isPhoneNumberOpen, setIsPhoneNumberOpen] = useState(false);
+  const [errors, setErrors] = useState({});
   const handleGoogleAuth = () => {
     const clientId =
       "1070483531281-lfru2nob62sbeojao9vc74q12o1fia9f.apps.googleusercontent.com";
@@ -39,10 +40,15 @@ export default function AuthLogin() {
 
   const handleLoginForm = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Please enter both email and password.");
+    setErrors({});
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      setErrors({ email: "Please enter a valid email address." });
       return;
     }
+
     const user = { email: email, password: password, action: "login" };
     const result = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Login.php",
@@ -53,7 +59,7 @@ export default function AuthLogin() {
       alert("Login successful! Welcome " + result.user.fullName);
       navigate("/studentView");
     } else {
-      alert("Login failed: " + result.message);
+      setErrors({ server: result.message });
     }
   };
 
@@ -84,6 +90,9 @@ export default function AuthLogin() {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </label>
+                {errors.email && (
+                  <p className="text-xs text-red-500 font-medium mt-1">{errors.email}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <label className="block relative">
@@ -124,6 +133,12 @@ export default function AuthLogin() {
                   </div>
                 </label>
               </div>
+
+              {errors.server && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-xs font-medium">
+                  {errors.server}
+                </div>
+              )}
 
               <button
                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"

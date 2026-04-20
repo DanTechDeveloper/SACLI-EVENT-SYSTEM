@@ -82,17 +82,22 @@ try {
         $fullName = $user['name'] ?? 'Google User';
         $profile_picture = $user['picture'];
 
-        // 2. Connect to DB and insert/check user
-        $checkStmt = $conn->prepare("SELECT id, fullName, profile_picture FROM students WHERE email = :email");
+        // 2. Hanapin kung may existing email na (Manual man o Google)
+        $checkStmt = $conn->prepare("SELECT id, fullName, profile_picture FROM students WHERE email = :email LIMIT 1");
         $checkStmt->bindValue(':email', $email, PDO::PARAM_STR);
         $checkStmt->execute();
 
         if ($checkStmt->rowCount() > 0) {
-            // User exists, fetch details
+            // Account Linking: Kung existing na, i-update ang info mula sa Google
             $existingUser = $checkStmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Optional: I-update ang profile picture kung nagbago ito sa Google
+            $updateStmt = $conn->prepare("UPDATE students SET profile_picture = :pic WHERE id = :id");
+            $updateStmt->execute([':pic' => $profile_picture, ':id' => $existingUser['id']]);
+
             $_SESSION['user_id'] = $existingUser['id'];
-            $_SESSION['fullName'] = $existingUser['fullName'];
-            $_SESSION['profile_picture'] = $existingUser['profile_picture'];
+            $_SESSION['fullName'] = $existingUser['fullName']; // Pwedeng panatilihin ang original name sa DB
+            $_SESSION['profile_picture'] = $profile_picture;
         } else {
             // User does not exist, register them
             // Generate a random secure password since they are logging in via Google
