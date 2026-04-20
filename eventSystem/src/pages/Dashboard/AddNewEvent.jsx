@@ -11,33 +11,71 @@ export default function AddNewEvent() {
   const [criteria, setCriteria] = useState("");
   const [location, setLocation] = useState("");
   const [author, setAuthor] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-
+  
+  // Get today's date in YYYY-MM-DD format for comparison and 'min' attribute
+  const today = new Date().toLocaleDateString('en-CA');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = {
-      title,
-      description,
-      category,
-      date,
-      time,
-      criteria,
-      location,
-      author
-    };
+    setErrors({});
+    
+    // 1. Client-side Validation
+    const validationErrors = {};
+    if (!title.trim()) validationErrors.title = "Event title is required.";
+    if (!description.trim()) validationErrors.description = "Description cannot be empty.";
+    if (!category) validationErrors.category = "Please select a category.";
+    if (!date) {
+      validationErrors.date = "Date is required.";
+    } else if (date < today) {
+      validationErrors.date = "Event date cannot be in the past.";
+    }
+    if (!time) validationErrors.time = "Time is required.";
+    if (!criteria) validationErrors.criteria = "Criteria is required.";
+    if (!location.trim()) validationErrors.location = "Location is required.";
+    if (!author.trim()) validationErrors.author = "Author is required.";
 
-    const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewEvent.php",
-      "POST",
-      formData,
-    );
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
-    if (response.success) {
-      alert("Event created successfully!");
-      navigate("/dashboard");
-    } 
-    console.table(formData);
+    setIsSubmitting(true);
+
+    try {
+      const formData = {
+        title,
+        description,
+        category,
+        date,
+        time,
+        criteria,
+        location,
+        author
+      };
+
+      const response = await apiRequest(
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewEvent.php",
+        "POST",
+        formData,
+      );
+
+      if (response.success) {
+        alert("Event created successfully!");
+        navigate("/dashboard");
+      } else {
+        // 2. Handle API Logic Errors
+        setErrors({ server: response.message || "Something went wrong on the server." });
+      }
+    } catch (err) {
+      // 3. Handle Network/Fatal Errors
+      console.error("Submission error:", err);
+      setErrors({ server: "Network error: Unable to connect to the server." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
 
@@ -81,6 +119,7 @@ export default function AddNewEvent() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+              {errors.title && <p class="mt-1 text-xs text-red-500 font-medium">{errors.title}</p>}
             </div>
 
             {/* <!-- Event Description --> */}
@@ -101,6 +140,7 @@ export default function AddNewEvent() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
+              {errors.description && <p class="mt-1 text-xs text-red-500 font-medium">{errors.description}</p>}
             </div>
 
             {/* <!-- Date and Time --> */}
@@ -120,7 +160,7 @@ export default function AddNewEvent() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     -- Select an Category --
                   </option>
                   <option value="Technology">Technology</option>
@@ -134,6 +174,7 @@ export default function AddNewEvent() {
                   <option value="Community">Community</option>
                   <option value="Health">Health</option>
                 </select>
+                {errors.category && <p class="mt-1 text-xs text-red-500 font-medium">{errors.category}</p>}
               </div>
               <div>
                 <label
@@ -147,10 +188,12 @@ export default function AddNewEvent() {
                   type="date"
                   id="date"
                   name="date"
+                  min={today}
                   class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
+                {errors.date && <p class="mt-1 text-xs text-red-500 font-medium">{errors.date}</p>}
               </div>
               <div>
                 <label
@@ -168,6 +211,7 @@ export default function AddNewEvent() {
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                 />
+                {errors.time && <p class="mt-1 text-xs text-red-500 font-medium">{errors.time}</p>}
               </div>
             </div>
 
@@ -188,12 +232,13 @@ export default function AddNewEvent() {
                   value={criteria}
                   onChange={(e) => setCriteria(e.target.value)}
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     -- Select an Criteria --
                   </option>
                   <option value="Online">Online</option>
                   <option value="Free">Free</option>
                 </select>
+                {errors.criteria && <p class="mt-1 text-xs text-red-500 font-medium">{errors.criteria}</p>}
               </div>
               <div>
                 <label
@@ -212,6 +257,7 @@ export default function AddNewEvent() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                 />
+                {errors.location && <p class="mt-1 text-xs text-red-500 font-medium">{errors.location}</p>}
               </div> 
               <div>
                 <label
@@ -230,17 +276,25 @@ export default function AddNewEvent() {
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                 />
+                {errors.author && <p class="mt-1 text-xs text-red-500 font-medium">{errors.author}</p>}
               </div>
             </div>
+
+            {errors.server && (
+              <div class="p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-medium">
+                {errors.server}
+              </div>
+            )}
 
             {/* <!-- Action Buttons --> */}
             <div class="flex justify-end gap-4 mt-4">
               <button
+                disabled={isSubmitting}
                 name="publishEvent"
                 type="submit"
-                class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
+                class={`rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-all ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                Publish Event
+                {isSubmitting ? "Publishing..." : "Publish Event"}
               </button>
             </div>
           </form>
