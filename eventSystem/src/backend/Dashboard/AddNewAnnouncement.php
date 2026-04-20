@@ -8,12 +8,15 @@ try {
         $title = $data['title'];
         $description = $data['message'];
         $category = $data['category'];
+        $author = $data['author'];
 
-        $sql = "INSERT INTO announcements (title, description, category) VALUES (:title, :description, :category)";
+        $sql = "INSERT INTO announcements (title, description, category, author) VALUES (:title, :description, :category, :author)";
         $stmt = $conn->prepare($sql);
+
         $stmt->bindValue(':title', $title);
         $stmt->bindValue(':description', $description);
         $stmt->bindValue(':category', $category);
+        $stmt->bindValue(':author', $author);
         
         if ($stmt->execute()) {
             echo json_encode(['success' => true, 'message' => 'Announcement created successfully']);

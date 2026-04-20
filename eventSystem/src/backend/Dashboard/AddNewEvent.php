@@ -41,7 +41,7 @@ try {
         $stmt->bindValue(":criteria", $criteria);
         $stmt->bindValue(":location", $location);
         $stmt->bindValue(":event_author", $author);
-        $stmt->execute();
+    $stmt->execute();
 
         echo json_encode(["success" => true, "message" => "Event created successfully"]);
     } else {

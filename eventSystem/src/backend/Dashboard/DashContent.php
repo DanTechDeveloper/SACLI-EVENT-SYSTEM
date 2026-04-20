@@ -24,7 +24,7 @@ function getStats($conn, $type)
 
 function readAnnouncement($conn)
 {
-    $sql = "SELECT id, title, description, category, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements WHERE status = 'pending' ORDER BY created_at DESC";
+    $sql = "SELECT id, title, description, category, author, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements WHERE status = 'pending' ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -35,7 +35,7 @@ function readAnnouncement($conn)
 function readEvents($conn){
     try {
         $conn->exec("SET time_zone = '+08:00';");
-        $sql = "SELECT id, title, description, category, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time, criteria, location, event_author AS author FROM events WHERE status = 'pending' ORDER BY created_at DESC";
+        $sql = "SELECT id, title, description, category, event_author, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time, criteria, location FROM events WHERE status = 'pending' ORDER BY created_at DESC";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

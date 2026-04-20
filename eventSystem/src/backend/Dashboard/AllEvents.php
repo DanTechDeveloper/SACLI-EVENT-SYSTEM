@@ -39,7 +39,7 @@ function handleAction ($conn, $status, $id, $data){
 }
 
 function tableRows($conn){
-    $sql = "SELECT * FROM events WHERE status = 'approved'";
+    $sql = "SELECT *, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time FROM events WHERE status = 'approved'";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -55,7 +55,6 @@ try {
         handleAction($conn, $status, $id, $data);
     }
     
-    $conn->exec("SET time_zone = '+08:00';");
     echo json_encode([
         "success" => true, 
         "data" => [

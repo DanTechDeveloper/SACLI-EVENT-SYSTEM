@@ -6,6 +6,7 @@ export default function AddNewAnnouncement() {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [category, setCategory] = useState("");
+  const [author, setAuthor] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,8 +16,8 @@ export default function AddNewAnnouncement() {
       title: title,
       message: message,
       category: category,
+      author: author,
     };
-
 
     const response = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewAnnouncement.php",
@@ -117,9 +118,25 @@ export default function AddNewAnnouncement() {
                   <option value="ACHIEVEMENT">ACHIEVEMENT</option>
                   <option value="EMERGENCY">EMERGENCY</option>
                 </select>
+              </div>{" "}
+              <div>
+                <label
+                  for="announcement_category"
+                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
+                >
+                  Author
+                </label>
+                <input
+                  type="text"
+                  required
+                  id="author"
+                  name="author"
+                  class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  onChange={(e) => setAuthor(e.target.value)}
+                  value={author}
+                  placeholder="e.g., John Doe"
+                ></input>
               </div>
-
-             
             </div>
 
             {/* <!-- Action Buttons --> */}

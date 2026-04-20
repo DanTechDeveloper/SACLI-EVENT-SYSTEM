@@ -24,6 +24,7 @@ export default function AddNewEvent() {
       time,
       criteria,
       location,
+      author
     };
 
     const response = await apiRequest(

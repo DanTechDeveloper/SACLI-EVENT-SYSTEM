@@ -12,18 +12,16 @@ export default function Callback() {
       if (hash && hash.includes("access_token")) {
         const params = new URLSearchParams(hash.substring(1));
         const accessToken = params.get("access_token");
-        const state = params.get("state") || "google";
 
         if (accessToken) {
           // Optional: Clear the hash from the URL for a cleaner look
           window.history.replaceState(null, null, window.location.pathname);
 
           try {
-            const actionType = state === "facebook" ? "facebookLogin" : "googleLogin";
             const result = await apiRequest(
-              "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/loginDatabase.php",
+              "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Login.php",
               "POST",
-              { action: actionType, token: accessToken }
+              { action: "googleLogin", token: accessToken }
             );
 
             if (result.success) {
