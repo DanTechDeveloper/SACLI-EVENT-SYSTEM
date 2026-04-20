@@ -38,6 +38,20 @@ export default function UpcomingEvent() {
     },
   ];
 
+  // Filter events to ensure no overlap between sections
+  const eventsThisWeek = data?.thisWeek || [];
+
+  const eventsThisMonthFiltered = (data?.thisMonth || []).filter(
+    (monthEvent) => !eventsThisWeek.some((weekEvent) => weekEvent.id === monthEvent.id)
+  );
+
+  // Combine events from this week and this month to exclude them from this year's remainder
+  const allEventsUpToMonth = [...eventsThisWeek, ...eventsThisMonthFiltered];
+
+  const eventsThisYearFiltered = (data?.thisYear || []).filter(
+    (yearEvent) => !allEventsUpToMonth.some((pastEvent) => pastEvent.id === yearEvent.id)
+  );
+
   // REUSABLE TABLE RENDERER
   const renderEventTable = (events, emptyMessage) => {
     return (
@@ -149,7 +163,7 @@ export default function UpcomingEvent() {
                 Happening This Week
               </h4>
             </div>
-            {renderEventTable(data?.thisWeek, "No upcoming events scheduled for this week.")}
+            {renderEventTable(eventsThisWeek, "No upcoming events scheduled for this week.")}
           </section>{" "}
           <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -157,7 +171,7 @@ export default function UpcomingEvent() {
                 Upcoming This Month
               </h4>
             </div>
-            {renderEventTable(data?.thisMonth, "There are no events planned for the rest of this month.")}
+            {renderEventTable(eventsThisMonthFiltered, "There are no events planned for the rest of this month.")}
           </section>
           <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -165,7 +179,7 @@ export default function UpcomingEvent() {
                 Upcoming Remainder of the Year
               </h4>
             </div>
-            {renderEventTable(data?.thisYear, "No more events found for the current year.")}
+            {renderEventTable(eventsThisYearFiltered, "No more events found for the current year.")}
           </section>
         </div>
       </div>
