@@ -3,27 +3,87 @@ import apiRequest from "../../services/apiRequest";
 export default function Announcement() {
   const [data, setData] = useState(null);
 
+  const fetchData = async () => {
+    const response = await apiRequest(
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
+    );
+
+    if (response.success) {
+      setData(response.data);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php",
-      );
-      
-      if (response.success) {
-        setData(response.data);
-      }
-    };
     fetchData();
   }, []);
 
   const statisticalData = [
-    { title: "IMPORTANT", value: data?.getAnnouncementCategoryCount?.total_important || 0 },
-    { title: "REMINDERS", value: data?.getAnnouncementCategoryCount?.total_reminder || 0 },
-    { title: "GENERAL", value: data?.getAnnouncementCategoryCount?.total_general || 0 },
-    { title: "EVENTS", value: data?.getAnnouncementCategoryCount?.total_event || 0 },
-    { title: "ACHIEVEMENTS", value: data?.getAnnouncementCategoryCount?.total_achievement || 0 },
-    { title: "EMERGENCY", value: data?.getAnnouncementCategoryCount?.total_emergency || 0 },
+    {
+      title: "IMPORTANT",
+      value: data?.getAnnouncementCategoryCount?.total_important || 0,
+    },
+    {
+      title: "REMINDERS",
+      value: data?.getAnnouncementCategoryCount?.total_reminder || 0,
+    },
+    {
+      title: "GENERAL",
+      value: data?.getAnnouncementCategoryCount?.total_general || 0,
+    },
+    {
+      title: "EVENTS",
+      value: data?.getAnnouncementCategoryCount?.total_event || 0,
+    },
+    {
+      title: "ACHIEVEMENTS",
+      value: data?.getAnnouncementCategoryCount?.total_achievement || 0,
+    },
+    {
+      title: "EMERGENCY",
+      value: data?.getAnnouncementCategoryCount?.total_emergency || 0,
+    },
   ];
+
+  const handleAction = async (action, id) => {
+    switch (action) {
+      case "edit":
+        const editTitle = prompt("Enter new title:")
+        if (!editTitle) return;
+        const editDescription = prompt("Enter new description:")
+        if (!editDescription) return;
+        const editCategory = prompt("Enter new category:")
+        if (!editCategory) return;
+        const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php?id=${id}&status=${action}`
+        const response = await apiRequest(api, 
+          "PUT",
+          {
+            title: editTitle,
+            description: editDescription,
+            category: editCategory
+          }
+        )
+        if (response.success) {
+          await fetchData();
+          alert("Announcement updated successfully!");    
+
+        }
+        break;
+      case "delete":
+        const deletePrompt = confirm("Are you sure you want to delete this announcement?");
+        if (!deletePrompt) {
+          return;
+        }
+        const deleteApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php?id=${id}&status=${action}`;
+        const deleteResponse = await apiRequest(deleteApi);
+        if (deleteResponse.success) {
+          await fetchData();
+          alert("Announcement removed successfully.");
+        }
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <>
@@ -99,39 +159,38 @@ export default function Announcement() {
                 </tr>
               ) : (
                 data?.allAnnouncements?.map((value, key) => (
-                  <tr key={key} class="border-b dark:border-slate-800 text-[#212529] dark:text-white">
-                    <td class="px-6 py-4 font-semibold">
-                      {value.title}
+                  <tr
+                    key={key}
+                    class="border-b dark:border-slate-800 text-[#212529] dark:text-white"
+                  >
+                    <td class="px-6 py-4 font-semibold">{value.title}</td>
+                    <td class="px-6 py-4">
+                      <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                        {value.description}
+                      </span>
                     </td>
-                  <td class="px-6 py-4">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                     {value.description}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4">{value.category}</td>
-                  <td class="px-6 py-4">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                      <span class="size-1.5 rounded-full bg-green-600"></span>
-                      {value.date_posted}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <div class="flex items-center justify-end gap-2">
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">edit</span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary">
-                        <span class="material-symbols-outlined">
-                          visibility
-                        </span>
-                      </button>
-                      <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500">
-                        <span class="material-symbols-outlined">delete</span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              )))}
+                    <td class="px-6 py-4">{value.category}</td>
+                    <td class="px-6 py-4">
+                      <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
+                        <span class="size-1.5 rounded-full bg-green-600"></span>
+                        {value.date_posted}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                      <div class="flex items-center justify-end gap-2">
+                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary"
+                        onClick={() => handleAction('edit', value.id)}>
+                          <span class="material-symbols-outlined">edit</span>
+                        </button>
+                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500"
+                        onClick={() => handleAction('delete', value.id)}>
+                          <span class="material-symbols-outlined">delete</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

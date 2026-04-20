@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 export default function DashContent() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
-  const [pendingAnnouncement, setPendingAnnouncement] = useState([]);
   const fetchDashboardData = async () => {
     const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
     const response = await apiRequest(url);
@@ -40,7 +39,6 @@ export default function DashContent() {
     const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${status}`;
     const response = await apiRequest(url);
     if (response.success) {
-      await fetchDashboardData();
       alert("Event status updated successfully!");
       navigate("/events");
     } else {
@@ -48,7 +46,7 @@ export default function DashContent() {
     }
   };
 
-  const handleApprovalAnnouncement = async (id,status) => {
+  const handleApprovalAnnouncement = async (id, status) => {
     if (status === "approved") {
       const approvedPrompt = confirm(
         "Are you sure you want to approve this announcement?",
@@ -66,7 +64,7 @@ export default function DashContent() {
       }
       status = "rejected";
     }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php?id=${id}&status=${status}`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php?id=${id}&status=${status}`;
     const response = await apiRequest(url);
     if (response.success) {
       await fetchDashboardData();
@@ -75,7 +73,8 @@ export default function DashContent() {
     } else {
       console.error(`Error updating announcement: ${response.error}`);
     }
-  }
+  };
+
 
   return (
     <>
@@ -242,7 +241,7 @@ export default function DashContent() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {data?.readAnnouncement?.length === 0 ? (
+                  {data?.handleAnnouncement?.length === 0 ? (
                     <tr>
                       <td
                         colSpan={4}
@@ -252,7 +251,7 @@ export default function DashContent() {
                       </td>
                     </tr>
                   ) : (
-                    data?.readAnnouncement?.map((values, key) => (
+                    data?.handleAnnouncement?.map((values, key) => (
                       <tr
                         key={key}
                         className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
@@ -281,15 +280,25 @@ export default function DashContent() {
                               type="button"
                               className="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors"
                               onClick={() =>
-                                handleApprovalAnnouncement(values.id, "approved")
+                                handleApprovalAnnouncement(
+                                  values.id,
+                                  "approved",
+                                )
                               }
                             >
                               <span className="material-symbols-outlined">
                                 check
                               </span>
                             </button>
-                            <button className="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors"
-                            onClick={()=> handleApprovalAnnouncement(values.id, "rejected")}>
+                            <button
+                              className="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors"
+                              onClick={() =>
+                                handleApprovalAnnouncement(
+                                  values.id,
+                                  "rejected",
+                                )
+                              }
+                            >
                               <span className="material-symbols-outlined">
                                 close
                               </span>

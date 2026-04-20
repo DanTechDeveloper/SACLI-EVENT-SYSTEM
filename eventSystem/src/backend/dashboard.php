@@ -12,7 +12,7 @@ function getStats($conn, $type)
             $stmt = $conn->prepare($sql);
             break;
         case 'totalAnnouncement':
-            $sql = "SELECT COUNT(*) FROM announcements";
+            $sql = "SELECT COUNT(*) FROM announcements WHERE status = 'approved'";
             $stmt = $conn->prepare($sql);
             break;
         case 'totalEvents':
@@ -28,7 +28,7 @@ function getStats($conn, $type)
 
 function readAnnouncement($conn)
 {
-    $sql = "SELECT id, title, description, category, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements WHERE status = 'pending' ORDER BY created_at DESC";
+    $sql = "SELECT id, title, description, category, DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted FROM announcements WHERE status = 'approved' ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -49,7 +49,18 @@ function readEvents($conn){
     }
 }
 
+function handleAnnouncement($conn, $id, $status)
+{
+    $newStatus = ($status === "approved") ? "approved" : "rejected";
+    $sql = "UPDATE announcements SET status = :status WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':status', $newStatus, PDO::PARAM_STR);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+}
 
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$status = isset($_GET['status']) ? $_GET['status'] : null;
 echo json_encode([
     "success" => true,
     "data" => [
@@ -58,6 +69,7 @@ echo json_encode([
         "totalEvents" => getStats($conn, 'totalEvents'),
         'readAnnouncement'=> readAnnouncement($conn),
         'readEvent'=> readEvents($conn),
+        'handleAnnouncement'=> handleAnnouncement($conn, $id, $status),
     ]
 ]);
 ?>

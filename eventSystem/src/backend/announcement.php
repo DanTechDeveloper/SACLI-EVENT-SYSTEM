@@ -31,22 +31,31 @@ function readAnnouncement($conn)
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }
 
-function updateAnnouncementStatus($conn, $id, $status) {
-    $sql = "UPDATE announcements SET status = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$status, $id]);
-    return $stmt->rowCount() > 0;
-}
+
 
 try {
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
     $status = isset($_GET['status']) ? $_GET['status'] : null;
-
-    // Only attempt update if parameters are actually provided
-    if ($id !== null && $status !== null) {
-        updateAnnouncementStatus($conn, $id, $status);
+    $conn->exec("SET time_zone = '+08:00';");
+    if ($status === "edit") {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $title = isset($data['title']) ? $data['title'] : null;
+        $description = isset($data['description']) ? $data['description'] : null;
+        $category = isset($data['category']) ? $data['category'] : null;
+        $sql = "UPDATE announcements SET title = ?, description = ?, category = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$title, $description, $category, $id]);
+        echo json_encode([
+            "success" => true,
+        ]);
+    } else if ($status === "delete"){
+        $id = isset($_GET['id']) ? $_GET['id'] : null;
+        $sql = "DELETE FROM announcements WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id]);
+        echo json_encode([
+            "success" => true,
+        ]);
     }
-    
     echo json_encode([
         "success" => true,
         "data" => [
