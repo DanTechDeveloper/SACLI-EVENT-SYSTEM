@@ -27,7 +27,7 @@ export default function AddNewEvent() {
     };
 
     const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createEvent.php",
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewEvent.php",
       "POST",
       formData,
     );

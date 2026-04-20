@@ -6,7 +6,7 @@ export default function DashContent() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const fetchDashboardData = async () => {
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php`;
     const response = await apiRequest(url);
     if (response.success) {
       setData(response.data);
@@ -18,15 +18,15 @@ export default function DashContent() {
     fetchDashboardData();
   }, []);
 
-  const handleApprove = async (id, status) => {
-    if (status === "approved") {
+  const handleApproveEvent = async (eventID, eventStatus) => {
+    if (eventStatus === "approved") {
       const approvedPrompt = confirm(
         "Are you sure you want to approve this event?",
       );
       if (!approvedPrompt) {
         return;
       }
-      status = "approved";
+      eventStatus = "approved";
     } else {
       const rejectedPrompt = confirm(
         "Are you sure you want to reject this event?",
@@ -34,9 +34,9 @@ export default function DashContent() {
       if (!rejectedPrompt) {
         return;
       }
-      status = "rejected";
+      eventStatus = "rejected";
     }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${status}`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?id=${eventID}&status=${eventStatus}`;
     const response = await apiRequest(url);
     if (response.success) {
       alert("Event status updated successfully!");
@@ -46,15 +46,15 @@ export default function DashContent() {
     }
   };
 
-  const handleApprovalAnnouncement = async (id, status) => {
-    if (status === "approved") {
+  const handleApprovalAnnouncement = async (announcementID, announcementStatus) => {
+    if (announcementStatus === "approved") {
       const approvedPrompt = confirm(
         "Are you sure you want to approve this announcement?",
-      );
+      );  
       if (!approvedPrompt) {
         return;
       }
-      status = "approved";
+      announcementStatus = "approved";
     } else {
       const rejectedPrompt = confirm(
         "Are you sure you want to reject this announcement?",
@@ -62,9 +62,9 @@ export default function DashContent() {
       if (!rejectedPrompt) {
         return;
       }
-      status = "rejected";
+      announcementStatus = "rejected";
     }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/dashboard.php?id=${id}&status=${status}`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?id=${announcementID}&status=${announcementStatus}`;
     const response = await apiRequest(url);
     if (response.success) {
       await fetchDashboardData();
@@ -184,7 +184,7 @@ export default function DashContent() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApprove(value.id, "approved")
+                                handleApproveEvent(value.id, "approved")
                               }
                               className="text-sm font-bold text-primary dark:text-white hover:underline"
                             >
@@ -195,7 +195,7 @@ export default function DashContent() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApprove(value.id, "rejected")
+                                handleApproveEvent(value.id, "rejected")
                               }
                               className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline"
                             >

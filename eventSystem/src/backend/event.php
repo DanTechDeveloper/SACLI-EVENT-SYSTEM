@@ -1,42 +1,6 @@
 <?php
 include 'connect.php';
-
 session_start();
-
-function handleAction($conn, $status, $id, $data){
-    if ($status === "edit"){
-        $title = isset($data['title']) ? $data['title'] : null;
-        $description = isset($data['description']) ? $data['description'] : null;
-        $category = isset($data['category']) ? $data['category'] : null;
-        $sql = "UPDATE events SET title = ?, description = ?, category = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$title, $description, $category, $id]);
-    } else if ($status === "delete"){
-        $sql = "DELETE FROM events WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$id]);
-    }
-  
-}
-
-function getCategoryCounts($conn) {
-    $sql = "SELECT 
-                SUM(CASE WHEN category = 'Technology' THEN 1 ELSE 0 END) AS total_technology,
-                SUM(CASE WHEN category = 'Social' THEN 1 ELSE 0 END) AS total_social,
-                SUM(CASE WHEN category = 'Business' THEN 1 ELSE 0 END) AS total_business,
-                SUM(CASE WHEN category = 'Outdoors' THEN 1 ELSE 0 END) AS total_outdoors,
-                SUM(CASE WHEN category = 'Arts' THEN 1 ELSE 0 END) AS total_arts,
-                SUM(CASE WHEN category = 'Programming' THEN 1 ELSE 0 END) AS total_programming,
-                SUM(CASE WHEN category = 'School Activity' THEN 1 ELSE 0 END) AS total_school_activity,
-                SUM(CASE WHEN category = 'Campus Program' THEN 1 ELSE 0 END) AS total_campus_program,
-                SUM(CASE WHEN category = 'Community' THEN 1 ELSE 0 END) AS total_community,
-                SUM(CASE WHEN category = 'Health' THEN 1 ELSE 0 END) AS total_health
-            FROM events WHERE status = 'approved'";
-            
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
 
 function handleApprove($conn, $id, $status) {
 
@@ -100,8 +64,7 @@ WHERE e.status = 'approved'
         "data" => [
             "tableRows" => $rows, 
             "categoryCounts" => getCategoryCounts($conn),
-            "handleApprove" => handleApprove($conn, $id, $status),
-            "handleAction" => handleAction($conn, $status, $id, $data)
+            "handleApprove" => handleApprove($conn, $id, $status)
         ]
     ]);
 

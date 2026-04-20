@@ -19,7 +19,7 @@ export default function AddNewAnnouncement() {
 
 
     const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/createAnnouncement.php",
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewAnnouncement.php",
       "POST",
       formData,
     );

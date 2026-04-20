@@ -6,7 +6,7 @@ export default function AllEvent() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await apiRequest(
-        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php",
+        "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php",
       );
       
       if (response.success) {
@@ -61,16 +61,36 @@ export default function AllEvent() {
   const handleAction = async (action, id) => {
     switch (action){
       case "edit":
+        const title = prompt("Enter title");
+        const description = prompt("Enter description");
+        const date = prompt("Enter date");
+        const time = prompt("Enter time");
+        const location = prompt("Enter location");
+        const criteria = prompt("Enter criteria");
+        const eventAuthor = prompt("Enter event author");
+        const data = {
+          title,
+          description,
+          date,
+          time,
+          location,
+          criteria,
+          eventAuthor
+        }
+        const editApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php?id=${id}&status=${action}`;
+        const editResponse = await apiRequest(editApi, "POST", data);
+        if (editResponse.success) {
+          alert("Event updated successfully.");
+        }
         break;
       case "delete":
         const deletePrompt = confirm("Are you sure you want to delete this event?");
         if (!deletePrompt) {
           return;
         }
-        const deleteApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/event.php?id=${id}&status=${action}`;
+        const deleteApi = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AllEvents.php?id=${id}&status=${action}`;
         const deleteResponse = await apiRequest(deleteApi);
         if (deleteResponse.success) {
-          await fetchData();
           alert("Event removed successfully.");
         }
        break;
