@@ -84,11 +84,11 @@ export default function StudentAnnouncement() {
                           </span>
                         </div>
                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                          {values.author}
+                        {values.author}
                         </span>
                       </div>
                       <time className="text-xs text-slate-400">
-                        {values.date_posted}
+                        {values.created_at}
                       </time>
                     </footer>
                   </article>

@@ -35,10 +35,11 @@ export default function EventGrid({ events, userSession }) {
 
   const filters = [
     { id: "all", label: "All Events", icon: "explore" },
-    { id: "weekend", label: "This Weekend", icon: "calendar_today" },
     { id: "free", label: "Free", icon: "payments" },
     { id: "online", label: "Online", icon: "videocam" },
-    { id: "upcoming_events", label: "Upcoming Events", icon: "event" },
+    { id: "upcoming_week", label: "This Week", icon: "today" },
+    { id: "upcoming_this_year", label: "This Year", icon: "calendar_month" },
+    { id: "upcoming_next_year", label: "Next Year", icon: "event_upcoming" },
   ];
 
   const [fetchedEvents, setFetchedEvents] = useState([]);

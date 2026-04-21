@@ -7,6 +7,31 @@ export default function AuthAdmin({ toggleModal }) {
   const navigate = useNavigate();
   const handleDashboard = (e) => {
     e.preventDefault();
+
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const isValidEmail = emailRegex.test(email);
+    const isValidPassword = passwordRegex.test(password);
+
+
+    if (email.trim() === "") {
+      alert("Email is required");
+      return;
+    }
+    if (!isValidEmail) {
+      alert("Invalid email address");
+      return;
+    }
+    if (password.trim() === "") {
+      alert("Password is required");
+      return;
+    }
+    if (!isValidPassword) {
+      alert("Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      return;
+    }
+    
     if (email.trim() === "sacli@gmail.com" && password.trim() === "admin") {
       navigate("/dashboard");
     } else {
