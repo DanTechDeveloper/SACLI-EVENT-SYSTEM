@@ -16,7 +16,7 @@ function getAnnouncementCategoryCounts($conn) {
     return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 }
 
-function readAnnouncement($conn)
+function readAnnouncement($conn, $category)
 {
     $sql = "SELECT 
                 id, 
@@ -25,7 +25,8 @@ function readAnnouncement($conn)
                 category, 
                 DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted 
             FROM announcements 
-            WHERE status = 'approved' ORDER BY created_at DESC";
+            WHERE status = 'approved' AND category = `$category` 
+           ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
@@ -57,7 +58,12 @@ try {
     echo json_encode([
         "success" => true,
         "data" => [
-            "allAnnouncements" => readAnnouncement($conn),
+            "important" => readAnnouncement($conn, 'IMPORTANT'),
+            "reminder" => readAnnouncement($conn, 'REMINDER'),
+            "general" => readAnnouncement($conn, 'GENERAL'),
+            "event" => readAnnouncement($conn, 'EVENT'),
+            "achievement" => readAnnouncement($conn, 'ACHIEVEMENT'),
+            "emergency" => readAnnouncement($conn, 'EMERGENCY'),
             "getAnnouncementCategoryCount" => getAnnouncementCategoryCounts($conn),
             "handleAction" => handleAction($conn, $status, $id, $data),
         ]

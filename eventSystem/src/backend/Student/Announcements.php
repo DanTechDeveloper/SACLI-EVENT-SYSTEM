@@ -8,9 +8,7 @@ try {
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode([
         "success" => true,
-        "data" => [
-            "allAnnouncements" => $rows,
-        ]
+        "allAnnouncements" => $rows
     ]);
 } catch (\Throwable $th) {
     echo json_encode(["success" => false, "message" => "Error: " . $th->getMessage()]);

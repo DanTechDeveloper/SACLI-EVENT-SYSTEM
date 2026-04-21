@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/apiRequest";
+import TableAnnouncement from "../../components/Dashboard/TableAnnouncement";
+import BorderLayout from "../../layouts/BorderLayout";
+import BorderContainer from "../../components/Dashboard/BorderContainer";
+
 export default function Announcement() {
   const [data, setData] = useState(null);
 
@@ -47,29 +51,27 @@ export default function Announcement() {
   const handleAction = async (action, id) => {
     switch (action) {
       case "edit":
-        const editTitle = prompt("Enter new title:")
+        const editTitle = prompt("Enter new title:");
         if (!editTitle) return;
-        const editDescription = prompt("Enter new description:")
+        const editDescription = prompt("Enter new description:");
         if (!editDescription) return;
-        const editCategory = prompt("Enter new category:")
+        const editCategory = prompt("Enter new category:");
         if (!editCategory) return;
-        const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php?id=${id}&status=${action}`
-        const response = await apiRequest(api, 
-          "POST",
-          {
-            title: editTitle,
-            description: editDescription,
-            category: editCategory
-          }
-        )
+        const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/announcement.php?id=${id}&status=${action}`;
+        const response = await apiRequest(api, "POST", {
+          title: editTitle,
+          description: editDescription,
+          category: editCategory,
+        });
         if (response.success) {
           await fetchData();
-          alert("Announcement updated successfully!");    
-
+          alert("Announcement updated successfully!");
         }
         break;
       case "delete":
-        const deletePrompt = confirm("Are you sure you want to delete this announcement?");
+        const deletePrompt = confirm(
+          "Are you sure you want to delete this announcement?",
+        );
         if (!deletePrompt) {
           return;
         }
@@ -129,71 +131,50 @@ export default function Announcement() {
             </select>
           </div>
         </div>
-        <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 text-xs uppercase text-[#6C757D] dark:bg-slate-800 dark:text-slate-400">
-              <tr>
-                <th class="px-6 py-3 font-medium" scope="col">
-                  Title
-                </th>
-                <th class="px-6 py-3 font-medium" scope="col">
-                  Description
-                </th>
-                <th class="px-6 py-3 font-medium" scope="col">
-                  Category
-                </th>
-                <th class="px-6 py-3 font-medium" scope="col">
-                  Date Posted
-                </th>
-                <th class="px-6 py-3 text-right font-medium" scope="col">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.allAnnouncements?.length === 0 ? (
-                <tr>
-                  <td class="px-6 py-4 text-center" colspan="5">
-                    No announcements found
-                  </td>
-                </tr>
-              ) : (
-                data?.allAnnouncements?.map((value, key) => (
-                  <tr
-                    key={key}
-                    class="border-b dark:border-slate-800 text-[#212529] dark:text-white"
-                  >
-                    <td class="px-6 py-4 font-semibold">{value.title}</td>
-                    <td class="px-6 py-4">
-                      <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                        {value.description}
-                      </span>
-                    </td>
-                    <td class="px-6 py-4">{value.category}</td>
-                    <td class="px-6 py-4">
-                      <span class="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                        <span class="size-1.5 rounded-full bg-green-600"></span>
-                        {value.date_posted}
-                      </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <div class="flex items-center justify-end gap-2">
-                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-primary"
-                        onClick={() => handleAction('edit', value.id)}>
-                          <span class="material-symbols-outlined">edit</span>
-                        </button>
-                        <button class="p-1.5 text-[#6C757D] dark:text-slate-400 hover:text-red-500"
-                        onClick={() => handleAction('delete', value.id)}>
-                          <span class="material-symbols-outlined">delete</span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <BorderLayout>
+          <BorderContainer title="IMPORTANT">
+            <TableAnnouncement
+              announcements={data?.important || []}
+              emptyMessage="No important announcements found."
+              handleAction={handleAction}
+            />
+          </BorderContainer>{" "}
+          <BorderContainer title="REMINDERS">
+            <TableAnnouncement
+              announcements={data?.reminder || []}
+              emptyMessage="No reminder announcements found."
+              handleAction={handleAction}
+            />
+          </BorderContainer>{" "}
+          <BorderContainer title="GENERAL">
+            <TableAnnouncement
+              announcements={data?.general || []}
+              emptyMessage="No general announcements found."
+              handleAction={handleAction}
+            />
+          </BorderContainer>{" "}
+          <BorderContainer title="EVENTS">
+            <TableAnnouncement
+              announcements={data?.event || []}
+              emptyMessage="No events announcements found."
+              handleAction={handleAction}
+            />
+          </BorderContainer>{" "}
+          <BorderContainer title="ACHIEVEMENTS">
+            <TableAnnouncement
+              announcements={data?.achievement || []}
+              emptyMessage="No achievement announcements found."
+              handleAction={handleAction}
+            />
+          </BorderContainer>
+          <BorderContainer title="EMERGENCY">
+            <TableAnnouncement
+              announcements={data?.emergency || []}
+              emptyMessage="No emergency announcements found."
+              handleAction={handleAction}
+            />
+          </BorderContainer>
+        </BorderLayout>
       </div>
     </>
   );

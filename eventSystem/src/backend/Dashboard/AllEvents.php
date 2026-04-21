@@ -38,8 +38,29 @@ function handleAction ($conn, $status, $id, $data){
     }
 }
 
-function tableRows($conn){
-    $sql = "SELECT *, DATE_FORMAT(event_date, '%M %d, %Y') as date, TIME_FORMAT(event_time, '%h:%i %p') as time FROM events WHERE status = 'approved'";
+function ongoingEvent($conn){
+    $conn->exec("SET time_zone = '+08:00';");
+    $sql = "SELECT *, 
+                   DATE_FORMAT(event_date, '%M %d, %Y') as date, 
+                   TIME_FORMAT(event_time, '%h:%i %p') as time 
+            FROM events 
+            WHERE status = 'approved' 
+            AND event_date <= CURDATE() 
+            ORDER BY event_date DESC, event_time DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function pastEvent($conn){
+    $conn->exec("SET time_zone = '+08:00';");
+    $sql = "SELECT *, 
+                   DATE_FORMAT(event_date, '%M %d, %Y') as date, 
+                   TIME_FORMAT(event_time, '%h:%i %p') as time 
+            FROM events 
+            WHERE status = 'approved' 
+            AND event_date < CURDATE() 
+            ORDER BY event_date DESC, event_time DESC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -58,7 +79,8 @@ try {
     echo json_encode([
         "success" => true, 
         "data" => [
-            "tableRows" => tableRows($conn), 
+            "ongoingEvent" => ongoingEvent($conn), 
+            "pastEvent" => pastEvent($conn),
             "categoryCounts" => getCategoryCounts($conn),
         ]
     ]);

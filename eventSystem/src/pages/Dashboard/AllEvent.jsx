@@ -151,15 +151,15 @@ export default function AllEvent() {
         <BorderLayout>
           <BorderContainer title="Ongoing Events">
             <TableEvent
-              events={data?.tableRows}
+              events={data?.ongoingEvent}
               emptyMessage="No ongoing events."
               handleAction={handleAction}
             ></TableEvent>
           </BorderContainer>{" "}
           <BorderContainer title="Past Events">
             <TableEvent
-              events={data?.tableRows}
-              emptyMessage="No ongoing events."
+              events={data?.pastEvent}
+              emptyMessage="No past events."
               handleAction={handleAction}
             ></TableEvent>
           </BorderContainer>
