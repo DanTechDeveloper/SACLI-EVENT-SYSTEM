@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import apiRequest from "../services/apiRequest";
+import BorderContainer from "../components/Dashboard/BorderContainer";
+import BorderLayout from "../layouts/BorderLayout";
+import TableEvent from "../components/Dashboard/TableEvent";
 
 export default function UpcomingEvent() {
   const [data, setData] = useState(null);
@@ -43,74 +46,19 @@ export default function UpcomingEvent() {
   const eventsThisWeek = data?.thisWeek || [];
 
   const eventsThisMonthFiltered = (data?.thisMonth || []).filter(
-    (monthEvent) => !eventsThisWeek.some((weekEvent) => weekEvent.id === monthEvent.id)
+    (monthEvent) =>
+      !eventsThisWeek.some((weekEvent) => weekEvent.id === monthEvent.id),
   );
 
   // Combine events from this week and this month to exclude them from this year's remainder
   const allEventsUpToMonth = [...eventsThisWeek, ...eventsThisMonthFiltered];
 
   const eventsThisYearFiltered = (data?.thisYear || []).filter(
-    (yearEvent) => !allEventsUpToMonth.some((pastEvent) => pastEvent.id === yearEvent.id)
+    (yearEvent) =>
+      !allEventsUpToMonth.some((pastEvent) => pastEvent.id === yearEvent.id),
   );
 
-  // REUSABLE TABLE RENDERER
-  const renderEventTable = (events, emptyMessage) => {
-    return (
-      <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead className="bg-slate-50 dark:bg-slate-800/50">
-            <tr>
-              <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest" scope="col">Title</th>
-              <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest" scope="col">Category</th>
-              <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest" scope="col">Event Date</th>
-              <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest" scope="col">Event Time</th>
-              <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest" scope="col">Criteria</th>
-              <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-right" scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-            {!events || events.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400 italic">
-                  {emptyMessage}
-                </td>
-              </tr>
-            ) : (
-              events.map((event, key) => (
-                <tr key={key} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="font-semibold text-slate-900 dark:text-slate-100">{event.title}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                      {event.category}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-slate-600 dark:text-slate-300">{event.date}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                      <span className="size-1.5 rounded-full bg-green-600"></span>
-                      {event.time}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
-                    {event.criteria}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    {/* Actions placeholder to match thead */}
-                    <div className="flex justify-end gap-2 text-slate-400 italic text-xs">View Only</div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
+ 
   return (
     <>
       <div className="flex flex-col gap-8">
@@ -157,32 +105,17 @@ export default function UpcomingEvent() {
             </select>
           </div>
         </div>
-        <div className="flex flex-col gap-12 w-full py-4">
-          <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <h4 className="text-lg font-bold text-primary dark:text-white">
-                Happening This Week
-              </h4>
-            </div>
-            {renderEventTable(eventsThisWeek, "No upcoming events scheduled for this week.")}
-          </section>{" "}
-          <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <h4 className="text-lg font-bold text-primary dark:text-white">
-                Upcoming This Month
-              </h4>
-            </div>
-            {renderEventTable(eventsThisMonthFiltered, "There are no events planned for the rest of this month.")}
-          </section>
-          <section className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <h4 className="text-lg font-bold text-primary dark:text-white">
-                Upcoming Events Next Year
-              </h4>
-            </div>
-            {renderEventTable(eventsThisYearFiltered, "No more events found for next year.")}
-          </section>
-        </div>
+        <BorderLayout>
+          <BorderContainer title="Happening This Week">
+            <TableEvent events={eventsThisWeek} emptyMessage="No events found for this week."/>
+          </BorderContainer>{" "}
+          <BorderContainer title="Upcoming This Month">
+            <TableEvent events={eventsThisMonthFiltered} emptyMessage="No events found for this month."></TableEvent>
+          </BorderContainer>
+          <BorderContainer title="Upcoming Events Next Year">
+            <TableEvent events={eventsThisYearFiltered} emptyMessage="No events found for this year."/>
+          </BorderContainer>
+        </BorderLayout>
       </div>
     </>
   );
