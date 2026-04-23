@@ -40,7 +40,7 @@ export default function EventGrid({ events, userSession }) {
     { id: "free", label: "Free", icon: "payments" },
     { id: "online", label: "Online", icon: "videocam" },
     { id: "upcoming_week", label: "This Week", icon: "today" },
-    { id: "upcoming_this_year", label: "This Year", icon: "calendar_month" },
+    { id: "upcoming_this_year", label: "This Month", icon: "calendar_month" },
     { id: "upcoming_next_year", label: "Next Year", icon: "event_upcoming" },
   ];
 
@@ -50,7 +50,6 @@ export default function EventGrid({ events, userSession }) {
     if (events?.tableRows) {
       setFetchedEvents(events.tableRows);
     }
-    console.log(fetchedEvents);
 }, [events]);
 
   const handleFilterClick = async (filterId) => {
@@ -133,7 +132,7 @@ export default function EventGrid({ events, userSession }) {
                       schedule
                     </span>
                     <span>
-                      {event.date} • {event.time}
+                      {event.date} • {event.time} - {event.time_end}
                     </span>
                   </div>
                   <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm">
@@ -145,9 +144,10 @@ export default function EventGrid({ events, userSession }) {
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                   <button
-                    onClick={() => toggleModal(event)}
+                    onClick={() => {navigate('/viewDetails', {state: {event}})}}
                     class="text-sm font-semibold text-primary hover:underline"
                   >
+                    
                     View Details
                   </button>
                   <button
@@ -156,14 +156,20 @@ export default function EventGrid({ events, userSession }) {
                         state: { event, userSession },
                       })
                     }
-                    disabled={event.joined}
+                    disabled={
+                      event.timing_status === "Past" || event.joined
+                    }
                     class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
-                      event.joined
+                      event.joined || event.timing_status === "Past"
                         ? "bg-green-500 text-white cursor-not-allowed opacity-80"
                         : "bg-primary text-white hover:brightness-110 active:scale-95"
                     }`}
                   >
-                    {event.joined ? "Registered" : "Register"}
+                    {event.timing_status === "Past"
+                      ? "Event Ended"
+                      : event.joined
+                        ? "Registered"
+                        : "Register"}
                   </button>
                 </div>
               </div>
@@ -172,12 +178,7 @@ export default function EventGrid({ events, userSession }) {
       )}
       </div>
 
-      {isModalOpen && (
-        <ModalEventDescription
-          event={selectedEventDetails}
-          toggleModal={toggleModal}
-        />
-      )}
+     
     </>
   );
 }

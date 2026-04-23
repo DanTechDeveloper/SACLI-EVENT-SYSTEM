@@ -154,7 +154,9 @@ export default function AllEvent() {
               events={data?.ongoingEvent}
               emptyMessage="No ongoing events."
               handleAction={handleAction}
-            ></TableEvent>
+            >
+              
+            </TableEvent>
           </BorderContainer>{" "}
           <BorderContainer title="Past Events">
             <TableEvent

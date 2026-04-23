@@ -42,7 +42,8 @@ function ongoingEvent($conn){
     $conn->exec("SET time_zone = '+08:00';");
     $sql = "SELECT *, 
                    DATE_FORMAT(event_date, '%M %d, %Y') as date, 
-                   TIME_FORMAT(event_time, '%h:%i %p') as time 
+                   TIME_FORMAT(event_time, '%h:%i %p') as time,
+                   TIME_FORMAT(event_time_end, '%h:%i %p') as time_end 
             FROM events 
             WHERE status = 'approved' 
             AND event_date <= CURDATE() 
@@ -56,7 +57,8 @@ function pastEvent($conn){
     $conn->exec("SET time_zone = '+08:00';");
     $sql = "SELECT *, 
                    DATE_FORMAT(event_date, '%M %d, %Y') as date, 
-                   TIME_FORMAT(event_time, '%h:%i %p') as time 
+                   TIME_FORMAT(event_time, '%h:%i %p') as time,
+                   TIME_FORMAT(event_time_end, '%h:%i %p') as time_end 
             FROM events 
             WHERE status = 'approved' 
             AND event_date < CURDATE() 

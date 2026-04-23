@@ -71,7 +71,7 @@ export default function EventRegistration() {
             <span class="hidden sm:inline text-slate-300">|</span>
             <div class="flex items-center gap-1.5">
               <span class="material-symbols-outlined text-lg">schedule</span>
-              <span>{event?.time}</span>
+              <span>{event?.time} - {event?.time_end}</span>
             </div>
             <span class="hidden sm:inline text-slate-300">|</span>
             <div class="flex items-center gap-1.5">

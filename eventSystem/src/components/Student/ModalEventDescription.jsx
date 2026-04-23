@@ -1,10 +1,15 @@
-export default function ModalEventDescription({ event, toggleModal }) {
+import {useEffect} from "react";
+export default function ModalEventDescription({ event, toggleModal}) {  
+
+
+  
+
   return (
     <div class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center p-4">
       {/* <!-- Modal Overlay --> */}
       <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         {/* <!-- Modal Container --> */}
-        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
           {/* <!-- Header --> */}
           <header class="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
             <div class="flex items-center gap-3">
@@ -50,7 +55,7 @@ export default function ModalEventDescription({ event, toggleModal }) {
                     Time
                   </p>
                   <p class="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                    {event?.time}
+                    {event?.time} - {event?.time_end}
                   </p>
                 </div>
               </div>

@@ -15,6 +15,7 @@ try {
             criteria,
             DATE_FORMAT(event_date, '%M %d, %Y') AS date, 
             TIME_FORMAT(event_time, '%h:%i %p') AS time,
+            TIME_FORMAT(event_time_end, '%h:%i %p') AS time_end,
             event_date,
             event_time
         FROM events
