@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ViewDetails() {
@@ -6,6 +6,39 @@ export default function ViewDetails() {
   const event = location.state?.event;
   const userSession = location.state?.userSession;
   const navigate = useNavigate();
+  const [currentState, setCurrentState] = useState(false);
+
+  // Enhanced hardcoded reviews data
+  const reviews = [
+    {
+      id: 0,
+      name: userSession?.fullName || "Guest User",
+      isUser: true,
+      rating: 5,
+      date: "Just now",
+      comment: "I'm really looking forward to attending this! The topics covered seem very relevant to my current studies.",
+      initials: userSession?.fullName?.split(" ").map(n => n[0]).join("") || "GU",
+      color: "bg-primary"
+    },
+    {
+      id: 1,
+      name: "Sarah Jenkins",
+      rating: 5,
+      date: "2 days ago",
+      comment: "Absolutely incredible experience! The organization was top-notch and the venue was perfect for this kind of event.",
+      initials: "SJ",
+      color: "bg-blue-500"
+    },
+    {
+      id: 2,
+      name: "Marcus Rivera",
+      rating: 4,
+      date: "1 week ago",
+      comment: "Great atmosphere and very informative. Only minor issue was the seating arrangement, but overall well worth it.",
+      initials: "MR",
+      color: "bg-emerald-500"
+    }
+  ];
 
   if (!event) {
     return (
@@ -54,9 +87,7 @@ export default function ViewDetails() {
                 {event.date}
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl Organized by: Admin
-￼
-font-black text-white mb-4 drop-shadow-lg">
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 drop-shadow-lg">
               {event.title}
             </h1>
             <div className="flex flex-wrap items-center gap-6 text-white/90">
@@ -92,17 +123,110 @@ font-black text-white mb-4 drop-shadow-lg">
 
             <section className="space-y-8" id="reviews">
               <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-6">
-                <div>
+                <div className="flex flex-col gap-1">
                   <h2 className="text-2xl font-bold">
                     Community Reviews
                   </h2>
+                  <div className="flex items-center gap-2 text-sm text-slate-500">
+                    <div className="flex text-amber-400">
+                      <span className="material-symbols-outlined text-sm">star</span>
+                      <span className="material-symbols-outlined text-sm">star</span>
+                      <span className="material-symbols-outlined text-sm">star</span>
+                      <span className="material-symbols-outlined text-sm">star</span>
+                      <span className="material-symbols-outlined text-sm">star_half</span>
+                    </div>
+                    <span>4.5 Average Rating (12 reviews)</span>
+                  </div>
+                </div>
+                <button 
+                disabled={(Number(event.joined) === 1) ? true : false}
+                type="button" className={`bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-primary/90 transition-all ${(Number(event.joined) !== 1 ) && "opacity-50 cursor-not-allowed"}`}>Add Review</button>
+              </div>
+
+              {/* Review Feed */}
+              <div className="space-y-6">
+                {reviews.length > 0 ? (
+                  reviews.map((review) => (
+                    <div 
+                      key={review.id} 
+                      className={`bg-white dark:bg-slate-900/50 p-6 rounded-2xl border shadow-sm transition-all hover:shadow-md ${
+                        review.isUser ? "border-primary/30 bg-primary/5" : "border-slate-100 dark:border-slate-800"
+                      }`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={`w-12 h-12 rounded-full ${review.color} flex items-center justify-center text-white font-bold shrink-0`}>
+                          {review.initials}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-bold text-slate-900 dark:text-white">{review.name}</h4>
+                              {review.isUser && (
+                                <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full uppercase font-black">You</span>
+                              )}
+                            </div>
+                            <span className="text-xs text-slate-400">{review.date}</span>
+                          </div>
+                          <div className="flex gap-0.5 mb-3">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className={`material-symbols-outlined text-sm ${i < review.rating ? 'text-amber-400' : 'text-slate-300'}`}>
+                                star
+                              </span>
+                            ))}
+                          </div>
+                          <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            {review.comment}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-12 bg-slate-50 dark:bg-slate-800/20 rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
+                    <p className="text-slate-500">No reviews yet. Be the first to share your experience!</p>
+                  </div>
+                )}
+              </div>
+
+            </section>
+                    {/* Leave a Thought Section */}
+              <div className="bg-slate-50 dark:bg-slate-900/30 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 mt-12">
+                <h3 className="text-xl font-bold mb-6">Leave your thoughts</h3>
+                <div className="space-y-6">
+                  <div>
+                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider block mb-3">
+                      Your Rating
+                    </label>
+                    <div className="flex gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          // key={star}
+                          type="button"
+                          // onClick={() => setRating(star)}
+                          className="focus:outline-none transition-transform active:scale-90"
+                        >
+                          
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate-500 uppercase tracking-wider block">
+                      Comment
+                    </label>
+                    <textarea
+                      className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-2xl p-4 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all min-h-[120px] text-slate-700 dark:text-slate-200"
+                      placeholder="What did you think about the event?"
+                      
+                    ></textarea>
+                  </div>
+
+                  <button className="px-8 py-3 bg-primary text-white rounded-full font-bold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95">
+                    Post Review
+                  </button>
                 </div>
               </div>
-              <div className="text-center py-10 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-                <span className="material-symbols-outlined text-4xl text-slate-400 mb-2">rate_review</span>
-                <p className="text-slate-500">Reviews for this event will appear after it concludes.</p>
-              </div>
-            </section>
           </div>
 
           <div className="lg:col-span-1">
@@ -130,17 +254,17 @@ font-black text-white mb-4 drop-shadow-lg">
 
                 <button
                   onClick={() => navigate(`/eventRegistration`, { state: { event, userSession } })}
-                  disabled={event.timing_status === "Past" || event.joined}
+                  disabled={event.timing_status === "Past" || Number(event.joined) === 1}
                   className={`w-full py-4 rounded-full font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg ${
-                    event.joined || event.timing_status === "Past"
+                    Number(event.joined) === 1 || event.timing_status === "Past"
                       ? "bg-slate-200 text-slate-500 cursor-not-allowed shadow-none"
                       : "bg-primary text-white hover:bg-primary/90 hover:shadow-primary/30"
                   }`}
                 >
                   <span className="material-symbols-outlined">
-                    {event.joined ? "task_alt" : "how_to_reg"}
+                    {Number(event.joined) === 1 ? "task_alt" : "how_to_reg"}
                   </span>
-                  {event.timing_status === "Past" ? "Event Ended" : event.joined ? "Already Registered" : "Register Now"}
+                  {event.timing_status === "Past" ? "Event Ended" : Number(event.joined) === 1 ? "Already Registered" : "Register Now"}
                 </button>
               </div>
 

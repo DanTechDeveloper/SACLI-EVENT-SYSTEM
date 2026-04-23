@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import ModalEventDescription from "./ModalEventDescription";
 import { useState, useEffect } from "react";
 export default function EventGrid({ events, userSession }) {
   const categoryColors = {
@@ -18,10 +17,6 @@ export default function EventGrid({ events, userSession }) {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasBeenSelected, setHasBeenSelected] = useState(null);
-  const toggleModal = (event) => {
-    setIsModalOpen(!isModalOpen);
-    if (event) setHasBeenSelected(event.id);
-  };
 
   const selectedEventDetails = events?.tableRows.find(
     (event) => event.id === hasBeenSelected,
@@ -157,17 +152,17 @@ export default function EventGrid({ events, userSession }) {
                       })
                     }
                     disabled={
-                      event.timing_status === "Past" || event.joined
+                      event.timing_status === "Past" || Number(event.joined) === 1
                     }
                     class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
-                      event.joined || event.timing_status === "Past"
+                      Number(event.joined) === 1 || event.timing_status === "Past"
                         ? "bg-green-500 text-white cursor-not-allowed opacity-80"
                         : "bg-primary text-white hover:brightness-110 active:scale-95"
                     }`}
                   >
                     {event.timing_status === "Past"
                       ? "Event Ended"
-                      : event.joined
+                      : Number(event.joined) === 1
                         ? "Registered"
                         : "Register"}
                   </button>
