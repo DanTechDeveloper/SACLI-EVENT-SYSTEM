@@ -16,6 +16,13 @@ export default function DashSidebar() {
     },
     {
       type: "section",
+      label: "Approval Management",
+      items: [
+        { label: "Event Approvals", icon: "event_available", path: "/eventApprovals" },
+        { label: "Announcement Approvals", icon: "campaign", path: "/announcementApprovals" },
+      ],
+    }, {
+      type: "section",
       label: "Events Management",
       items: [
         { label: "All Events", icon: "calendar_month", path: "/events" },

@@ -24,13 +24,14 @@ try {
         $criteria = $data['criteria'];
         $location = $data['location'];
         $dateAndTimeConvert = convertDateAndTime($data['date'], $data['time']);
+        $timeEndConvert = convertDateAndTime($data['date'], $data['timeEnd']);
         $author = $data['author'];
         
         // The user ID who created this event (assuming your table has a created_by column)
         $created_by = $_SESSION['user_id'];
 
-        $sql = "INSERT INTO events (title, description, category, event_date, event_time, criteria, location, event_author) 
-                VALUES (:title, :description, :category, :event_date, :event_time, :criteria, :location, :event_author)";
+        $sql = "INSERT INTO events (title, description, category, event_date, event_time, event_time_end, criteria, location, event_author) 
+                VALUES (:title, :description, :category, :event_date, :event_time, :event_time_end, :criteria, :location, :event_author)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":title", $title);
@@ -41,6 +42,7 @@ try {
         $stmt->bindValue(":criteria", $criteria);
         $stmt->bindValue(":location", $location);
         $stmt->bindValue(":event_author", $author);
+        $stmt->bindValue(":event_time_end", $timeEndConvert->format('H:i:s'));
     $stmt->execute();
 
         echo json_encode(["success" => true, "message" => "Event created successfully"]);

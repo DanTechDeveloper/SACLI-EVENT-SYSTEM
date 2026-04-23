@@ -25,9 +25,10 @@ function readAnnouncement($conn, $category)
                 category, 
                 DATE_FORMAT(created_at, '%M %d, %Y %h:%i %p') AS date_posted 
             FROM announcements 
-            WHERE status = 'approved' AND category = `$category` 
+            WHERE status = 'approved' AND category = :category
            ORDER BY created_at DESC";
     $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':category', $category);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
 }

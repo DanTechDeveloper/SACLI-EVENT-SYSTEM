@@ -13,6 +13,7 @@ export default function AddNewEvent() {
   const [author, setAuthor] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [timeEnd, setTimeEnd] = useState("");
   const navigate = useNavigate();
   
   // Get today's date in YYYY-MM-DD format for comparison and 'min' attribute
@@ -33,6 +34,7 @@ export default function AddNewEvent() {
       validationErrors.date = "Event date cannot be in the past.";
     }
     if (!time) validationErrors.time = "Time is required.";
+    if (!timeEnd) validationErrors.timeEnd = "Time end is required.";
     if (!criteria) validationErrors.criteria = "Criteria is required.";
     if (!location.trim()) validationErrors.location = "Location is required.";
     if (!author.trim()) validationErrors.author = "Author is required.";
@@ -53,8 +55,11 @@ export default function AddNewEvent() {
         time,
         criteria,
         location,
-        author
+        author,
+        timeEnd
       };
+
+      console.table(formData);
 
       const response = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewEvent.php",
@@ -144,7 +149,7 @@ export default function AddNewEvent() {
             </div>
 
             {/* <!-- Date and Time --> */}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <label
                   for="category"
@@ -200,7 +205,7 @@ export default function AddNewEvent() {
                   for="event_time"
                   class="block text-sm font-medium text-gray-700 dark:text-slate-300"
                 >
-                  Event Time
+                  Event Time Start
                 </label>
                 <input
                   required
@@ -210,6 +215,24 @@ export default function AddNewEvent() {
                   class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
+                />
+                {errors.time && <p class="mt-1 text-xs text-red-500 font-medium">{errors.time}</p>}
+              </div> 
+              <div>
+                <label
+                  for="event_time_end"
+                  class="block text-sm font-medium text-gray-700 dark:text-slate-300"
+                >
+                  Event Time End
+                </label>
+                <input
+                  required
+                  type="time"
+                  id="time"
+                  name="timeEnd"
+                  class="mt-1 block w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:border-primary focus:ring-primary"
+                  value={timeEnd}
+                  onChange={(e) => setTimeEnd(e.target.value)}
                 />
                 {errors.time && <p class="mt-1 text-xs text-red-500 font-medium">{errors.time}</p>}
               </div>

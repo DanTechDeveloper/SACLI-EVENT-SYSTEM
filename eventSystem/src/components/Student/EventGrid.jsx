@@ -35,6 +35,8 @@ export default function EventGrid({ events, userSession }) {
 
   const filters = [
     { id: "all", label: "All Events", icon: "explore" },
+    { id: "ongoingEvents", label: "Ongoing Events", icon: "timer" },
+    { id: "pastEvents", label: "Past Events", icon: "history" },
     { id: "free", label: "Free", icon: "payments" },
     { id: "online", label: "Online", icon: "videocam" },
     { id: "upcoming_week", label: "This Week", icon: "today" },
@@ -48,6 +50,7 @@ export default function EventGrid({ events, userSession }) {
     if (events?.tableRows) {
       setFetchedEvents(events.tableRows);
     }
+    console.log(fetchedEvents);
 }, [events]);
 
   const handleFilterClick = async (filterId) => {
@@ -88,12 +91,16 @@ export default function EventGrid({ events, userSession }) {
           </div>
         </div>
       </section>
+      <div>
+        
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        
         {fetchedEvents && (
           fetchedEvents.map((event, index) => (
             <div
-              key={index}
-              class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"
+            key={index}
+            class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"
             >
               <div class="relative aspect-video overflow-hidden">
                 <img

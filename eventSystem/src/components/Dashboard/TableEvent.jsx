@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import apiRequest from "../../services/apiRequest";
-export default function TableEvent({events, emptyMessage, handleAction}) {
+export default function TableEvent({events, emptyMessage, handleAction,}) {
     return (
       <div className="overflow-x-auto">
         <table className="w-full text-left">
