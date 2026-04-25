@@ -189,9 +189,9 @@ export default function ViewDetails() {
                   </div>
                 </div>
                 <button
-                  disabled={Number(event.joined) === 1 ? true : false}
+                  disabled={event.joined === "joined"}
                   type="button"
-                  className={`bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-primary/90 transition-all ${Number(event.joined) !== 1 && "opacity-50 cursor-not-allowed"}`}
+                  className={`bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-primary/90 transition-all ${event.joined !== "joined" && "opacity-50 cursor-not-allowed"}`}
                 >
                   Add Review
                 </button>
@@ -337,20 +337,20 @@ export default function ViewDetails() {
                     })
                   }
                   disabled={
-                    event.timing_status === "Past" || Number(event.joined) === 1
+                    event.timing_status === "Past" || event.joined === "joined"
                   }
                   className={`w-full py-4 rounded-full font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-2 shadow-lg ${
-                    Number(event.joined) === 1 || event.timing_status === "Past"
+                    event.joined === "joined" || event.timing_status === "Past"
                       ? "bg-slate-200 text-slate-500 cursor-not-allowed shadow-none"
                       : "bg-primary text-white hover:bg-primary/90 hover:shadow-primary/30"
                   }`}
                 >
                   <span className="material-symbols-outlined">
-                    {Number(event.joined) === 1 ? "task_alt" : "how_to_reg"}
+                    {event.joined === "joined" ? "task_alt" : "how_to_reg"}
                   </span>
                   {event.timing_status === "Past"
                     ? "Event Ended"
-                    : Number(event.joined) === 1
+                    : event.joined === "joined"
                       ? "Already Registered"
                       : "Register Now"}
                 </button>

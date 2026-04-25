@@ -152,17 +152,17 @@ export default function EventGrid({ events, userSession }) {
                       })
                     }
                     disabled={
-                      event.timing_status === "Past" || Number(event.joined) === 1
+                      event.timing_status === "Past" || event.joined === "joined"
                     }
                     class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
-                      Number(event.joined) === 1 || event.timing_status === "Past"
+                      event.joined === "joined" || event.timing_status === "Past"
                         ? "bg-green-500 text-white cursor-not-allowed opacity-80"
                         : "bg-primary text-white hover:brightness-110 active:scale-95"
                     }`}
                   >
                     {event.timing_status === "Past"
                       ? "Event Ended"
-                      : Number(event.joined) === 1
+                      : event.joined === "joined"
                         ? "Registered"
                         : "Register"}
                   </button>

@@ -25,19 +25,13 @@ try {
     TIME_FORMAT(e.event_time_end, '%h:%i %p') AS time_end,
     e.criteria,
     e.location,
-    eu.id AS event_participant_id,
-
-    CASE 
-        WHEN eu.id IS NULL THEN 0 
-        ELSE 1 
-    END AS joined,
-
+    e.event_author,
+    eu.status AS joined,
     CASE 
         WHEN e.event_date < CURDATE() THEN 'Past'
         WHEN e.event_date = CURDATE() THEN 'Ongoing'
         ELSE 'Upcoming'
     END AS timing_status
-
 FROM events e
 LEFT JOIN event_participants eu
     ON e.id = eu.event_id

@@ -30,7 +30,7 @@ try {
     }
 
     // INSERT action para maging "Joined" ang status
-    $sql = "INSERT INTO event_participants (event_id, student_id) VALUES (:event_id, :student_id)";
+    $sql = "INSERT INTO event_participants (event_id, student_id, status) VALUES (:event_id, :student_id, 'joined')";
     $stmt = $conn->prepare($sql);
     $stmt->execute([':event_id' => $event_id, ':student_id' => $student_id]);
 
