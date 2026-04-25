@@ -15,7 +15,7 @@ try {
     $conn->exec("SET time_zone = '+08:00';");
 
     $sql = "
-        SELECT 
+     SELECT 
     e.id,
     e.title,
     e.description,
@@ -25,21 +25,24 @@ try {
     TIME_FORMAT(e.event_time_end, '%h:%i %p') AS time_end,
     e.criteria,
     e.location,
+    eu.id AS event_participant_id,
+
     CASE 
-        WHEN eu.event_id IS NULL THEN 0 
+        WHEN eu.id IS NULL THEN 0 
         ELSE 1 
     END AS joined,
+
     CASE 
         WHEN e.event_date < CURDATE() THEN 'Past'
         WHEN e.event_date = CURDATE() THEN 'Ongoing'
         ELSE 'Upcoming'
     END AS timing_status
+
 FROM events e
 LEFT JOIN event_participants eu
     ON e.id = eu.event_id
    AND eu.student_id = :student_id
-WHERE e.status = 'approved'
-    ";
+WHERE e.status = 'approved'";
     // Handle the specific "Upcoming Events" filter temporal logic
     if ($filter === 'upcoming_week') {
         // Tomorrow → end of current week (Sunday)
