@@ -27,6 +27,7 @@ try {
     e.location,
     e.event_author,
     eu.status AS joined,
+    eu.id AS participation_id,
     CASE 
         WHEN e.event_date < CURDATE() THEN 'Past'
         WHEN e.event_date = CURDATE() THEN 'Ongoing'
@@ -43,7 +44,7 @@ WHERE e.status = 'approved'";
         $sql .= " AND e.event_date BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY)
                   AND DATE_ADD(CURDATE(), INTERVAL (8 - DAYOFWEEK(CURDATE())) % 7 DAY) ";
     } elseif ($filter === 'upcoming_this_year') {
-        // After this week → end of current year
+        // After this week → Pnd of current year
         $sql .= " AND e.event_date > DATE_ADD(CURDATE(), INTERVAL (8 - DAYOFWEEK(CURDATE())) % 7 DAY)
                   AND YEAR(e.event_date) = YEAR(CURDATE()) ";
     } elseif ($filter === 'upcoming_next_year') {

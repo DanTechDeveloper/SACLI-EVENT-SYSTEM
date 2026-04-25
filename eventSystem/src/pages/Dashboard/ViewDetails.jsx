@@ -7,11 +7,10 @@ export default function ViewDetails() {
   const event = location.state?.event;
   const userSession = location.state?.userSession;
   const navigate = useNavigate();
-  const [currentState, setCurrentState] = useState(false);
   const [commentData, setCommentData] = useState([]);
   const [userComment,setUserComment] = useState("");
 
-  console.log(userComment);
+  console.log(event);
 
   // Enhanced hardcoded reviews data
   const reviews = [
@@ -58,8 +57,7 @@ export default function ViewDetails() {
       "POST",
       {
         comment: userComment,
-        event_id: event.id,
-        student_id: userSession.id,
+        participation_id: event.participation_id,
       }
     );
     if (response.success) {
@@ -81,8 +79,7 @@ export default function ViewDetails() {
   }
 
   const fetchComments = async () => {
-    const api =
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php";
+    const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?event_id=${event.id}`;
     const response = await apiRequest(api, "GET");
     if (response.success) {
       setCommentData(response.data.tableRows);

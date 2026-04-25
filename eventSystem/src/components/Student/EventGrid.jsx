@@ -18,10 +18,6 @@ export default function EventGrid({ events, userSession }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasBeenSelected, setHasBeenSelected] = useState(null);
 
-  const selectedEventDetails = events?.tableRows.find(
-    (event) => event.id === hasBeenSelected,
-  ); // Replace with actual selected event logic
-
   const [activeFilter, setActiveFilter] = useState("all");
   const activeClass =
     "px-5 py-2.5 rounded-xl bg-primary text-white font-medium shadow-lg shadow-primary/20 flex items-center gap-2 transition-all";
@@ -46,6 +42,7 @@ export default function EventGrid({ events, userSession }) {
       setFetchedEvents(events.tableRows);
     }
 }, [events]);
+
 
   const handleFilterClick = async (filterId) => {
     setActiveFilter(filterId);
