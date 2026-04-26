@@ -10,48 +10,14 @@ export default function ViewDetails() {
   const [commentData, setCommentData] = useState([]);
   const [userComment,setUserComment] = useState("");
 
-  console.log(event);
-
-  // Enhanced hardcoded reviews data
-  const reviews = [
-    {
-      id: 0,
-      name: userSession?.fullName || "Guest User",
-      isUser: true,
-      rating: 5,
-      date: "Just now",
-      comment:
-        "I'm really looking forward to attending this! The topics covered seem very relevant to my current studies.",
-      initials:
-        userSession?.fullName
-          ?.split(" ")
-          .map((n) => n[0])
-          .join("") || "GU",
-      color: "bg-primary",
-    },
-    {
-      id: 1,
-      name: "Sarah Jenkins",
-      rating: 5,
-      date: "2 days ago",
-      comment:
-        "Absolutely incredible experience! The organization was top-notch and the venue was perfect for this kind of event.",
-      initials: "SJ",
-      color: "bg-blue-500",
-    },
-    {
-      id: 2,
-      name: "Marcus Rivera",
-      rating: 4,
-      date: "1 week ago",
-      comment:
-        "Great atmosphere and very informative. Only minor issue was the seating arrangement, but overall well worth it.",
-      initials: "MR",
-      color: "bg-emerald-500",
-    },
-  ];
+  useEffect(() => {
+    if (event?.id) {
+      fetchComments();
+    }
+  }, [event?.id]);
 
   const addComment = async () => {
+    if (!userComment.trim()) return;
     const response = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php",
       "POST",
@@ -61,7 +27,8 @@ export default function ViewDetails() {
       }
     );
     if (response.success) {
-      alert("Saksesful");
+      setUserComment("");
+      fetchComments();
     } else {
       console.log(response.message);
     }
@@ -84,10 +51,9 @@ export default function ViewDetails() {
     const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?event_id=${event.id}`;
     const response = await apiRequest(api, "GET");
     if (response.success) {
-      setCommentData(response.data.tableRows);
+      setCommentData(response.commentData);
     }
   };
-  console.table(event);
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-slate-100">
       {/* <!-- Top Navigation Bar --> */}
@@ -198,50 +164,50 @@ export default function ViewDetails() {
 
               {/* Review Feed */}
               <div className="space-y-6">
-                {reviews.length > 0 ? (
-                  reviews.map((review) => (
+                {commentData.length > 0 ? (
+                  commentData.map((comment, index) => (
                     <div
-                      key={review.id}
+                      key={index}
                       className={`bg-white dark:bg-slate-900/50 p-6 rounded-2xl border shadow-sm transition-all hover:shadow-md ${
-                        review.isUser
+                        comment.user_id === userSession?.id
                           ? "border-primary/30 bg-primary/5"
                           : "border-slate-100 dark:border-slate-800"
                       }`}
                     >
                       <div className="flex items-start gap-4">
                         <div
-                          className={`w-12 h-12 rounded-full ${review.color} flex items-center justify-center text-white font-bold shrink-0`}
+                          className={`w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold shrink-0`}
                         >
-                          {review.initials}
+                          {comment.full_name?.split(" ").map(n => n[0]).join("").toUpperCase()}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
                               <h4 className="font-bold text-slate-900 dark:text-white">
-                                {review.name}
+                                {comment.full_name}
                               </h4>
-                              {review.isUser && (
+                              {comment.user_id === userSession?.id && (
                                 <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full uppercase font-black">
                                   You
                                 </span>
                               )}
                             </div>
                             <span className="text-xs text-slate-400">
-                              {review.date}
+                              {new Date(comment.created_at).toLocaleDateString()}
                             </span>
                           </div>
                           <div className="flex gap-0.5 mb-3">
                             {[...Array(5)].map((_, i) => (
                               <span
                                 key={i}
-                                className={`material-symbols-outlined text-sm ${i < review.rating ? "text-amber-400" : "text-slate-300"}`}
+                                className={`material-symbols-outlined text-sm ${i < 5 ? "text-amber-400" : "text-slate-300"}`}
                               >
                                 star
                               </span>
                             ))}
                           </div>
                           <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                            {review.comment}
+                            {comment.comment_description}
                           </p>
                         </div>
                       </div>

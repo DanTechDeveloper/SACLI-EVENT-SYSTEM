@@ -27,8 +27,22 @@ try {
             ':comment_description' => $comment_description,
         ]);
         echo json_encode(["success" => true, "message" => "Comment posted successfully."]);
-    }
+    } else if ($method === 'GET') {
+$event_id = $_GET['event_id'];
+        $sql = "SELECT 
+    u.fullName, 
+    c.comment_description, 
+    u.id
+FROM users_comment c
+JOIN event_participants ep ON c.event_participant_id = ep.id
+JOIN students u ON ep.student_id = u.id
+WHERE ep.event_id = :event_id";
 
+$stmt = $conn->prepare($sql);
+$stmt->execute(['event_id' => $event_id]);
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo json_encode(["success" => true, "commentData" => $result]);
+    }
 } catch (\Throwable $th) {
     echo json_encode(["success" => false, "message" => $th->getMessage()]);
 }
