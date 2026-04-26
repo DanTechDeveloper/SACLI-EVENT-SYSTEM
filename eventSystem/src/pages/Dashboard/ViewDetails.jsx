@@ -56,12 +56,14 @@ export default function ViewDetails() {
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php",
       "POST",
       {
-        comment: userComment,
+        comment_description: userComment,
         participation_id: event.participation_id,
       }
     );
     if (response.success) {
-      setCommentData(response.data.tableRows);
+      alert("Saksesful");
+    } else {
+      console.log(response.message);
     }
   };
 

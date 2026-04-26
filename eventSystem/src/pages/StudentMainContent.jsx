@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import StudentHeader from "../components/Student/StudentHeader";
-import EventFilter from "../components/Student/EventFilter";
 import EventGrid from "../components/Student/EventGrid";
 
 export default function StudentMainContent() {
