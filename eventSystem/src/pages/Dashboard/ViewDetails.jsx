@@ -48,7 +48,7 @@ export default function ViewDetails() {
   }
 
   const fetchComments = async () => {
-    const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?event_id=${event.id}`;
+    const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?participation_id=${event.participation_id}`;
     const response = await apiRequest(api, "GET");
     if (response.success) {
       setCommentData(response.commentData);
@@ -178,13 +178,12 @@ export default function ViewDetails() {
                         <div
                           className={`w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold shrink-0`}
                         >
-                          {comment.full_name?.split(" ").map(n => n[0]).join("").toUpperCase()}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center gap-2">
                               <h4 className="font-bold text-slate-900 dark:text-white">
-                                {comment.full_name}
+                                {comment.fullName}
                               </h4>
                               {comment.user_id === userSession?.id && (
                                 <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full uppercase font-black">
@@ -193,7 +192,7 @@ export default function ViewDetails() {
                               )}
                             </div>
                             <span className="text-xs text-slate-400">
-                              {new Date(comment.created_at).toLocaleDateString()}
+                              {comment.created_at}
                             </span>
                           </div>
                           <div className="flex gap-0.5 mb-3">
