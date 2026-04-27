@@ -63,9 +63,9 @@ try {
         ]);
         echo json_encode(["success" => true, "message" => "Comment posted successfully."]);
     } else if ($method === 'GET') {
-        $participation_id = $_GET['participation_id'] ?? null;
-        if (!$participation_id) {
-            echo json_encode(["success" => false, "message" => "Participation ID is required."]);
+        $event_id = $_GET['event_id'] ?? null;
+        if (!$event_id) {
+            echo json_encode(["success" => false, "message" => "Event ID is required."]);
             exit;
         }
 
@@ -76,10 +76,10 @@ try {
 FROM users_comment c
 JOIN event_participants ep ON c.event_participant_id = ep.id
 JOIN students s ON ep.student_id = s.id
-WHERE c.event_participant_id = :participation_id";
+WHERE ep.event_id = :event_id";
 
 $stmt = $conn->prepare($sql);
-$stmt->execute(['participation_id' => $participation_id]);
+$stmt->execute(['event_id' => $event_id]);
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($result as &$row) {

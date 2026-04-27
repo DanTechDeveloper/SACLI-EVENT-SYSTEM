@@ -48,7 +48,7 @@ export default function ViewDetails() {
   }
 
   const fetchComments = async () => {
-    const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?participation_id=${event.participation_id}`;
+    const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?event_id=${event.id}`;
     const response = await apiRequest(api, "GET");
     if (response.success) {
       setCommentData(response.commentData);
