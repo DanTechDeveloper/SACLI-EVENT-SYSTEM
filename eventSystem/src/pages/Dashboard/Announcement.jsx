@@ -90,42 +90,55 @@ export default function Announcement() {
   return (
     <>
       <div class="flex flex-col gap-8">
-        <div class="flex flex-wrap justify-between items-center gap-3">
-          <div class="flex flex-col gap-1">
-            <p class="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+        <div className="flex flex-wrap justify-between items-center gap-3">
+          <div className="flex flex-col gap-1">
+            <p className="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
               Announcements
             </p>
-            <p class="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">
+            <p className="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal">
               Welcome, Admin! Here's a summary of school activities.
             </p>
           </div>
         </div>
 
         {/* <!-- Stats --> */}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
-          {statisticalData.map((stat, index) => (
-            <div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-              <p class="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
-                {stat.title}
-              </p>
-              <p class="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-                {stat.value}
-              </p>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {statisticalData.map((stat, index) => {
+            const palettes = [
+              "bg-grad-primary shadow-glow-primary",
+              "bg-grad-secondary shadow-glow-secondary",
+              "bg-grad-success shadow-glow-success",
+              "bg-grad-accent shadow-glow-accent",
+              "bg-grad-warning shadow-glow-warning",
+              "bg-grad-primary shadow-glow-primary",
+            ];
+            return (
+              <div
+                key={index}
+                className={`card-hover flex flex-col gap-2 rounded-2xl p-5 text-white ${palettes[index % palettes.length]}`}
+              >
+                <p className="text-[10px] font-black uppercase tracking-widest text-white/70">
+                  {stat.title}
+                </p>
+                <p className="text-4xl font-black leading-none">
+                  {stat.value}
+                </p>
+              </div>
+            );
+          })}
         </div>
-        <h2 class="text-[#212529] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+        <h2 className="text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
           Recent Activity
         </h2>
         {/* <!-- ToolBar --> */}
-        <div class="flex justify-between gap-4 py-2">
-          <div class="flex gap-2">
-            <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+        <div className="flex justify-between gap-4 py-2">
+          <div className="flex gap-2">
+            <select className="rounded-xl border border-violet-200 dark:border-violet-900/40 dark:bg-surface-dark dark:text-white text-slate-700 focus:ring-primary focus:border-primary text-sm px-3 py-2">
               <option>All Types</option>
               <option>Announcements</option>
               <option>Events</option>
             </select>
-            <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+            <select className="rounded-xl border border-violet-200 dark:border-violet-900/40 dark:bg-surface-dark dark:text-white text-slate-700 focus:ring-primary focus:border-primary text-sm px-3 py-2">
               <option>Newest First</option>
               <option>Oldest First</option>
             </select>

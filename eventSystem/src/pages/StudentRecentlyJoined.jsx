@@ -24,21 +24,22 @@ export default function StudentRecentlyJoined() {
   return (
     <>
       <div class="cursor-pointer bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen">
-        <div class="py-5 px-6">
+        <div class="py-5 px-6 max-w-3xl mx-auto">
           <div class="mx-auto">
             <a
               onClick={handleOnClick}
-              class="flex items-center text-slate-600 hover:text-slate-900 font-medium mb-6 transition-colors group"
+              class="flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary-light font-semibold mb-6 transition-colors group w-fit"
             >
-              <span class="material-symbols-outlined mr-1 text-xl group-hover:-translate-x-1 transition-transform">
+              <span class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">
                 arrow_back
               </span>
-              Back
+              Back to Events
             </a>
-            <div class="mb-5">
-              <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                My Recently Joined Event's
+            <div class="mb-6">
+              <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                My Recently Joined Events
               </h1>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Events you have registered for.</p>
             </div>
 
             <div class="flex flex-col gap-6">
@@ -46,23 +47,23 @@ export default function StudentRecentlyJoined() {
                 recentlyJoined.map((event, index) => (
                   <article
                     key={index}
-                    class="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
+                    class="card-hover bg-white dark:bg-surface-dark border border-violet-100 dark:border-violet-900/40 rounded-2xl p-5 shadow-sm"
                   >
                     <div class="flex items-start justify-between mb-3">
-                      <h3 class="font-bold text-lg text-slate-900 dark:text-white">
+                      <h3 class="font-bold text-base text-slate-900 dark:text-white">
                         {event.title}
                       </h3>
-                      <span class="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
+                      <span class="bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light text-[10px] uppercase tracking-wider font-black px-2.5 py-1 rounded-full">
                         {event.category}
                       </span>
                     </div>
                     <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
                       {event.description}
                     </p>
-                    <footer class="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
+                    <footer class="flex items-center justify-between pt-4 border-t border-violet-100 dark:border-violet-900/30">
                       <div class="flex items-center gap-2">
-                        <div class="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                          <span class="material-symbols-outlined text-xs text-slate-500">
+                        <div class="size-6 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                          <span class="material-symbols-outlined text-xs text-primary dark:text-primary-light">
                             event
                           </span>
                         </div>
@@ -71,15 +72,15 @@ export default function StudentRecentlyJoined() {
                         </span>
                       </div>
                       <div class="text-xs text-slate-400 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-xs">location_on</span>
+                        <span class="material-symbols-outlined text-xs text-primary/50">location_on</span>
                         {event.location}
                       </div>
                     </footer>
                   </article>
                 ))
               ) : (
-                <div class="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
-                    <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">
+                <div class="w-full flex justify-center items-center p-8 bg-white dark:bg-surface-dark rounded-2xl border border-dashed border-violet-200 dark:border-violet-900/40">
+                    <p class="text-slate-500 dark:text-slate-400 text-base font-medium">
                       {"No events found."}
                     </p>
                 </div>

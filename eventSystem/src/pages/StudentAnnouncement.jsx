@@ -32,22 +32,22 @@ export default function StudentAnnouncement() {
   return (
     <>
       <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen">
-        <div className="py-5 px-6">
+        <div className="py-5 px-6 max-w-3xl mx-auto">
           <div className="mx-auto">
             <a
               onClick={handleOnClick}
-              className="cursor-pointer flex items-center text-slate-600 hover:text-slate-900 font-medium mb-6 transition-colors group"
+              className="cursor-pointer flex items-center gap-1 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary-light font-semibold mb-6 transition-colors group w-fit"
             >
-              <span className="material-symbols-outlined mr-1 text-xl group-hover:-translate-x-1 transition-transform">
+              <span className="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">
                 arrow_back
               </span>
-              Back
+              Back to Events
             </a>
-            <div className="mb-5">
-              <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            <div className="mb-6">
+              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                 Announcements
               </h1>
-              <p className="text-slate-500 mt-2">
+              <p className="text-slate-500 dark:text-slate-400 mt-1 text-sm">
                 The latest updates and news from your community.
               </p>
             </div>
@@ -63,28 +63,28 @@ export default function StudentAnnouncement() {
                 announcement?.allAnnouncements.map((values, key) => (
                   <article
                     key={key}
-                    className="bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 shadow-sm"
+                    className="card-hover bg-white dark:bg-surface-dark border border-violet-100 dark:border-violet-900/40 rounded-2xl p-5 shadow-sm"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className="font-bold text-lg text-slate-900 dark:text-white">
+                      <h3 className="font-bold text-base text-slate-900 dark:text-white">
                         {values.title}
                       </h3>
-                      <span className="bg-blue-100 text-blue-700 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">
+                      <span className="bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-light text-[10px] uppercase tracking-wider font-black px-2.5 py-1 rounded-full">
                         {values.category}
                       </span>
                     </div>
                     <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 mb-4">
                       {values.message}
                     </p>
-                    <footer className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-border-dark">
+                    <footer className="flex items-center justify-between pt-4 border-t border-violet-100 dark:border-violet-900/30">
                       <div className="flex items-center gap-2">
-                        <div className="size-5 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                          <span className="material-symbols-outlined text-xs text-slate-500">
+                        <div className="size-6 rounded-full bg-primary/10 dark:bg-primary/20 flex items-center justify-center">
+                          <span className="material-symbols-outlined text-xs text-primary dark:text-primary-light">
                             person
                           </span>
                         </div>
                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                        {values.author}
+                          {values.author}
                         </span>
                       </div>
                       <time className="text-xs text-slate-400">
@@ -94,8 +94,8 @@ export default function StudentAnnouncement() {
                   </article>
                 ))
               ) : (
-                <div className="w-full flex justify-center items-center p-6 bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark border-dashed">
-                  <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
+                <div className="w-full flex justify-center items-center p-8 bg-white dark:bg-surface-dark rounded-2xl border border-dashed border-violet-200 dark:border-violet-900/40">
+                  <p className="text-slate-500 dark:text-slate-400 text-base font-medium">
                     No announcements found.
                   </p>
                 </div>

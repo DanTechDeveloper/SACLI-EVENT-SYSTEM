@@ -107,41 +107,50 @@ export default function AllEvent() {
       <div class="flex flex-col gap-8">
         <div class="flex flex-wrap justify-between items-center gap-3">
           <div class="flex flex-col gap-1">
-            <p class="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+            <p class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
               Event Posts
             </p>
-            <p class="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">
+            <p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal">
               Welcome, Admin! Here's a summary of school activities.
             </p>
           </div>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {statsData.map((stat, index) => (
-            <div
-              key={index}
-              class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <p class="text-slate-500 text-[12px] font-bold uppercase tracking-wider">
-                {stat.title}
-              </p>
-              <p class="text-xl font-bold text-slate-900 dark:text-slate-100">
-                {stat.value}
-              </p>
-            </div>
-          ))}
+          {statsData.map((stat, index) => {
+            const palettes = [
+              "bg-grad-primary shadow-glow-primary",
+              "bg-grad-secondary shadow-glow-secondary",
+              "bg-grad-success shadow-glow-success",
+              "bg-grad-accent shadow-glow-accent",
+              "bg-grad-warning shadow-glow-warning",
+            ];
+            return (
+              <div
+                key={index}
+                class={`card-hover flex flex-col gap-2 rounded-2xl p-5 text-white ${palettes[index % palettes.length]}`}
+              >
+                <p class="text-[10px] font-black uppercase tracking-widest text-white/70">
+                  {stat.title}
+                </p>
+                <p class="text-4xl font-black leading-none">
+                  {stat.value}
+                </p>
+              </div>
+            );
+          })}
         </div>
-        <h2 class="text-[#212529] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
+        <h2 class="text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">
           Recent Activity
         </h2>
         {/* <!-- ToolBar --> */}
         <div class="flex justify-between gap-4 py-2">
           <div class="flex gap-2">
-            <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+            <select class="rounded-xl border border-violet-200 dark:border-violet-900/40 dark:bg-surface-dark dark:text-white text-slate-700 focus:ring-primary focus:border-primary text-sm px-3 py-2">
               <option>All Types</option>
               <option>Announcements</option>
               <option>Events</option>
             </select>
-            <select class="rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-primary focus:border-primary">
+            <select class="rounded-xl border border-violet-200 dark:border-violet-900/40 dark:bg-surface-dark dark:text-white text-slate-700 focus:ring-primary focus:border-primary text-sm px-3 py-2">
               <option>Newest First</option>
               <option>Oldest First</option>
             </select>

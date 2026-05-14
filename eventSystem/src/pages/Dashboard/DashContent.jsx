@@ -83,66 +83,81 @@ export default function DashContent() {
       <div className="flex flex-col gap-8">
         <div className="flex flex-wrap justify-between items-center gap-3">
           <div className="flex flex-col gap-1">
-            <p className="text-[#212529] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+            <p className="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
               Admin Dashboard
             </p>
-            <p className="text-[#6C757D] dark:text-slate-400 text-base font-normal leading-normal">
+            <p className="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal">
               Welcome, Admin! Here's a summary of school activities.
             </p>
           </div>
         </div>
         {/* <!-- Stats --> */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-            <p className="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
-              Total Posts
+          {/* Total Posts */}
+          <div className="card-hover relative overflow-hidden flex flex-col gap-3 rounded-2xl p-6 bg-grad-primary shadow-glow-primary text-white">
+            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none" />
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold uppercase tracking-widest text-white/70">Total Posts</p>
+              <span className="stat-icon material-symbols-outlined text-3xl text-white/80">feed</span>
+            </div>
+            <p className="text-5xl font-black tracking-tight leading-none">
+              {data?.totalPosts ?? "—"}
             </p>
-            <p className="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              {data?.totalPosts}
-            </p>
+            <p className="text-xs text-white/60 font-medium">Approved events + announcements</p>
           </div>
-          <div className="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-            <p className="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
-              Total Announcements
+
+          {/* Total Announcements */}
+          <div className="card-hover relative overflow-hidden flex flex-col gap-3 rounded-2xl p-6 bg-grad-secondary shadow-glow-secondary text-white">
+            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none" />
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold uppercase tracking-widest text-white/70">Total Announcements</p>
+              <span className="stat-icon material-symbols-outlined text-3xl text-white/80" style={{animationDelay:'0.6s'}}>campaign</span>
+            </div>
+            <p className="text-5xl font-black tracking-tight leading-none">
+              {data?.totalAnnouncement ?? "—"}
             </p>
-            <p className="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              {data?.totalAnnouncement}
-            </p>
+            <p className="text-xs text-white/60 font-medium">Published & approved</p>
           </div>
-          <div className="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800">
-            <p className="text-[#6C757D] dark:text-slate-400 text-base font-medium leading-normal">
-              Total Events
+
+          {/* Total Events */}
+          <div className="card-hover relative overflow-hidden flex flex-col gap-3 rounded-2xl p-6 bg-grad-accent shadow-glow-accent text-white">
+            <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none" />
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold uppercase tracking-widest text-white/70">Total Events</p>
+              <span className="stat-icon material-symbols-outlined text-3xl text-white/80" style={{animationDelay:'1.2s'}}>event_available</span>
+            </div>
+            <p className="text-5xl font-black tracking-tight leading-none">
+              {data?.totalEvents ?? "—"}
             </p>
-            <p className="text-[#212529] dark:text-white tracking-light text-3xl font-bold leading-tight">
-              {data?.totalEvents}
-            </p>
+            <p className="text-xs text-white/60 font-medium">Approved events only</p>
           </div>
         </div>
+
         {/* <!-- Recent Events Section --> */}
         <div className="lg:col-span-2 space-y-8">
-          <section className="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <h4 className="text-lg font-bold text-primary dark:text-white">
+          <section className="bg-white dark:bg-surface-dark rounded-2xl border border-violet-100 dark:border-violet-900/40 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-violet-100 dark:border-violet-900/40 bg-violet-50/50 dark:bg-violet-900/10 flex items-center justify-between">
+              <h4 className="text-sm font-black text-primary dark:text-primary-light uppercase tracking-widest">
                 Pending Events
               </h4>
-              <button className="text-sm font-semibold text-primary/60 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors">
-                View All Events
+              <button className="text-xs font-bold text-primary/60 hover:text-primary dark:text-primary-light/60 dark:hover:text-primary-light transition-colors uppercase tracking-wider">
+                View All
               </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-slate-50 dark:bg-slate-800/50">
+                <thead className="bg-violet-50 dark:bg-violet-900/20 border-b border-violet-100 dark:border-violet-900/40">
                   <tr>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
                       Event Name
                     </th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
                       Category
                     </th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
                       Author
                     </th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest text-right">
                       Action
                     </th>
                   </tr>
@@ -161,7 +176,7 @@ export default function DashContent() {
                     data?.readEvent?.map((value, key) => (
                       <tr
                         key={key}
-                        className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
+                        className="hover:bg-violet-50/60 dark:hover:bg-violet-900/10 transition-colors"
                       >
                         <td className="px-6 py-4">
                           <div className="font-medium text-slate-900 dark:text-slate-100">
@@ -215,29 +230,29 @@ export default function DashContent() {
             </div>
           </section>
           {/* <!-- Recent Announcements Section --> */}
-          <section className="bg-white dark:bg-background-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <h4 className="text-lg font-bold text-primary dark:text-white">
+          <section className="bg-white dark:bg-surface-dark rounded-2xl border border-violet-100 dark:border-violet-900/40 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-violet-100 dark:border-violet-900/40 bg-violet-50/50 dark:bg-violet-900/10 flex items-center justify-between">
+              <h4 className="text-sm font-black text-primary dark:text-primary-light uppercase tracking-widest">
                 Pending Announcements
               </h4>
-              <button className="text-sm font-semibold text-primary/60 hover:text-primary dark:text-slate-400 dark:hover:text-white transition-colors">
-                Manage Announcements
+              <button className="text-xs font-bold text-primary/60 hover:text-primary dark:text-primary-light/60 dark:hover:text-primary-light transition-colors uppercase tracking-wider">
+                Manage
               </button>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-slate-50 dark:bg-slate-800/50">
+                <thead className="bg-violet-50 dark:bg-violet-900/20 border-b border-violet-100 dark:border-violet-900/40">
                   <tr>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
                       Title
                     </th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
                       Category
                     </th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
                       Author
                     </th>
-                    <th className="px-6 py-3 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">
+                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest text-right">
                       Action
                     </th>
                   </tr>

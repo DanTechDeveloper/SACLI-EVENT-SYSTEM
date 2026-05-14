@@ -43,70 +43,61 @@ export default function DashSidebar() {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-3">
-          <div
-            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
-            data-alt="Official school crest"
-          >
-            <img src={SacliLogo} alt="" />
+        {/* Brand */}
+        <div className="flex items-center gap-3 px-2 py-1">
+          <div className="size-10 rounded-full overflow-hidden ring-2 ring-primary/30 shrink-0">
+            <img src={SacliLogo} alt="SACLI Logo" className="w-full h-full object-cover" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-[#212529] dark:text-white text-base font-bold leading-normal">
+            <h1 className="text-slate-900 dark:text-white text-base font-bold leading-tight">
               SACLIEventSys
             </h1>
-            <p className="text-[#6C757D] dark:text-slate-400 text-sm font-normal leading-normal">
+            <p className="text-primary text-xs font-semibold">
               Admin Portal
             </p>
           </div>
         </div>
-        <nav className="flex flex-col gap-2 mt-4">
+
+        {/* Divider */}
+        <div className="border-t border-violet-100 dark:border-violet-900/30 my-1" />
+
+        <nav className="flex flex-col gap-1">
           {sidebarLinks.map((item, index) =>
             item.type === "link" ? (
               <a
                 key={index}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all font-semibold text-sm ${
                   isActive(item.path)
-                    ? "bg-primary/10 text-primary dark:bg-primary/20 font-semibold"
-                    : "hover:bg-slate-800 hover:text-white transition-colors group"
+                    ? "bg-primary text-white shadow-glow-primary"
+                    : "text-slate-700 dark:text-slate-300 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20 dark:hover:text-primary-light"
                 }`}
                 onClick={() => navigate(item.path)}
               >
-                <span className="material-symbols-outlined fill">
-                  {item.icon}
-                </span>
-                <p className="text-sm font-semibold leading-normal">
-                  {item.label}
-                </p>
+                <span className="material-symbols-outlined text-xl">{item.icon}</span>
+                <p>{item.label}</p>
               </a>
             ) : (
-              <div key={index}>
+              <div key={index} className="mt-3">
                 <div className="flex items-center justify-between px-3 py-1 mb-1">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                  <span className="text-[10px] font-black text-primary/60 dark:text-primary-light/60 uppercase tracking-widest">
                     {item.label}
                   </span>
-                  <span className="material-symbols-outlined text-slate-500 text-xs">
-                    expand_more
-                  </span>
                 </div>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   {item.items.map((subItem, subIndex) => (
                     <a
                       key={subIndex}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors group cursor-pointer ${
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all cursor-pointer text-sm ${
                         isActive(subItem.path)
-                          ? "bg-primary/10 text-primary dark:bg-primary/20 font-semibold"
-                          : "hover:bg-slate-800 hover:text-white"
+                          ? "bg-primary text-white shadow-glow-primary font-semibold"
+                          : "text-slate-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/20 dark:hover:text-primary-light font-medium"
                       }`}
                       onClick={() => navigate(subItem.path)}
                     >
-                      <span
-                        className={`material-symbols-outlined text-slate-500 group-hover:text-indigo-400 ${
-                          subItem.iconClass || ""
-                        }`}
-                      >
+                      <span className={`material-symbols-outlined text-xl ${isActive(subItem.path) ? "text-white" : "text-primary/50 dark:text-primary-light/50"}`}>
                         {subItem.icon}
                       </span>
-                      <p className="text-sm font-medium">{subItem.label}</p>
+                      <p>{subItem.label}</p>
                     </a>
                   ))}
                 </div>
