@@ -71,6 +71,7 @@ try {
         }
 
         $sql = "SELECT 
+    s.id as user_id,
     s.fullName, 
     c.comment_description,
     s.profile_picture,

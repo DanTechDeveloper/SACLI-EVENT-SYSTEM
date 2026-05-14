@@ -1,10 +1,11 @@
 <?php
 
+include '../connect.php';
 function getStats($conn, $type)
 {
     switch ($type) {
         case 'totalPosts':
-            $sql = "SELECT (SELECT COUNT(*) FROM announcements WHERE status = 'approved') + (SELECT COUNT(*) FROM events WHERE status = 'approved')";
+            $sql = "SELECT (SELECT COUNT(*) FROM announcements WHERE status = 'approved') + (SELECT COUNT(*) FROM events WHERE status = 'approved') AS total";
             $stmt = $conn->prepare($sql);
             break;
         case 'totalAnnouncement':
@@ -73,7 +74,6 @@ function handleApproveAnnouncement($conn, $id, $status) {
 }
 
 
-require_once '../connect.php';
 
 try {
     $eventID = isset($_GET['eventID']) ? $_GET['eventID'] : null;

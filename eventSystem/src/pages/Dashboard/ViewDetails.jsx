@@ -9,6 +9,11 @@ export default function ViewDetails() {
   const navigate = useNavigate();
   const [commentData, setCommentData] = useState([]);
   const [userComment,setUserComment] = useState("");
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
+
   const addComment = async () => {
     if (!userComment.trim()) return;
     const response = await apiRequest(
@@ -23,6 +28,7 @@ export default function ViewDetails() {
      if (response.success) {
        setUserComment("");
        fetchComments();
+       console.log(response.message);
      } else {
        console.log(response.message);
      }
@@ -37,7 +43,7 @@ export default function ViewDetails() {
       setCommentData(response.commentData);
     }
   };
-  console.table(event);
+  
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-slate-100">
       {/* <!-- Top Navigation Bar --> */}
@@ -134,17 +140,10 @@ export default function ViewDetails() {
                         star_half
                       </span>
                     </div>
-                    <span>4.5 Average Rating (12 reviews)</span>
+                    <span>4.5 Average Rating ({commentData.length} reviews)</span>
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <button
-                    disabled={event.joined !== "joined" || event.timing_status !== "Past"}
-                    type="button"
-                    className={`bg-primary text-white px-4 py-2 rounded-lg transition-all hover:bg-primary/90 cursor-pointer`}
-                  >
-                    Add Review
-                  </button>
                   {/* {event.timing_status === "Past" && (
                     <p className="text-xs text-red-500 font-medium">
                       This event has already ended.
@@ -321,11 +320,10 @@ export default function ViewDetails() {
 
               <div className="bg-slate-100 dark:bg-slate-800/50 rounded-3xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
                 <div className="h-40 bg-slate-200 dark:bg-slate-700 relative">
-                  <img
+                  {/* <img
                     className="w-full h-full object-cover grayscale opacity-30"
                     src="https://maps.googleapis.com/maps/api/staticmap?center=University&zoom=13&size=400x200&key=YOUR_KEY"
-                    alt="Map Location"
-                  />
+                  /> */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg animate-bounce">
                       <span className="material-symbols-outlined">
