@@ -38,7 +38,7 @@ LEFT JOIN event_participants eu
     ON e.id = eu.event_id
    AND eu.student_id = :student_id
 WHERE e.status = 'approved'";
-    // Handle the specific "Upcoming Events" filter temporal logic
+
     if ($filter === 'upcoming_week') {
         // Tomorrow → end of current week (Sunday)
         $sql .= " AND e.event_date BETWEEN DATE_ADD(CURDATE(), INTERVAL 1 DAY)
@@ -50,9 +50,7 @@ WHERE e.status = 'approved'";
     } elseif ($filter === 'upcoming_next_year') {
         // Next year and beyond
         $sql .= " AND YEAR(e.event_date) > YEAR(CURDATE()) ";
-    } elseif ($filter === 'upcoming_events') {
-        $sql .= " AND e.event_date >= CURDATE() ";
-    } elseif ($filter === 'ongoing_events') {
+    } elseif ($filter === 'ongoingEvents') {
         $sql .= " AND e.event_date = CURDATE() ";
     } elseif ($filter === 'pastEvents') {
         $sql .= " AND e.event_date < CURDATE() ";
@@ -65,7 +63,7 @@ WHERE e.status = 'approved'";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':student_id', $student_id, PDO::PARAM_INT);
     // Only bind :filter if we are actually filtering by criteria (not time-based filters)
-    $timeBased = ['all', 'upcoming_events', 'upcoming_week', 'upcoming_this_year', 'upcoming_next_year', 'ongoing_events', 'pastEvents'];
+    $timeBased = ['all', 'upcoming_week', 'upcoming_this_year', 'upcoming_next_year', 'ongoingEvents', 'pastEvents'];
     if (!in_array($filter, $timeBased)) {
         $stmt->bindParam(':filter', $filter, PDO::PARAM_STR);
     }

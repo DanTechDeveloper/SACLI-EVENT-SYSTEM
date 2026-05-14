@@ -73,6 +73,7 @@ try {
     s.fullName, 
     c.comment_description,
     c.created_at
+    
 FROM users_comment c
 JOIN event_participants ep ON c.event_participant_id = ep.id
 JOIN students s ON ep.student_id = s.id

@@ -10,11 +10,6 @@ export default function ViewDetails() {
   const [commentData, setCommentData] = useState([]);
   const [userComment,setUserComment] = useState("");
 
-  useEffect(() => {
-    if (event?.id) {
-      fetchComments();
-    }
-  }, [event?.id]);
 
   const addComment = async () => {
     if (!userComment.trim()) return;
@@ -34,7 +29,7 @@ export default function ViewDetails() {
     }
   };
 
-  if (!event) {
+if (!event) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <button
@@ -54,6 +49,7 @@ export default function ViewDetails() {
       setCommentData(response.commentData);
     }
   };
+  console.table(event);
   return (
     <div className="bg-background-light dark:bg-background-dark min-h-screen text-slate-900 dark:text-slate-100">
       {/* <!-- Top Navigation Bar --> */}
@@ -153,13 +149,29 @@ export default function ViewDetails() {
                     <span>4.5 Average Rating (12 reviews)</span>
                   </div>
                 </div>
-                <button
-                  disabled={event.joined === "joined"}
-                  type="button"
-                  className={`bg-primary text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-primary/90 transition-all ${event.joined !== "joined" && "opacity-50 cursor-not-allowed"}`}
-                >
-                  Add Review
-                </button>
+                <div className="flex flex-col items-end gap-1">
+                  <button
+                    disabled={event.joined !== "joined" || event.timing_status !== "Past"}
+                    type="button"
+                    className={`bg-primary text-white px-4 py-2 rounded-lg transition-all ${
+                      event.joined === "joined" && event.timing_status === "Past"
+                        ? "hover:bg-primary/90 cursor-pointer"
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
+                  >
+                    Add Review
+                  </button>
+                  {event.timing_status === "Past" && (
+                    <p className="text-xs text-red-500 font-medium">
+                      This event has already ended.
+                    </p>
+                  )}
+                  {event.timing_status !== "Past" && event.joined !== "joined" && (
+                    <p className="text-xs text-amber-500 font-medium">
+                      You must join this event to add a review.
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Review Feed */}
@@ -254,13 +266,30 @@ export default function ViewDetails() {
                   ></textarea>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => addComment()}
-                  className="px-8 py-3 bg-primary text-white rounded-full font-bold hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95"
-                >
-                  Post Review
-                </button>
+                <div className="flex flex-col gap-1">
+                  <button
+                    type="button"
+                    onClick={() => addComment()}
+                    className={`px-8 py-3 bg-primary text-white rounded-full font-bold transition-all active:scale-95 ${
+                      event.joined === "joined" && event.timing_status === "Past"
+                        ? "hover:shadow-lg hover:shadow-primary/30"
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
+                    disabled={event.joined !== "joined" || event.timing_status !== "Past"}
+                  >
+                    Post Review
+                  </button>
+                  {event.timing_status === "Past" && (
+                    <p className="text-sm text-red-500 font-medium">
+                      This event has already ended.
+                    </p>
+                  )}
+                  {event.timing_status !== "Past" && event.joined !== "joined" && (
+                    <p className="text-sm text-amber-500 font-medium">
+                      You must join this event to post a review.
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
