@@ -46,19 +46,20 @@ try {
     if ($method === 'POST') {
         $data = file_get_contents("php://input");
         $data = json_decode($data, true);
-        $participation_id = $data['participation_id'] ?? null;
+        $student_id = $data['student_id'] ?? null;
+        $event_id = $data['event_id'] ?? null;
         $comment_description = $data['comment_description'] ?? null;
-
-        if (!$participation_id || !$comment_description) {
+        if (!$student_id || !$event_id || !$comment_description) {   
             echo json_encode(["success" => false, "message" => "Comment description and participation ID are required."]);
             exit;
         }
 
-        $sql = "INSERT INTO users_comment (event_participant_id, comment_description) 
-                VALUES (:event_participant_id, :comment_description) ";
+        $sql = "INSERT INTO users_comment (student_id, event_id, comment_description) 
+                VALUES (:student_id, :event_id, :comment_description) ";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
-            ':event_participant_id' => $participation_id,
+            ':student_id' => $student_id,
+            ':event_id' => $event_id,
             ':comment_description' => $comment_description,
         ]);
         echo json_encode(["success" => true, "message" => "Comment posted successfully."]);
@@ -72,12 +73,14 @@ try {
         $sql = "SELECT 
     s.fullName, 
     c.comment_description,
+    s.profile_picture,
+    s.email,
     c.created_at
     
 FROM users_comment c
-JOIN event_participants ep ON c.event_participant_id = ep.id
-JOIN students s ON ep.student_id = s.id
-WHERE ep.event_id = :event_id";
+JOIN students s ON c.student_id = s.id
+WHERE c.event_id =:event_id
+ORDER BY c.created_at DESC";
 
 $stmt = $conn->prepare($sql);
 $stmt->execute(['event_id' => $event_id]);

@@ -9,38 +9,26 @@ export default function ViewDetails() {
   const navigate = useNavigate();
   const [commentData, setCommentData] = useState([]);
   const [userComment,setUserComment] = useState("");
-
-
   const addComment = async () => {
     if (!userComment.trim()) return;
     const response = await apiRequest(
-      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php",
-      "POST",
-      {
+     "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php",
+     "POST",
+       {
         comment_description: userComment,
-        participation_id: event.participation_id,
-      }
-    );
-    if (response.success) {
-      setUserComment("");
-      fetchComments();
-    } else {
-      console.log(response.message);
-    }
+        event_id: event.id,
+        student_id: userSession.id,
+       }
+     );
+     if (response.success) {
+       setUserComment("");
+       fetchComments();
+     } else {
+       console.log(response.message);
+     }
   };
 
-if (!event) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <button
-          onClick={() => navigate("/studentView")}
-          className="text-primary underline"
-        >
-          Event not found. Return to Browse.
-        </button>
-      </div>
-    );
-  }
+
 
   const fetchComments = async () => {
     const api = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/UserComments.php?event_id=${event.id}`;
@@ -153,15 +141,11 @@ if (!event) {
                   <button
                     disabled={event.joined !== "joined" || event.timing_status !== "Past"}
                     type="button"
-                    className={`bg-primary text-white px-4 py-2 rounded-lg transition-all ${
-                      event.joined === "joined" && event.timing_status === "Past"
-                        ? "hover:bg-primary/90 cursor-pointer"
-                        : "opacity-50 cursor-not-allowed"
-                    }`}
+                    className={`bg-primary text-white px-4 py-2 rounded-lg transition-all hover:bg-primary/90 cursor-pointer`}
                   >
                     Add Review
                   </button>
-                  {event.timing_status === "Past" && (
+                  {/* {event.timing_status === "Past" && (
                     <p className="text-xs text-red-500 font-medium">
                       This event has already ended.
                     </p>
@@ -170,7 +154,7 @@ if (!event) {
                     <p className="text-xs text-amber-500 font-medium">
                       You must join this event to add a review.
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
 
@@ -188,8 +172,15 @@ if (!event) {
                     >
                       <div className="flex items-start gap-4">
                         <div
-                          className={`w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold shrink-0`}
+                          className={`w-12 h-12 ${comment.profile_picture?"rounded-full":"rounded-full"} bg-primary flex items-center justify-center text-white font-bold shrink-0`}
                         >
+                          {comment.profile_picture ? (
+                            <img src={comment.profile_picture} alt="" />
+                          ) : (
+                            <span className="material-symbols-outlined">
+                              person
+                            </span>
+                          )}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
@@ -237,29 +228,13 @@ if (!event) {
             <div className="bg-slate-50 dark:bg-slate-900/30 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 mt-12">
               <h3 className="text-xl font-bold mb-6">Leave your thoughts</h3>
               <div className="space-y-6">
-                <div>
-                  <label className="text-sm font-bold text-slate-500 uppercase tracking-wider block mb-3">
-                    Your Rating
-                  </label>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <button
-                        // key={star}
-                        type="button"
-                        // onClick={() => setRating(star)}
-                        className="focus:outline-none transition-transform active:scale-90"
-                      ></button>
-                    ))}
-                  </div>
-                </div>
-
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-slate-500 uppercase tracking-wider block">
                     Comment
                   </label>
                   <textarea
                     className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-2xl p-4 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all min-h-[120px] text-slate-700 dark:text-slate-200"
-                    placeholder="What did you think about the event?"
+                    placeholder="Leave a comment."
                     value={userComment}
                     onChange={(e) => setUserComment(e.target.value)}
                     required
@@ -270,16 +245,11 @@ if (!event) {
                   <button
                     type="button"
                     onClick={() => addComment()}
-                    className={`px-8 py-3 bg-primary text-white rounded-full font-bold transition-all active:scale-95 ${
-                      event.joined === "joined" && event.timing_status === "Past"
-                        ? "hover:shadow-lg hover:shadow-primary/30"
-                        : "opacity-50 cursor-not-allowed"
-                    }`}
-                    disabled={event.joined !== "joined" || event.timing_status !== "Past"}
+                    className={`px-8 py-3 bg-primary text-white rounded-full font-bold transition-all active:scale-95 hover:shadow-lg hover:shadow-primary/30 cursor-pointer`}
                   >
                     Post Review
                   </button>
-                  {event.timing_status === "Past" && (
+                  {/* {event.timing_status === "Past" && (
                     <p className="text-sm text-red-500 font-medium">
                       This event has already ended.
                     </p>
@@ -288,7 +258,7 @@ if (!event) {
                     <p className="text-sm text-amber-500 font-medium">
                       You must join this event to post a review.
                     </p>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

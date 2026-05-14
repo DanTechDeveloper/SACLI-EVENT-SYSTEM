@@ -41,8 +41,7 @@ export default function EventGrid({ events, userSession }) {
     if (events?.tableRows) {
       setFetchedEvents(events.tableRows);
     }
-}, [events]);
-
+  }, [events]);
 
   const handleFilterClick = async (filterId) => {
     setActiveFilter(filterId);
@@ -73,7 +72,7 @@ export default function EventGrid({ events, userSession }) {
               <button
                 key={filter.id}
                 class={activeFilter === filter.id ? activeClass : inactiveClass}
-              onClick={() => handleFilterClick(filter.id)}
+                onClick={() => handleFilterClick(filter.id)}
               >
                 <span class="material-icons-round text-lg">{filter.icon}</span>{" "}
                 {filter.label}
@@ -82,23 +81,20 @@ export default function EventGrid({ events, userSession }) {
           </div>
         </div>
       </section>
-      <div>
-        
-      </div>
+      <div></div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        
-        {fetchedEvents && (
+        {fetchedEvents &&
           fetchedEvents.map((event, index) => (
             <div
-            key={index}
-            class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"
+              key={index}
+              class="group bg-white dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-transparent hover:border-primary/30 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 flex flex-col"
             >
               <div class="relative aspect-video overflow-hidden">
                 <img
                   alt={event.title}
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZCyRuFu3jLTrcPY9td1ZKHtS5atPcDqpZycgL7_RfL5XnC69Nhz1hWdoIJxeHqdO05Ughv7B43IbJafbHTX6XJSqSB3lWxG7HEqJ2RjQAcxvuSfi4Xe6iMVDmNzW8i3YFtXu2ItGtnj8RO4nKy4oyQNWitZO7zt68qE6shJ-qX6fdPHaa6tlFfFQpvEiWmSQV8QB3mb7xSyLZQ_2nu2HY7uVv9V12dq0LceBC2jw-T-e87Kvs_uqGq9A0TwxIiLveNfAWfpxgSjU"
-                  />
+                />
                 <div class="absolute top-3 left-3">
                   <span
                     class={`${
@@ -136,10 +132,11 @@ export default function EventGrid({ events, userSession }) {
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                   <button
-                    onClick={() => {navigate('/viewDetails', {state: {event}})}}
+                    onClick={() => {
+                      navigate("/viewDetails", { state: { event, userSession} });
+                    }}
                     class="text-sm font-semibold text-primary hover:underline"
                   >
-                    
                     View Details
                   </button>
                   <button
@@ -149,10 +146,12 @@ export default function EventGrid({ events, userSession }) {
                       })
                     }
                     disabled={
-                      event.timing_status === "Past" || event.joined === "joined"
+                      event.timing_status === "Past" ||
+                      event.joined === "joined"
                     }
                     class={`text-sm font-semibold px-4 py-2 rounded-lg transition-all ${
-                      event.joined === "joined" || event.timing_status === "Past"
+                      event.joined === "joined" ||
+                      event.timing_status === "Past"
                         ? "bg-green-500 text-white cursor-not-allowed opacity-80"
                         : "bg-primary text-white hover:brightness-110 active:scale-95"
                     }`}
@@ -166,11 +165,8 @@ export default function EventGrid({ events, userSession }) {
                 </div>
               </div>
             </div>
-          ))
-      )}
+          ))}
       </div>
-
-     
     </>
   );
 }
