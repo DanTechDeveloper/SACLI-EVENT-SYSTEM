@@ -29,17 +29,22 @@ function getEvent($status, $conn){
             $sql = "SELECT * FROM events WHERE status = 'approved'";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         case "pending":
             $sql = "SELECT * FROM events WHERE status = 'pending'";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         case "draft":
             $sql = "SELECT * FROM events WHERE status = 'draft'";
             $stmt = $conn->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        case "all":
+            $sql = "SELECT * FROM events";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         default:
             return "Invalid status type";
     }
@@ -51,16 +56,22 @@ try {
    $totalDraft = countEvent("totalDraft", $conn);
    $eventApproved = getEvent("approved", $conn);
    $eventPending = getEvent("pending", $conn);
-   $eventDraft = getEvent("draft", $conn);
-    echo json_encode(array(
-        'success' => true,
+   $eventDraft = getEvent("draft", $conn); 
+   $eventAll = getEvent("all", $conn); 
+    $responseData = [
         'totalApproved' => $totalApproved,
         'totalPending' => $totalPending,
         'totalDraft' => $totalDraft,
         'eventApproved' => $eventApproved,
         'eventPending' => $eventPending,
-        'eventDraft' => $eventDraft
-    ));
+        'eventDraft' => $eventDraft,
+        "all" => $eventAll
+    ];
+
+    echo json_encode([
+        'success' => true,
+        'data' => $responseData
+    ]);
 } catch (Exception $th) {
     echo json_encode(array(
         'success' => false,

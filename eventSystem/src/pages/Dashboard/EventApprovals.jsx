@@ -2,25 +2,24 @@ import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react"
 
 export default function EventApprovals() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState(null)
 
-  const handleApprovals = () => {
+  const handleApprovals = async () => {
     const URL = "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/EventApprovals.php";
-    
-    const response = apiRequest(URL, "GET");
-
-    if(response.success){
-      setData(response.data)
+    try {
+      const response = await apiRequest(URL, "GET");
+      if(response.success){
+        setData(response.data)
+      }
+    } catch (error) {
+      console.error("Failed to fetch event approvals:", error);
     }
   }
 
   useEffect(() => {
     handleApprovals();
-  }, [])
+  }, []);
 
-  useEffect(() => {
-    console.table(data);
-  }, [data])
 
   return (
     <div className="flex flex-col gap-8">
@@ -48,7 +47,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-        {/* {data?.totalPostsApproval ?? "—"} */}
+            {data?.totalApproved ?? "—"}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Approved events only
@@ -70,7 +69,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {/* {data?.totalAnnouncement ?? "—"} */}
+            {data?.totalPending ?? "—"}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Pending events only
@@ -92,7 +91,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {/* {data?.totalEvents ?? "—"} */}
+            {data?.totalDraft ?? "—"}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Draft events only
@@ -130,7 +129,7 @@ export default function EventApprovals() {
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                {/* {data?.readEvent?.length === 0 ? (
+                {!data?.eventPending || data.eventPending.length === 0 ? (
                   <tr>
                     <td
                       colSpan={4}
@@ -140,7 +139,7 @@ export default function EventApprovals() {
                     </td>
                   </tr>
                 ) : (
-                  data?.readEvent?.map((value, key) => (
+                  data.eventPending.map((value, key) => (
                     <tr
                       key={key}
                       className="hover:bg-violet-50/60 dark:hover:bg-violet-900/10 transition-colors"
@@ -187,7 +186,7 @@ export default function EventApprovals() {
                       </td>
                     </tr>
                   ))
-                )} */}
+                )}
               </tbody>
             </table>
           </div>
