@@ -17,7 +17,8 @@ import Announcement from "./pages/Dashboard/Announcement";
 import StudentRecentlyJoined from "./pages/StudentRecentlyJoined";
 import UpcomingEvent from "./pages/UpcomingEvent";
 import ViewDetails from "./pages/Dashboard/ViewDetails";
-
+import EventApprovals from "./pages/Dashboard/EventApprovals";
+import AnnouncementApprovals from "./pages/Dashboard/AnnouncementApprovals";
 function App() {
   return (
     <>
@@ -30,23 +31,15 @@ function App() {
           </Route>
           <Route element={<DashboardLayout />}>
             <Route index element={<DashContent />} path="/dashboard" />
+            <Route element={<EventApprovals />} path="/eventApprovals" />
+            <Route element={<AnnouncementApprovals />} path="/announcementApprovals" />
             <Route element={<AllEvent />} path="/events" />
             <Route element={<AddNewEvent />} path="/newEvent" />
             <Route element={<AddNewAnnouncement />} path="/newAnnouncement" />
             <Route element={<Announcement />} path="/announcements" />
-            <Route
-              element={<PublishedAnnouncement />}
-              path="/publishedAnnouncement"
-            />
-            <Route
-              element={<PublishedEvent />}
-              path="/publishEvent"
-            />
-            <Route
-              element={<UpcomingEvent />}
-              path="/upcomingEvents"
-            />
-            
+            <Route element={<PublishedAnnouncement />} path="/publishedAnnouncement" />
+            <Route element={<PublishedEvent />} path="/publishEvent" />
+            <Route element={<UpcomingEvent />} path="/upcomingEvents" />
           </Route>
 
           <Route element={<StudentMainContent />} index path="/studentView" />
@@ -54,10 +47,7 @@ function App() {
             element={<StudentAnnouncement />}
             path="/studentAnnouncement"
           />
-          <Route
-            element={<ViewDetails />}
-            path="/viewDetails"
-          />
+          <Route element={<ViewDetails />} path="/viewDetails" />
           <Route
             element={<StudentRecentlyJoined />}
             path="/studentRecentlyJoined"

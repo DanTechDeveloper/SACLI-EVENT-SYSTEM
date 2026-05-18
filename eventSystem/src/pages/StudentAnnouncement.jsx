@@ -5,19 +5,19 @@ import apiRequest from "../services/apiRequest";
 export default function StudentAnnouncement() {
   const navigate = useNavigate();
   const handleOnClick = () => navigate("/studentView");
-  
 
-  const [announcement, setAnnouncement] = useState(null);
+  const [announcements, setAnnouncements] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
         const response = await apiRequest(
-          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/Announcements.php"
+          "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Student/Announcements.php",
+          "GET"
         );
         if (response.success) {
-          setAnnouncement(response.data);
+          setAnnouncements(response.allAnnouncements);
         } else {
           setError(response.message || "Failed to load announcements.");
         }
@@ -59,8 +59,8 @@ export default function StudentAnnouncement() {
                     {error}
                   </p>
                 </div>
-              ) : announcement?.allAnnouncements && announcement.allAnnouncements.length > 0 ? (
-                announcement?.allAnnouncements.map((values, key) => (
+              ) : announcements && announcements.length > 0 ? (
+                announcements.map((values, key) => (
                   <article
                     key={key}
                     className="card-hover bg-white dark:bg-surface-dark border border-violet-100 dark:border-violet-900/40 rounded-2xl p-5 shadow-sm"

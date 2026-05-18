@@ -44,7 +44,7 @@ export default function AddNewAnnouncement() {
 
     if (response.success) {
       alert("Announcement published successfully!");
-      navigate("/dashboard");
+      navigate("/announcementApprovals");
     } else {
       setErrors({ server: response.message || "Failed to save announcement." });
     }

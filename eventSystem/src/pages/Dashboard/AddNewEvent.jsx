@@ -69,7 +69,7 @@ export default function AddNewEvent() {
 
       if (response.success) {
         alert("Event created successfully!");
-        navigate("/dashboard");
+        navigate("/eventApprovals");
       } else {
         // 2. Handle API Logic Errors
         setErrors({ server: response.message || "Something went wrong on the server." });
