@@ -1,8 +1,10 @@
 import apiRequest from "../../services/apiRequest";
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router";
 
 export default function EventApprovals() {
   const [data, setData] = useState(null)
+  const navigate = useNavigate();
 
   const handleApprovals = async () => {
     const URL = "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/EventApprovals.php";
@@ -15,6 +17,26 @@ export default function EventApprovals() {
       console.error("Failed to fetch event approvals:", error);
     }
   }
+
+  const handleApproveEvent = async (eventID, eventStatus) => {
+    const statusMessages = {
+      approved: "approve",
+      rejected: "reject",
+      draft: "move to draft"
+    };
+
+    if (!confirm(`Are you sure you want to ${statusMessages[eventStatus]} this event?`)) return;
+
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?eventID=${eventID}&eventStatus=${eventStatus}`;
+    const response = await apiRequest(url);
+    
+    if (response.success) {
+      await handleApprovals();
+      alert(`Event updated to ${eventStatus} successfully!`);
+    } else {
+      console.error(`Error updating event: ${response.error}`);
+    }
+  };
 
   useEffect(() => {
     handleApprovals();
@@ -47,7 +69,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {data?.totalApproved ?? "—"}
+            {data?.totalApproved}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Approved events only
@@ -69,7 +91,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {data?.totalPending ?? "—"}
+            {data?.totalPending}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Pending events only
@@ -91,7 +113,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {data?.totalDraft ?? "—"}
+            {data?.totalDraft}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Draft events only
@@ -128,7 +150,7 @@ export default function EventApprovals() {
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                 {!data?.eventPending || data.eventPending.length === 0 ? (
                   <tr>
                     <td
@@ -167,11 +189,20 @@ export default function EventApprovals() {
                           <button
                             type="button"
                             onClick={() =>
+                              handleApproveEvent(value.id, "draft")
+                            }
+                            className="text-sm font-bold text-amber-500 hover:underline"
+                          >
+                            <span className="material-symbols-outlined">draft</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
                               handleApproveEvent(value.id, "approved")
                             }
                             className="text-sm font-bold text-primary dark:text-white hover:underline"
                           >
-                            <span class="material-symbols-outlined">check</span>
+                            <span className="material-symbols-outlined">check</span>
                           </button>
                           <button
                             type="button"
@@ -180,7 +211,7 @@ export default function EventApprovals() {
                             }
                             className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline"
                           >
-                            <span class="material-symbols-outlined">close</span>
+                            <span className="material-symbols-outlined">close</span>
                           </button>
                         </div>
                       </td>
