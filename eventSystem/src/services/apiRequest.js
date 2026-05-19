@@ -1,11 +1,3 @@
-/**
- * Generic REST API handler
- * @param {string} url - endpoint URL
- * @param {string} method - GET, POST, PUT, DELETE
- * @param {object|null} body - request body for POST/PUT
- * @param {object} headers - optional additional headers
- * @returns {Promise<object>} - JSON response
- */
 export default async function apiRequest(
   url,
   method = "GET",
@@ -13,30 +5,38 @@ export default async function apiRequest(
   headers = {},
 ) {
   try {
+    const isFormData = body instanceof FormData;
+
     const options = {
       method,
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json",
+        // Only apply JSON header when NOT FormData
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
         ...headers,
       },
-      credentials: "include", // Required to send cookies (PHPSESSID) with cross-origin requests
     };
 
-    if (body) {
-      options.body = JSON.stringify(body);
+    // Correct body handling
+    if (body !== null && body !== undefined) {
+      options.body = isFormData ? body : JSON.stringify(body);
     }
 
     const response = await fetch(url, options);
 
-    // Check if the response is not OK
+    // Better error handling
+    const rawText = await response.text();
+
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP ${response.status}: ${errorText}`);
+      throw new Error(`HTTP ${response.status}: ${rawText}`);
     }
 
-    // Return parsed JSON (or empty object if no content)
-    const text = await response.text();
-    return text ? JSON.parse(text) : {};
+    // Safe JSON parsing fallback
+    try {
+      return rawText ? JSON.parse(rawText) : {};
+    } catch {
+      return rawText;
+    }
   } catch (err) {
     console.error("API request failed:", err);
     throw err;

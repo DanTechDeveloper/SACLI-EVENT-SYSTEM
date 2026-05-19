@@ -26,8 +26,9 @@ try {
     e.criteria,
     e.location,
     e.event_author,
-    eu.status AS joined,
+    eu.status AS joined,    
     eu.id AS participation_id,
+    e.event_image,
     CASE 
         WHEN e.event_date < CURDATE() THEN 'Past'
         WHEN e.event_date = CURDATE() THEN 'Ongoing'

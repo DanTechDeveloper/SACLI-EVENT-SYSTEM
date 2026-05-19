@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import apiRequest from "../../services/apiRequest";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 export default function AddNewEvent() {
   const [title, setTitle] = useState("");
@@ -14,19 +14,22 @@ export default function AddNewEvent() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeEnd, setTimeEnd] = useState("");
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
-  
+
   // Get today's date in YYYY-MM-DD format for comparison and 'min' attribute
-  const today = new Date().toLocaleDateString('en-CA');
+  const today = new Date().toLocaleDateString("en-CA");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
-    
+
     // 1. Client-side Validation
     const validationErrors = {};
     if (!title.trim()) validationErrors.title = "Event title is required.";
-    if (!description.trim()) validationErrors.description = "Description cannot be empty.";
+    if (!description.trim())
+      validationErrors.description = "Description cannot be empty.";
     if (!category) validationErrors.category = "Please select a category.";
     if (!date) {
       validationErrors.date = "Date is required.";
@@ -47,32 +50,33 @@ export default function AddNewEvent() {
     setIsSubmitting(true);
 
     try {
-      const formData = {
-        title,
-        description,
-        category,
-        date,
-        time,
-        criteria,
-        location,
-        author,
-        timeEnd
-      };
-
-      console.table(formData);
-
+      const dataToSend = new FormData();
+      dataToSend.append("title", title);
+      dataToSend.append("description", description);
+      dataToSend.append("category", category);
+      dataToSend.append("date", date);
+      dataToSend.append("time", time);
+      dataToSend.append("criteria", criteria);
+      dataToSend.append("location", location);
+      dataToSend.append("author", author);
+      dataToSend.append("timeEnd", timeEnd);
+      
+      if (image) {
+        dataToSend.append("event_image", image);
+      }
       const response = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AddNewEvent.php",
         "POST",
-        formData,
+        dataToSend,
       );
-
       if (response.success) {
         alert("Event created successfully!");
         navigate("/eventApprovals");
       } else {
         // 2. Handle API Logic Errors
-        setErrors({ server: response.message || "Something went wrong on the server." });
+        setErrors({
+          server: response.message || "Something went wrong on the server.",
+        });
       }
     } catch (err) {
       // 3. Handle Network/Fatal Errors
@@ -83,6 +87,17 @@ export default function AddNewEvent() {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        setErrors({ ...errors, image: "Please upload a valid image file (PNG/JPG)." });
+        return;
+      }
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   return (
     <>
@@ -96,8 +111,32 @@ export default function AddNewEvent() {
             Fill out the form below to schedule a new event.
           </p>
         </div>
-
-        {/* <!-- Form Container --> */}
+        <div className="w-full rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex flex-col gap-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
+              Event Header Photo
+            </label>
+            <div className="flex items-center gap-6">
+              <div className="h-32 w-52 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-slate-800">
+                {imagePreview ? (
+                  <img src={imagePreview} alt="Preview" className="h-full w-full object-cover" />
+                ) : (
+                  <span className="text-slate-400 text-xs font-medium">Preview Image</span>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 dark:file:bg-slate-800 dark:file:text-slate-300 transition-all"
+                />
+                <p className="text-xs text-slate-500">Max size 2MB. Recommended: 16:9 ratio.</p>
+                {errors.image && <p className="text-xs text-red-500 font-bold">{errors.image}</p>}
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="w-full rounded-xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
           <form
             onSubmit={handleSubmit}
@@ -124,7 +163,11 @@ export default function AddNewEvent() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-              {errors.title && <p class="mt-1 text-xs text-red-500 font-medium">{errors.title}</p>}
+              {errors.title && (
+                <p class="mt-1 text-xs text-red-500 font-medium">
+                  {errors.title}
+                </p>
+              )}
             </div>
 
             {/* <!-- Event Description --> */}
@@ -145,7 +188,11 @@ export default function AddNewEvent() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
-              {errors.description && <p class="mt-1 text-xs text-red-500 font-medium">{errors.description}</p>}
+              {errors.description && (
+                <p class="mt-1 text-xs text-red-500 font-medium">
+                  {errors.description}
+                </p>
+              )}
             </div>
 
             {/* <!-- Date and Time --> */}
@@ -179,7 +226,11 @@ export default function AddNewEvent() {
                   <option value="Community">Community</option>
                   <option value="Health">Health</option>
                 </select>
-                {errors.category && <p class="mt-1 text-xs text-red-500 font-medium">{errors.category}</p>}
+                {errors.category && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.category}
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -198,7 +249,11 @@ export default function AddNewEvent() {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
-                {errors.date && <p class="mt-1 text-xs text-red-500 font-medium">{errors.date}</p>}
+                {errors.date && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.date}
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -216,8 +271,12 @@ export default function AddNewEvent() {
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                 />
-                {errors.time && <p class="mt-1 text-xs text-red-500 font-medium">{errors.time}</p>}
-              </div> 
+                {errors.time && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.time}
+                  </p>
+                )}
+              </div>
               <div>
                 <label
                   for="event_time_end"
@@ -234,7 +293,11 @@ export default function AddNewEvent() {
                   value={timeEnd}
                   onChange={(e) => setTimeEnd(e.target.value)}
                 />
-                {errors.time && <p class="mt-1 text-xs text-red-500 font-medium">{errors.time}</p>}
+                {errors.time && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.time}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -261,7 +324,11 @@ export default function AddNewEvent() {
                   <option value="Online">Online</option>
                   <option value="Free">Free</option>
                 </select>
-                {errors.criteria && <p class="mt-1 text-xs text-red-500 font-medium">{errors.criteria}</p>}
+                {errors.criteria && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.criteria}
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -280,8 +347,12 @@ export default function AddNewEvent() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                 />
-                {errors.location && <p class="mt-1 text-xs text-red-500 font-medium">{errors.location}</p>}
-              </div> 
+                {errors.location && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.location}
+                  </p>
+                )}
+              </div>
               <div>
                 <label
                   for="eventAuthor"
@@ -299,7 +370,11 @@ export default function AddNewEvent() {
                   value={author}
                   onChange={(e) => setAuthor(e.target.value)}
                 />
-                {errors.author && <p class="mt-1 text-xs text-red-500 font-medium">{errors.author}</p>}
+                {errors.author && (
+                  <p class="mt-1 text-xs text-red-500 font-medium">
+                    {errors.author}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -315,7 +390,7 @@ export default function AddNewEvent() {
                 disabled={isSubmitting}
                 name="publishEvent"
                 type="submit"
-                class={`rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-all ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                class={`rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-all ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 {isSubmitting ? "Publishing..." : "Publish Event"}
               </button>

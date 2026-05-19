@@ -64,7 +64,7 @@ export default function ViewDetails() {
         {/* <!-- Hero Section --> */}
         <div className="relative w-full h-[400px] overflow-hidden bg-slate-900">
           <img
-            src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=2070&auto=format&fit=crop"
+            src={event.event_image ? (event.event_image.startsWith("http") ? event.event_image : `http://localhost/IPTFINALPROJECT/eventSystem/src/${event.event_image}`) : "https://via.placeholder.com/800x400?text=No+Image"}
             alt={event.title}
             className="w-full h-full object-cover opacity-60"
           />

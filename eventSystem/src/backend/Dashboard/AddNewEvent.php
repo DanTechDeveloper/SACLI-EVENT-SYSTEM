@@ -15,23 +15,40 @@ function convertDateAndTime($date, $time){
 }
 
 try {
-    $data = json_decode(file_get_contents("php://input"), true);
-
-    if ($data) {
-        $title = $data['title'];
-        $description = $data['description'];
-        $category = $data['category'];
-        $criteria = $data['criteria'];
-        $location = $data['location'];
-        $dateAndTimeConvert = convertDateAndTime($data['date'], $data['time']);
-        $timeEndConvert = convertDateAndTime($data['date'], $data['timeEnd']);
-        $author = $data['author'];
+    // When sending FormData from React, use $_POST, not json_decode
+    if (!empty($_POST)) {
+        $title = $_POST['title'];
+        $description = $_POST['description'];
+        $category = $_POST['category'];
+        $criteria = $_POST['criteria'];
+        $location = $_POST['location'];
+        $dateAndTimeConvert = convertDateAndTime($_POST['date'], $_POST['time']);
+        $timeEndConvert = convertDateAndTime($_POST['date'], $_POST['timeEnd']);
+        $author = $_POST['author'];
         
-        // The user ID who created this event (assuming your table has a created_by column)
-        $created_by = $_SESSION['user_id'];
+        $imagePath = null;
 
-        $sql = "INSERT INTO events (title, description, category, event_date, event_time, event_time_end, criteria, location, event_author) 
-                VALUES (:title, :description, :category, :event_date, :event_time, :event_time_end, :criteria, :location, :event_author)";
+        // Handle Image Upload
+        if (isset($_FILES['event_image']) && $_FILES['event_image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '../../uploads/events/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $fileExtension = pathinfo($_FILES['event_image']['name'], PATHINFO_EXTENSION);
+            $fileName = uniqid('event_') . '.' . $fileExtension;
+            $targetFile = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES['event_image']['tmp_name'], $targetFile)) {
+                $imagePath = 'uploads/events/' . $fileName; // Path to store in DB
+            } else {
+                throw new Exception("Failed to move uploaded file.");
+            }
+        }
+        
+
+        $sql = "INSERT INTO events (title, description, category, event_date, event_time, event_time_end, criteria, location, event_author, event_image) 
+                VALUES (:title, :description, :category, :event_date, :event_time, :event_time_end, :criteria, :location, :event_author, :event_image)";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(":title", $title);
@@ -43,7 +60,9 @@ try {
         $stmt->bindValue(":location", $location);
         $stmt->bindValue(":event_author", $author);
         $stmt->bindValue(":event_time_end", $timeEndConvert->format('H:i:s'));
-    $stmt->execute();
+        $stmt->bindValue(":event_image", $imagePath);
+        $stmt->execute();
+        
 
         echo json_encode(["success" => true, "message" => "Event created successfully"]);
     } else {
