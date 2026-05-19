@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router";
 
 export default function EventApprovals() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   const handleApprovals = async () => {
     const URL = "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/EventApprovals.php";
@@ -56,25 +56,9 @@ export default function EventApprovals() {
         </div>
       </div>
       {/* <!-- Stats --> */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
         {/* Total Posts */}
-        <div className="card-hover relative overflow-hidden flex flex-col gap-3 rounded-2xl p-6 bg-grad-primary shadow-glow-primary text-white">
-          <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none" />
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold uppercase tracking-widest text-white/70">
-              Total Approved
-            </p>
-            <span className="stat-icon material-symbols-outlined text-3xl text-white/80">
-              event
-            </span>
-          </div>
-          <p className="text-5xl font-black tracking-tight leading-none">
-            {data?.totalApproved}
-          </p>
-          <p className="text-xs text-white/60 font-medium">
-            Approved events only
-          </p>
-        </div>
+     
 
         <div className="card-hover relative overflow-hidden flex flex-col gap-3 rounded-2xl p-6 bg-grad-secondary shadow-glow-secondary text-white">
           <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-white/10 blur-xl pointer-events-none" />
@@ -90,7 +74,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {data?.totalPending}
+            {data.totalPending}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Pending events only
@@ -112,7 +96,7 @@ export default function EventApprovals() {
             </span>
           </div>
           <p className="text-5xl font-black tracking-tight leading-none">
-            {data?.totalDraft}
+            {data.totalDraft}
           </p>
           <p className="text-xs text-white/60 font-medium">
             Draft events only
@@ -150,7 +134,7 @@ export default function EventApprovals() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {!data?.eventPending || data.eventPending.length === 0 ? (
+                {!data.eventPending || data.eventPending.length === 0 ? (
                   <tr>
                     <td
                       colSpan={4}
@@ -255,17 +239,17 @@ export default function EventApprovals() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                {!data?.eventPending || data.eventPending.length === 0 ? (
+                {!data.eventDraft || data.eventDraft.length === 0 ? (
                   <tr>
                     <td
                       colSpan={4}
                       className="px-6 py-4 text-center text-slate-500 dark:text-slate-400"
                     >
-                      No pending events found
+                      No draft events found
                     </td>``
                   </tr>
                 ) : (
-                  data.eventPending.map((value, key) => (
+                  data.eventDraft.map((value, key) => (
                     <tr
                       key={key}
                       className="hover:bg-violet-50/60 dark:hover:bg-violet-900/10 transition-colors"

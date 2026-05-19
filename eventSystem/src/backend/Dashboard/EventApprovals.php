@@ -41,6 +41,28 @@ function getEvent($status, $conn){
 }
 
 try {
+
+
+
+    $eventStatus = $_GET['event_status'];
+    $eventID = $_GET['eventID'];
+
+    if (isset($_GET['eventID']) && isset($_GET['event_status'])) {
+    $eventID = $_GET['eventID'];
+    $eventStatus = $_GET['event_status'];
+
+        $sql = "UPDATE events SET status = :eventStatus WHERE eventID = :eventID";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':eventID', $eventID);
+        $stmt->bindParam(':eventStatus', $eventStatus);
+        $stmt->execute();
+
+        echo json_encode([
+            "success" => true, 
+            "message" => "Event status updated successfully!"
+        ]);
+    }
+
    $totalApproved = countEvent("totalApproved", $conn);
    $totalPending = countEvent("totalPending", $conn);
    $totalDraft = countEvent("totalDraft", $conn);

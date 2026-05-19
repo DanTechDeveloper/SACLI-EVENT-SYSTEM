@@ -19,64 +19,6 @@ export default function DashContent() {
     fetchDashboardData();
   }, []);
 
-  const handleApproveEvent = async (eventID, eventStatus) => {
-    if (eventStatus === "approved") {
-      const approvedPrompt = confirm(
-        "Are you sure you want to approve this event?",
-      );
-      if (!approvedPrompt) {
-        return;
-      }
-      eventStatus = "approved";
-    } else {
-      const rejectedPrompt = confirm(
-        "Are you sure you want to reject this event?",
-      );
-      if (!rejectedPrompt) {
-        return;
-      }
-      eventStatus = "rejected";
-    }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?eventID=${eventID}&eventStatus=${eventStatus}`;
-    const response = await apiRequest(url);
-    if (response.success) {
-      await fetchDashboardData();
-      alert("Event status updated successfully!");
-      navigate("/events");
-    } else {
-      console.error(`Error updating event: ${response.error}`);
-    }
-  };
-
-  const handleApprovalAnnouncement = async (announcementID, announcementStatus) => {
-    if (announcementStatus === "approved") {
-      const approvedPrompt = confirm(
-        "Are you sure you want to approve this announcement?",
-      );  
-      if (!approvedPrompt) {
-        return;
-      }
-      announcementStatus = "approved";
-    } else {
-      const rejectedPrompt = confirm(
-        "Are you sure you want to reject this announcement?",
-      );
-      if (!rejectedPrompt) {
-        return;
-      }
-      announcementStatus = "rejected";
-    }
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?announcementID=${announcementID}&announcementStatus=${announcementStatus}`;
-    const response = await apiRequest(url);
-    if (response.success) {
-      await fetchDashboardData();
-      alert("Announcement status updated successfully!");
-      navigate("/announcements");
-    } else {
-      console.error(`Error updating announcement: ${response.error}`);
-    }
-  };
-
 
   return (
     <>
@@ -134,106 +76,61 @@ export default function DashContent() {
         </div>
 
         {/* <!-- Recent Events Section --> */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* <!-- Recent Announcements Section --> */}
-          <section className="bg-white dark:bg-surface-dark rounded-2xl border border-violet-100 dark:border-violet-900/40 shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b border-violet-100 dark:border-violet-900/40 bg-violet-50/50 dark:bg-violet-900/10 flex items-center justify-between">
-              <h4 className="text-sm font-black text-primary dark:text-primary-light uppercase tracking-widest">
-                Pending Announcements
-              </h4>
-              <button className="text-xs font-bold text-primary/60 hover:text-primary dark:text-primary-light/60 dark:hover:text-primary-light transition-colors uppercase tracking-wider">
-                Manage
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Recent Events */}
+          <section className="bg-white dark:bg-surface-dark rounded-2xl border border-violet-100 dark:border-violet-900/40 shadow-sm overflow-hidden p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Recent Events</h2>
+              <button
+                onClick={() => navigate("/events")}
+                className="text-sm font-semibold text-primary dark:text-primary-light hover:underline"
+              >
+                View All
               </button>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead className="bg-violet-50 dark:bg-violet-900/20 border-b border-violet-100 dark:border-violet-900/40">
-                  <tr>
-                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
-                      Title
-                    </th>
-                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
-                      Category
-                    </th>
-                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest">
-                      Author
-                    </th>
-                    <th className="px-6 py-3 text-xs font-black text-primary/70 dark:text-primary-light/70 uppercase tracking-widest text-right">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {data?.readAnnouncement?.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={4}
-                        className="px-6 py-4 text-center text-slate-500 dark:text-slate-400"
-                      >
-                        No pending announcements found
-                      </td>
-                    </tr>
-                  ) : (
-                    data?.readAnnouncement?.map((values, key) => (
-                      <tr
-                        key={key}
-                        className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
-                      >
-                        <td className="px-6 py-4">
-                          <div className="font-semibold text-slate-900 dark:text-slate-100">
-                            {values.title}
-                          </div>
-                          <div className="text-xs text-slate-400 mt-1">
-                            {values.date_posted}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                            {values.category}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="text-sm text-slate-600 dark:text-slate-400">
-                            {values.author}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end gap-2">
-                            <button
-                              type="button"
-                              className="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors"
-                              onClick={() =>
-                                handleApprovalAnnouncement(
-                                  values.id,
-                                  "approved",
-                                )
-                              }
-                            >
-                              <span className="material-symbols-outlined">
-                                check
-                              </span>
-                            </button>
-                            <button
-                              className="p-2 text-slate-400 hover:text-primary dark:hover:text-white transition-colors"
-                              onClick={() =>
-                                handleApprovalAnnouncement(
-                                  values.id,
-                                  "rejected",
-                                )
-                              }
-                            >
-                              <span className="material-symbols-outlined">
-                                close
-                              </span>
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+            {data?.recentEvents && data.recentEvents.length > 0 ? (
+              <div className="space-y-4">
+                {data.recentEvents.map((event) => (
+                  <div key={event.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    <span className="material-symbols-outlined text-primary">event</span>
+                    <div>
+                      <p className="font-medium text-slate-800 dark:text-white">{event.title}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{event.date} • {event.time}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-500 dark:text-slate-400 text-center py-4">No recent events to display.</p>
+            )}
+          </section>
+
+          {/* <!-- Recent Announcements Section --> */}
+          <section className="bg-white dark:bg-surface-dark rounded-2xl border border-violet-100 dark:border-violet-900/40 shadow-sm overflow-hidden p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Recent Announcements</h2>
+              <button
+                onClick={() => navigate("/announcements")}
+                className="text-sm font-semibold text-primary dark:text-primary-light hover:underline"
+              >
+                View All
+              </button>
             </div>
+            {data?.recentAnnouncements && data.recentAnnouncements.length > 0 ? (
+              <div className="space-y-4">
+                {data.recentAnnouncements.map((announcement) => (
+                  <div key={announcement.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    <span className="material-symbols-outlined text-secondary">campaign</span>
+                    <div>
+                      <p className="font-medium text-slate-800 dark:text-white">{announcement.title}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">{announcement.created_at}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-slate-500 dark:text-slate-400 text-center py-4">No recent announcements to display.</p>
+            )}
           </section>
         </div>
       </div>
