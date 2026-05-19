@@ -29,7 +29,7 @@ export default function EventApprovals() {
     if (!confirm(`Are you sure you want to ${statusMessages[eventStatus]} this event?`)) return;
 
     const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/EventApprovals.php?eventID=${eventID}&event_status=${eventStatus}`;
-    const response = await apiRequest(url);
+    const response = await apiRequest(url, "POST");
     
     if (response.success) {
       await handleApprovals();
