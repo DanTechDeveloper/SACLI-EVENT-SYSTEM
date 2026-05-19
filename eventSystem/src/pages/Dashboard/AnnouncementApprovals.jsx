@@ -1,17 +1,35 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import apiRequest from "../../services/apiRequest.js";
 export default function AnnouncementApprovals() {
   useEffect(() => {
     readAnnouncement();
   }, []);
-  const [data,setData] = useState([]);
-  const readAnnouncement = async() => {
-    const URL = "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AnnouncementApprovals.php";
+  const [data, setData] = useState([]);
+  const readAnnouncement = async () => {
+    const URL =
+      "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AnnouncementApprovals.php";
     const response = await apiRequest(URL, "POST");
     if (response.success) {
-        setData(response.data);
+      setData(response.data);
     } else {
-        console.error(response.message);
+      console.error(response.message);
+    }
+  };
+
+  const handleAnnouncementApproval = async (id, status) => {
+     const statusMessages = {
+      approved: "approve",
+      rejected: "reject",
+      draft: "move to draft"
+    };
+     if (!confirm(`Are you sure you want to ${statusMessages[status]} this announcement?`)) return;
+
+    const URL = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/AnnouncementApprovals.php?id=${id}&status=${status}`;
+    const response = await apiRequest(URL, "POST");
+    if (response.success) {
+     await readAnnouncement();
+    } else {
+      console.error(response.message);
     }
   };
 
@@ -68,7 +86,7 @@ export default function AnnouncementApprovals() {
               </span>
             </div>
             <p className="text-5xl font-black tracking-tight leading-none">
-            {data.totalDraft}
+              {data.totalDraft}
             </p>
             <p className="text-xs text-white/60 font-medium">
               Draft announcements only
@@ -106,7 +124,8 @@ export default function AnnouncementApprovals() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {!data.readAnnouncement || data.readAnnouncement.length === 0 ? (
+                  {!data.readAnnouncement ||
+                  data.readAnnouncement.length === 0 ? (
                     <tr>
                       <td
                         colSpan={4}
@@ -144,7 +163,7 @@ export default function AnnouncementApprovals() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApproveEvent(value.id, "draft")
+                                handleAnnouncementApproval(value.id, "draft")
                               }
                               className="text-sm font-bold text-amber-500 hover:underline"
                             >
@@ -155,7 +174,7 @@ export default function AnnouncementApprovals() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApproveEvent(value.id, "approved")
+                                handleAnnouncementApproval(value.id, "approved")
                               }
                               className="text-sm font-bold text-primary dark:text-white hover:underline"
                             >
@@ -166,7 +185,7 @@ export default function AnnouncementApprovals() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApproveEvent(value.id, "rejected")
+                                handleAnnouncementApproval(value.id, "rejected")
                               }
                               className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline"
                             >
@@ -215,18 +234,18 @@ export default function AnnouncementApprovals() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {/* {!data?.eventPending || data.eventPending.length === 0 ? (
+                  {!data.getDraft || data.getDraft.length === 0 ? (
                     <tr>
                       <td
                         colSpan={4}
                         className="px-6 py-4 text-center text-slate-500 dark:text-slate-400"
                       >
-                        No pending events found
+                        No draft announcements found
                       </td>
                       ``
                     </tr>
                   ) : (
-                    data.eventPending.map((value, key) => (
+                    data.getDraft.map((value, key) => (
                       <tr
                         key={key}
                         className="hover:bg-violet-50/60 dark:hover:bg-violet-900/10 transition-colors"
@@ -254,7 +273,7 @@ export default function AnnouncementApprovals() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApproveEvent(value.id, "approved")
+                                handleAnnouncementApproval(value.id, "approved")
                               }
                               className="text-sm font-bold text-primary dark:text-white hover:underline"
                             >
@@ -265,7 +284,7 @@ export default function AnnouncementApprovals() {
                             <button
                               type="button"
                               onClick={() =>
-                                handleApproveEvent(value.id, "rejected")
+                                handleAnnouncementApproval(value.id, "draft")
                               }
                               className="text-sm font-bold text-red-500 dark:text-red-400 hover:underline"
                             >
@@ -277,7 +296,7 @@ export default function AnnouncementApprovals() {
                         </td>
                       </tr>
                     ))
-                  )} */}
+                  )}
                 </tbody>
               </table>
             </div>

@@ -24,9 +24,11 @@ export default function EventApprovals() {
       draft: "move to draft"
     };
 
+    console.table(eventStatus);
+
     if (!confirm(`Are you sure you want to ${statusMessages[eventStatus]} this event?`)) return;
 
-    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/DashContent.php?eventID=${eventID}&eventStatus=${eventStatus}`;
+    const url = `http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/EventApprovals.php?eventID=${eventID}&event_status=${eventStatus}`;
     const response = await apiRequest(url);
     
     if (response.success) {
