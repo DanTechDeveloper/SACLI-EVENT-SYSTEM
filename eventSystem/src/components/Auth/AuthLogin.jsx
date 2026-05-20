@@ -55,20 +55,20 @@ export default function AuthLogin() {
     setIsPhoneNumberOpen(!isPhoneNumberOpen);
   };
 
-  const [email, setEmail] = useState("");
+  const [studentID, setStudentID] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLoginForm = async (e) => {
     e.preventDefault();
     setErrors({});
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrors({ email: "Please enter a valid email address." });
+    const studentIDRegex = /^\d+$/;
+    if (!studentIDRegex.test(studentID)) {
+      setErrors({ studentID: "Please enter a valid student ID." });
       return;
     }
 
-    const user = { email: email, password: password, action: "login" };
+    const user = { studentID: studentID, password: password, action: "login" };
     const result = await apiRequest(
       "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Login.php",
       "POST",
@@ -184,17 +184,17 @@ export default function AuthLogin() {
                 <div className="space-y-1.5">
                   <label className="block">
                     <span className="text-slate-800 dark:text-slate-200 text-sm font-semibold mb-1.5 block">
-                      Email
+                      Student-ID
                     </span>
                     <input
                       className="w-full rounded-xl border border-violet-200 dark:border-violet-900/40 dark:bg-background-dark dark:text-white h-12 px-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-slate-400 text-slate-800"
-                      type="email"
-                      id="loginEmail"
-                      placeholder="you@example.com"
-                      onChange={(e) => setEmail(e.target.value)}
+                      type="text"
+                      id="studentID"
+                      placeholder="123456789"
+                      onChange={(e) => setStudentID(e.target.value)}
                     />
                   </label>
-                  {errors.email && (
+                  {errors.studentID && (
                     <p className="text-xs text-secondary font-medium">
                       {errors.email}
                     </p>

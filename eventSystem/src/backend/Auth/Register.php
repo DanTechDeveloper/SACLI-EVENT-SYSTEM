@@ -13,25 +13,20 @@ try {
 
     // 2. Extract and sanitize
     $fullName = trim($data['fullName'] ?? '');
-    $email = trim($data['email'] ?? '');
+    $studentID = trim($data['studentID'] ?? '');
     $password = $data['password'] ?? '';
 
     // 3. Basic Validation
-    if (empty($fullName) || empty($email) || empty($password)) {
+    if (empty($fullName) || empty($studentID) || empty($password)) {
         echo json_encode(['success' => false, 'message' => 'All fields are required']);
         exit;
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(['success' => false, 'message' => 'Invalid email format']);
-        exit;
-    }
-
     // 4. Check if user already exists
-    $checkStmt = $conn->prepare("SELECT id FROM students WHERE email = :email");
-    $checkStmt->execute([':email' => $email]);
+    $checkStmt = $conn->prepare("SELECT id FROM students WHERE studentID = :studentID");
+    $checkStmt->execute([':studentID' => $studentID]);
     if ($checkStmt->fetch()) {
-        echo json_encode(['success' => false, 'message' => 'Email is already registered']);
+        echo json_encode(['success' => false, 'message' => 'Student ID is already registered']);
         exit;
     }
 

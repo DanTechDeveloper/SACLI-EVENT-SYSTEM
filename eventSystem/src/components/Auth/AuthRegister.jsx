@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import apiRequest from "../../services/apiRequest";
 export default function AuthRegister() {
-  const [email, setEmail] = useState("");
+  const [studentID, setStudentID] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const navigate = useNavigate();
@@ -12,11 +12,11 @@ export default function AuthRegister() {
     
     // Trim and Clean inputs
     const cleanFullName = fullName.trim().replace(/\s+/g, ' ');
-    const cleanEmail = email.trim().toLowerCase();
+    const cleanStudentID = studentID.trim();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(cleanEmail)) {
-      alert("Please enter a valid email address.");
+    const idRegex = /^[A-Z0-9]+$/;
+    if (!idRegex.test(cleanStudentID)) {
+      alert("Please enter a valid student ID.");
       return;
     }
     
@@ -25,7 +25,7 @@ export default function AuthRegister() {
       return;
     }
 
-    const user = { fullName : cleanFullName, password : password, email : cleanEmail,  action: "register" };
+    const user = { fullName : cleanFullName, password : password, studentID : cleanStudentID,  action: "register" };
     try {
       const result = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Register.php",
@@ -61,6 +61,17 @@ export default function AuthRegister() {
             <div className="grid grid-cols-1 gap-4">
               <label className="block">
                 <span className="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
+                  Student-ID
+                </span>
+                <input
+                  className="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-11 px-4 focus:ring-2 focus:ring-primary outline-none"
+                  type="text"
+                  id="studentID"
+                  onChange={(e) => setStudentID(e.target.value)}
+                />
+              </label>
+              <label className="block">
+                <span className="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
                   Full Name
                 </span>
                 <input
@@ -68,17 +79,6 @@ export default function AuthRegister() {
                   type="text"
                   id="fullName"
                   onChange={(e) => setFullName(e.target.value)}
-                />
-              </label>
-              <label className="block">
-                <span className="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
-                  Email
-                </span>
-                <input
-                  className="w-full rounded-lg border border-[#dbdee6] dark:border-gray-700 dark:bg-gray-800 dark:text-white h-11 px-4 focus:ring-2 focus:ring-primary outline-none"
-                  type="email"
-                  id="email"
-                  onChange={(e) => setEmail(e.target.value)}
                 />
               </label>
               <label className="block relative">
