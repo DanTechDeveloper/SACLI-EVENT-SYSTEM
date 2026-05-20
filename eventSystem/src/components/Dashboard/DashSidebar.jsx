@@ -16,15 +16,29 @@ export default function DashSidebar() {
     },
     {
       type: "section",
-      label: "Approval Management",
+      label: "Users Management",
       items: [
-        { label: "Event Approvals", icon: "event_available", path: "/eventApprovals" },
-        { label: "Announcement Approvals", icon: "campaign", path: "/announcementApprovals" },
+        {
+          label: "Students",
+          icon: "event_available",
+          path: "/students",
+        },
+        {
+          label: "Event Participant",
+          icon: "campaign",
+          path: "/eventParticipants",
+        },
       ],
-    }, {
+    },
+    {
       type: "section",
       label: "Events Management",
       items: [
+        {
+          label: "Event Approvals",
+          icon: "event_available",
+          path: "/eventApprovals",
+        },
         { label: "All Events", icon: "calendar_month", path: "/events" },
         { label: "Upcoming Events", icon: "event", path: "/upcomingEvents" },
         { label: "Add New", icon: "add_box", path: "/newEvent" },
@@ -34,6 +48,11 @@ export default function DashSidebar() {
       type: "section",
       label: "Announcements",
       items: [
+        {
+          label: "Announcement Approvals",
+          icon: "campaign",
+          path: "/announcementApprovals",
+        },
         { label: "All Posts", icon: "campaign", path: "/announcements" },
         { label: "Add New", icon: "post_add", path: "/newAnnouncement" },
       ],
@@ -46,15 +65,17 @@ export default function DashSidebar() {
         {/* Brand */}
         <div className="flex items-center gap-3 px-2 py-1">
           <div className="size-10 rounded-full overflow-hidden ring-2 ring-primary/30 shrink-0">
-            <img src={SacliLogo} alt="SACLI Logo" className="w-full h-full object-cover" />
+            <img
+              src={SacliLogo}
+              alt="SACLI Logo"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <h1 className="text-slate-900 dark:text-white text-base font-bold leading-tight">
               SACLIEventSys
             </h1>
-            <p className="text-primary text-xs font-semibold">
-              Admin Portal
-            </p>
+            <p className="text-primary text-xs font-semibold">Admin Portal</p>
           </div>
         </div>
 
@@ -73,7 +94,9 @@ export default function DashSidebar() {
                 }`}
                 onClick={() => navigate(item.path)}
               >
-                <span className="material-symbols-outlined text-xl">{item.icon}</span>
+                <span className="material-symbols-outlined text-xl">
+                  {item.icon}
+                </span>
                 <p>{item.label}</p>
               </a>
             ) : (
@@ -94,7 +117,9 @@ export default function DashSidebar() {
                       }`}
                       onClick={() => navigate(subItem.path)}
                     >
-                      <span className={`material-symbols-outlined text-xl ${isActive(subItem.path) ? "text-white" : "text-primary/50 dark:text-primary-light/50"}`}>
+                      <span
+                        className={`material-symbols-outlined text-xl ${isActive(subItem.path) ? "text-white" : "text-primary/50 dark:text-primary-light/50"}`}
+                      >
                         {subItem.icon}
                       </span>
                       <p>{subItem.label}</p>

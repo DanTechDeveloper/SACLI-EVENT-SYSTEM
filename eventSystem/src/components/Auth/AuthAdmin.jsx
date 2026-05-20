@@ -8,12 +8,11 @@ export default function AuthAdmin({ toggleModal }) {
   const handleDashboard = (e) => {
     e.preventDefault();
 
-
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const isValidEmail = emailRegex.test(email);
     const isValidPassword = passwordRegex.test(password);
-
 
     if (email.trim() === "") {
       alert("Email is required");
@@ -28,10 +27,12 @@ export default function AuthAdmin({ toggleModal }) {
       return;
     }
     if (!isValidPassword) {
-      alert("Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      alert(
+        "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+      );
       return;
     }
-    
+
     if (email.trim() === "sacli@gmail.com" && password.trim() === "admin") {
       navigate("/dashboard");
     } else {

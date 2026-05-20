@@ -19,6 +19,8 @@ import UpcomingEvent from "./pages/UpcomingEvent";
 import ViewDetails from "./pages/Dashboard/ViewDetails";
 import EventApprovals from "./pages/Dashboard/EventApprovals";
 import AnnouncementApprovals from "./pages/Dashboard/AnnouncementApprovals";
+import Students from "./pages/Dashboard/Students";
+import EventParticipants from "./pages/Dashboard/EventParticipants";
 function App() {
   return (
     <>
@@ -40,6 +42,8 @@ function App() {
             <Route element={<PublishedAnnouncement />} path="/publishedAnnouncement" />
             <Route element={<PublishedEvent />} path="/publishEvent" />
             <Route element={<UpcomingEvent />} path="/upcomingEvents" />
+            <Route element={<Students />} path="/students" />
+            <Route element={<EventParticipants />} path="/eventParticipants" />
           </Route>
 
           <Route element={<StudentMainContent />} index path="/studentView" />
