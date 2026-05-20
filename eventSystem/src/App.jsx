@@ -21,6 +21,7 @@ import EventApprovals from "./pages/Dashboard/EventApprovals";
 import AnnouncementApprovals from "./pages/Dashboard/AnnouncementApprovals";
 import Students from "./pages/Dashboard/Students";
 import EventParticipants from "./pages/Dashboard/EventParticipants";
+import StudentDetail from "./pages/Dashboard/StudentDetail";
 function App() {
   return (
     <>
@@ -44,6 +45,7 @@ function App() {
             <Route element={<UpcomingEvent />} path="/upcomingEvents" />
             <Route element={<Students />} path="/students" />
             <Route element={<EventParticipants />} path="/eventParticipants" />
+            <Route path="/students/:id" element={<StudentDetail />} />
           </Route>
 
           <Route element={<StudentMainContent />} index path="/studentView" />

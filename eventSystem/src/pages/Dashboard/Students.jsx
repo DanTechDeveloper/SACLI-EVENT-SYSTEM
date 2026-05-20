@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import apiRequest from '../../services/apiRequest';
-
+import { useNavigate } from 'react-router';
 export default function Students() {
   const [searchQuery, setSearchQuery] = useState('');
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -23,7 +23,7 @@ export default function Students() {
   };
 
   const handleView = (student) => {
-    alert(`Viewing Details for ${student.fullName || student.name}:\nEmail: ${student.email || 'N/A'}\nPhone: ${student.phone_number || 'N/A'}\nCourse: ${student.course}\nEvents Joined: ${student.eventsJoined}`);
+    navigate(`/students/${student.studentID}`, { state: { student } });
   };
 
   useEffect(() => {

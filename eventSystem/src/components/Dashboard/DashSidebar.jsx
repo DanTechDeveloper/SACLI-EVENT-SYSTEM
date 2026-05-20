@@ -22,12 +22,7 @@ export default function DashSidebar() {
           label: "Students",
           icon: "event_available",
           path: "/students",
-        },
-        {
-          label: "Event Participant",
-          icon: "campaign",
-          path: "/eventParticipants",
-        },
+        }
       ],
     },
     {
