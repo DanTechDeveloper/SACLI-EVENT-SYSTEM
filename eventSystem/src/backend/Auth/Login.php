@@ -8,21 +8,21 @@ try {
 
     // Check if action is login
     if (isset($data['action']) && $data['action'] === 'login') {
-        $email = $data['email'] ?? '';
+        $studentID = $data['studentID'] ?? '';
         $password = $data['password'] ?? '';
 
         // Validate inputs
-        if (empty($email) || empty($password)) {
+        if (empty($studentID) || empty($password)) {
             echo json_encode([
                 'success' => false,
-                'message' => 'Email and password are required'
+                'message' => 'StudentID and password are required'
             ]);
             exit;
         }
 
         // Fetch user from database by email
-        $stmt = $conn->prepare("SELECT id, fullName, email, password FROM students WHERE email = :email");
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt = $conn->prepare("SELECT id, fullName, studentID, password FROM students WHERE studentID = :studentID");
+        $stmt->bindValue(':studentID', $studentID, PDO::PARAM_STR);
         $stmt->execute();
 
         if ($stmt->rowCount() === 0) {
@@ -48,7 +48,7 @@ try {
         // Password matches, login successful
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['fullName'] = $user['fullName'];
-        $_SESSION['email'] = $user['email'];
+        $_SESSION['studentID'] = $user['studentID'];
 
         echo json_encode([
             'success' => true,
@@ -56,7 +56,7 @@ try {
             'user' => [
                 'id' => $user['id'],
                 'fullName' => $user['fullName'],
-                'email' => $user['email']
+                'studentID' => $user['studentID']
             ]
         ]);
 

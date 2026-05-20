@@ -1,19 +1,29 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
 import apiRequest from "../../services/apiRequest";
+import ComboboxSelect from "../ComboboxSelect";
 export default function AuthRegister() {
   const [studentID, setStudentID] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [course, setCourse] = useState("");
   const navigate = useNavigate();
+
+  const courseOptions = [
+    {value: "BSIT", label: "BSIT"},,
+    {value: "BSA", label: "BSA"},
+    {value: "BSBA", label: "BSBA"},
+    {value: "BSCE", label: "BSCE"},
+  ]
   
   const handleRegisterForm = async (e) => {
     e.preventDefault();
     
-    // Trim and Clean inputs
+      // Trim and Clean inputs
     const cleanFullName = fullName.trim().replace(/\s+/g, ' ');
     const cleanStudentID = studentID.trim();
 
+    // Validation for student ID
     const idRegex = /^[A-Z0-9]+$/;
     if (!idRegex.test(cleanStudentID)) {
       alert("Please enter a valid student ID.");
@@ -25,7 +35,8 @@ export default function AuthRegister() {
       return;
     }
 
-    const user = { fullName : cleanFullName, password : password, studentID : cleanStudentID,  action: "register" };
+    const user = { fullName : cleanFullName, password : password, studentID : cleanStudentID, course : course, action: "register" };
+    console.table(user);
     try {
       const result = await apiRequest(
         "http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Auth/Register.php",
@@ -80,7 +91,14 @@ export default function AuthRegister() {
                   id="fullName"
                   onChange={(e) => setFullName(e.target.value)}
                 />
-              </label>
+              </label>  
+              <ComboboxSelect
+                    label="Course"
+                    id="course"
+                    options={courseOptions}
+                    value={course}
+                    onChange={(e) => setCourse(e.target.value)}
+                  />
               <label className="block relative">
                 <span className="text-[#111318] dark:text-gray-200 text-sm font-semibold mb-1 block">
                   Password

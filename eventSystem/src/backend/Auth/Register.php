@@ -15,9 +15,10 @@ try {
     $fullName = trim($data['fullName'] ?? '');
     $studentID = trim($data['studentID'] ?? '');
     $password = $data['password'] ?? '';
+    $course = trim($data['course'] ?? '');
 
     // 3. Basic Validation
-    if (empty($fullName) || empty($studentID) || empty($password)) {
+    if (empty($fullName) || empty($studentID) || empty($password) || empty($course)) {
         echo json_encode(['success' => false, 'message' => 'All fields are required']);
         exit;
     }
@@ -34,11 +35,12 @@ try {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // 6. Insert new record
-    $insertStmt = $conn->prepare("INSERT INTO students (fullName, email, password) VALUES (:name, :email, :pass)");
+    $insertStmt = $conn->prepare("INSERT INTO students (fullName, studentID, password, course) VALUES (:fullName, :studentID, :password, :course)");
     $insertStmt->execute([
-        ':name'  => $fullName,
-        ':email' => $email,
-        ':pass'  => $hashedPassword
+        ':fullName'  => $fullName,
+        ':studentID' => $studentID,
+        ':password'  => $hashedPassword,
+        ':course'  => $course
     ]);
 
     echo json_encode(['success' => true, 'message' => 'Registration successful!']);

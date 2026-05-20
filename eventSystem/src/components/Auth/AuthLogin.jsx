@@ -59,7 +59,7 @@ export default function AuthLogin() {
   const [password, setPassword] = useState("");
 
   const handleLoginForm = async (e) => {
-    e.preventDefault();
+    e.preventDefault();password
     setErrors({});
 
     const studentIDRegex = /^\d+$/;
