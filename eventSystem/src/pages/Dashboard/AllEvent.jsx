@@ -132,9 +132,7 @@ export default function AllEvent() {
                 <p class="text-[10px] font-black uppercase tracking-widest text-white/70">
                   {stat.title}
                 </p>
-                <p class="text-4xl font-black leading-none">
-                  {stat.value}
-                </p>
+                <p class="text-4xl font-black leading-none">{stat.value}</p>
               </div>
             );
           })}
@@ -163,14 +161,19 @@ export default function AllEvent() {
               events={data?.ongoingEvent}
               emptyMessage="No ongoing events."
               handleAction={handleAction}
-            >
-              
-            </TableEvent>
+            ></TableEvent>
           </BorderContainer>{" "}
           <BorderContainer title="Past Events">
             <TableEvent
               events={data?.pastEvent}
               emptyMessage="No past events."
+              handleAction={handleAction}
+            ></TableEvent>
+          </BorderContainer>{" "}
+          <BorderContainer title="Upcoming Events">
+            <TableEvent
+              events={data?.upcomingEvent}
+              emptyMessage="No upcoming events."
               handleAction={handleAction}
             ></TableEvent>
           </BorderContainer>

@@ -14,18 +14,7 @@ export default function DashSidebar() {
       icon: "dashboard",
       path: "/admin/dashboard",
     },
-    {
-      type: "section",
-      label: "Users Management",
-      items: [
-        {
-          label: "Students",
-          icon: "event_available",
-          path: "/admin/students",
-        }
-      ],
-    },
-    {
+       {
       type: "section",
       label: "Events Management",
       items: [
@@ -39,6 +28,18 @@ export default function DashSidebar() {
         { label: "Add New", icon: "add_box", path: "/admin/newEvent" },
       ],
     },
+    {
+      type: "section",
+      label: "Users Management",
+      items: [
+        {
+          label: "Students",
+          icon: "event_available",
+          path: "/admin/students",
+        }
+      ],
+    },
+ 
     {
       type: "section",
       label: "Announcements",

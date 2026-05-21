@@ -68,6 +68,21 @@ function pastEvent($conn){
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function upcomingEvent($conn){
+    $conn->exec("SET time_zone = '+08:00';");
+    $sql = "SELECT *, 
+                   DATE_FORMAT(event_date, '%M %d, %Y') as date, 
+                   TIME_FORMAT(event_time, '%h:%i %p') as time,
+                   TIME_FORMAT(event_time_end, '%h:%i %p') as time_end 
+            FROM events 
+            WHERE status = 'approved' 
+            AND event_date > CURDATE() 
+            ORDER BY event_date ASC, event_time ASC";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 try {
     require_once '../connect.php';
     $id = isset($_GET['id']) ? $_GET['id'] : null;
@@ -83,6 +98,7 @@ try {
         "data" => [
             "ongoingEvent" => ongoingEvent($conn), 
             "pastEvent" => pastEvent($conn),
+            "upcomingEvent" => upcomingEvent($conn),
             "categoryCounts" => getCategoryCounts($conn),
         ]
     ]);
