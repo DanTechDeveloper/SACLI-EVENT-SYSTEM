@@ -23,7 +23,7 @@ export default function Students() {
   };
 
   const handleView = (student) => {
-    navigate(`/students/${student.studentID}`, { state: { student } });
+    navigate(`/admin/students/${student.studentID}`, { state: { student } });
   };
 
   useEffect(() => {

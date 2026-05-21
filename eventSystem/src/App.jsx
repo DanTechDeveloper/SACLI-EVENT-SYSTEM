@@ -33,19 +33,19 @@ function App() {
             <Route path="/callback" element={<Callback />} />
           </Route>
           <Route element={<DashboardLayout />}>
-            <Route index element={<DashContent />} path="/dashboard" />
-            <Route element={<EventApprovals />} path="/eventApprovals" />
-            <Route element={<AnnouncementApprovals />} path="/announcementApprovals" />
-            <Route element={<AllEvent />} path="/events" />
-            <Route element={<AddNewEvent />} path="/newEvent" />
-            <Route element={<AddNewAnnouncement />} path="/newAnnouncement" />
-            <Route element={<Announcement />} path="/announcements" />
-            <Route element={<PublishedAnnouncement />} path="/publishedAnnouncement" />
-            <Route element={<PublishedEvent />} path="/publishEvent" />
-            <Route element={<UpcomingEvent />} path="/upcomingEvents" />
-            <Route element={<Students />} path="/students" />
-            <Route element={<EventParticipants />} path="/eventParticipants" />
-            <Route path="/students/:id" element={<StudentDetail />} />
+            <Route index element={<DashContent />} path="/admin/dashboard" />
+            <Route element={<EventApprovals />} path="/admin/eventApprovals" />
+            <Route element={<AnnouncementApprovals />} path="/admin/announcementApprovals" />
+            <Route element={<AllEvent />} path="/admin/events" />
+            <Route element={<AddNewEvent />} path="/admin/newEvent" />
+            <Route element={<AddNewAnnouncement />} path="/admin/newAnnouncement" />
+            <Route element={<Announcement />} path="/admin/announcements" />
+            <Route element={<PublishedAnnouncement />} path="/admin/publishedAnnouncement" />
+            <Route element={<PublishedEvent />} path="/admin/publishEvent" />
+            <Route element={<UpcomingEvent />} path="/admin/upcomingEvents" />
+            <Route element={<Students />} path="/admin/students" />
+            <Route element={<EventParticipants />} path="/admin/eventParticipants" />
+            <Route path="/admin/students/:id" element={<StudentDetail />} />
           </Route>
 
           <Route element={<StudentMainContent />} index path="/studentView" />

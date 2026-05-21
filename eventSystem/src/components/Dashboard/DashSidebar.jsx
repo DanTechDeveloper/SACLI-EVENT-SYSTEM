@@ -12,7 +12,7 @@ export default function DashSidebar() {
       type: "link",
       label: "Dashboard",
       icon: "dashboard",
-      path: "/dashboard",
+      path: "/admin/dashboard",
     },
     {
       type: "section",
@@ -21,7 +21,7 @@ export default function DashSidebar() {
         {
           label: "Students",
           icon: "event_available",
-          path: "/students",
+          path: "/admin/students",
         }
       ],
     },
@@ -32,11 +32,11 @@ export default function DashSidebar() {
         {
           label: "Event Approvals",
           icon: "event_available",
-          path: "/eventApprovals",
+          path: "/admin/eventApprovals",
         },
-        { label: "All Events", icon: "calendar_month", path: "/events" },
-        { label: "Upcoming Events", icon: "event", path: "/upcomingEvents" },
-        { label: "Add New", icon: "add_box", path: "/newEvent" },
+        { label: "All Events", icon: "calendar_month", path: "/admin/events" },
+        { label: "Upcoming Events", icon: "event", path: "/admin/upcomingEvents" },
+        { label: "Add New", icon: "add_box", path: "/admin/newEvent" },
       ],
     },
     {
@@ -46,10 +46,10 @@ export default function DashSidebar() {
         {
           label: "Announcement Approvals",
           icon: "campaign",
-          path: "/announcementApprovals",
+          path: "/admin/announcementApprovals",
         },
-        { label: "All Posts", icon: "campaign", path: "/announcements" },
-        { label: "Add New", icon: "post_add", path: "/newAnnouncement" },
+        { label: "All Posts", icon: "campaign", path: "/admin/announcements" },
+        { label: "Add New", icon: "post_add", path: "/admin/newAnnouncement" },
       ],
     },
   ];

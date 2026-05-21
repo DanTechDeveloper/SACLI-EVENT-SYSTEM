@@ -12,7 +12,7 @@ export default function StudentDetail() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
               <button
-                onClick={() => navigate("/students")}
+                onClick={() => navigate("/admin/students")}
                 className="flex items-center gap-2 text-primary font-semibold hover:opacity-80 transition-opacity"
               >
                 <span className="material-symbols-outlined">
