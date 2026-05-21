@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import apiRequest from "../../services/apiRequest";
 
 export default function StudentDetail() {
   const { id } = useParams();
@@ -15,14 +16,29 @@ export default function StudentDetail() {
 
   const [isEditingID, setIsEditingID] = useState(false);
   const [studentID, setStudentID] = useState(student?.studentID || "");
-
   const [isEditingCourse, setIsEditingCourse] = useState(false);
   const [course, setCourse] = useState(student?.course || "");
-
-  const handleSaveID = () => {
-    // Logic for apiRequest to update Student ID would go here
-    console.log(`Updating student record ID from ${student.studentID} to: ${studentID}`);
-    setIsEditingID(false);
+  const [loading,setLoading] = useState(false);
+  
+  const handleSaveID = async () => {
+    try {
+      setLoading(true);
+      const response = await apiRequest("http://localhost/IPTFINALPROJECT/eventSystem/src/backend/Dashboard/StudentDetail.php", "POST",{
+        oldID: student.studentID,
+        newID: studentID
+      });
+      if (response && response.success) {
+        alert("Student ID updated successfully");
+        setStudentID(studentID);
+        setIsEditingID(false);
+      } else {
+        console.error("Failed to update student ID:", response?.message);
+      }
+    } catch (error) {
+      console.error("Error updating student ID:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSaveCourse = () => {
